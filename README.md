@@ -34,18 +34,18 @@ Dashboard frontend pour la gestion complète du Football Club, de l'API-football
 
 ## Screenshots
 
-<table width="100%">
+<table>
   <tr>
-    <td width="50%"><img src="./assets/screenshots/login.png" alt="login" width="100%"/></td>
-    <td width="50%"><img src="./assets/screenshots/register.png" alt="register" width="100%"/></td>
+    <td><img src="./assets/screenshots/login.png" alt="login" style="width:450px;"/></td>
+    <td><img src="./assets/screenshots/register.png" alt="register" style="width:450px;"/></td>
   </tr>
   <tr>
-    <td width="50%"><img src="./assets/screenshots/verification.png" alt="verification" width="100%"/></td>
-    <td width="50%"><img src="./assets/screenshots/verify-mail.png" alt="verify-mail" width="100%"/></td>
+    <td><img src="./assets/screenshots/verification.png" alt="verification" style="width:450px;"/></td>
+    <td><img src="./assets/screenshots/verify-mail.png" alt="verify-mail" style="width:450px;"/></td>
   </tr>
   <tr>
-    <td width="50%"><img src="./assets/screenshots/forgot-password.png" alt="forgot-password" width="100%"/></td>
-    <td width="50%"><img src="./assets/screenshots/reset-password.png" alt="reset-password" width="100%"/></td>
+    <td><img src="./assets/screenshots/forgot-password.png" alt="forgot-password" style="width:450px;"/></td>
+    <td><img src="./assets/screenshots/reset-password.png" alt="reset-password" style="width:450px;"/></td>
   </tr>
 </table>
 
