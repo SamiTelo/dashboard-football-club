@@ -5,6 +5,13 @@ Dashboard frontend pour la gestion complète du Football Club, de l'API-football
 
 **Note** : Il s’agit d’un prototype actuellement en développement. compatible mobile, tablette et PC
 
+## Stacks
+
+- Next.js 14
+- TypeScript
+- TailwindCSS
+- Framer Motion
+
 
 ##  Fonctionnalités 
 
@@ -24,12 +31,6 @@ Dashboard frontend pour la gestion complète du Football Club, de l'API-football
 - etc...
 
 
-## Stacks
-
-- Next.js 14
-- TypeScript
-- TailwindCSS
-- Framer Motion
 
 ## Screenshots
 
