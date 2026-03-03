@@ -34,17 +34,20 @@ Dashboard frontend pour la gestion complète du Football Club, de l'API-football
 
 ## Screenshots
 
-| Login | Register |
-|-------|----------|
-| ![](./assets/screenshots/login.png) | ![](./assets/screenshots/register.png) |
-
-| Verification | Verify Mail |
-|-------------|------------|
-| ![](./assets/screenshots/verification.png) | ![](./assets/screenshots/verify-mail.png) |
-
-| Forgot Password | Reset Password |
-|----------------|----------------|
-| ![](./assets/screenshots/forgot-password.png) | ![](./assets/screenshots/reset-password.png) |
+<table width="100%">
+  <tr>
+    <td width="50%"><img src="./assets/screenshots/login.png" alt="login" width="100%"/></td>
+    <td width="50%"><img src="./assets/screenshots/register.png" alt="register" width="100%"/></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="./assets/screenshots/verification.png" alt="verification" width="100%"/></td>
+    <td width="50%"><img src="./assets/screenshots/verify-mail.png" alt="verify-mail" width="100%"/></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="./assets/screenshots/forgot-password.png" alt="forgot-password" width="100%"/></td>
+    <td width="50%"><img src="./assets/screenshots/reset-password.png" alt="reset-password" width="100%"/></td>
+  </tr>
+</table>
 
 
 ```bash
