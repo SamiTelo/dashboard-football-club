@@ -20,22 +20,33 @@ export default function RegisterPage() {
       {/*---------------------------------------------------
           BLOC RIGHT: Image
        -------------------------------------------------------*/}
-      <div className="order-1 lg:order-2 relative bg-[url('/assets/login-img.jpg')] bg-cover bg-center min-h-125 lg:min-h-screen">
-        {/* Logo */}
-        <div className="absolute top-6 left-6 flex items-center gap-3 p-4 bg-white/10 backdrop-blur-sm border border-white/10 shadow-xl rounded-2xl">
-          <a href="#" className="flex items-center gap-3 font-semibold text-lg">
-            <div className="w-9 h-9 relative">
-              <Image
-                src="/assets/logo.png"
-                alt="Football Club Logo"
-                fill
-                className="object-contain rounded-xl"
-              />
+      <div className="order-1 lg:order-2 relative bg-[url('/assets/img.jpg')] bg-cover bg-center min-h-150 lg:min-h-screen flex items-center justify-center">
+      
+            {/* Logo */}
+              <div className="absolute top-6 right-6 flex items-center gap-3 p-3 md:p-4 bg-white/10 backdrop-blur-sm border border-white/10 shadow-xl rounded-2xl">
+                <a href="#" className="flex items-center gap-3 font-semibold text-lg">
+                  <div className="w-9 h-9 relative">
+                    <Image
+                      src="/assets/logo.png"
+                      alt="Football Club Logo"
+                      fill
+                      className="object-contain rounded-xl"
+                    />
+                  </div>
+                  <span className="text-white text-sm md:text-[15px] ">Football Club</span>
+                </a>
+              </div>
+      
+              {/* Texte */}
+              <div className="relative text-center mt-0 md:mt-80 md:mx-4 text-white px-6 md:px-12 py-10 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 shadow-xl">
+                <p className="mb-6 text-white/90 text-left text-3xl font-semibold">
+                  Le saviez-vous ?
+                </p>
+                <p className="text-xs sm:text-sm mb-8 text-white/70 text-left">
+                 En 2006, pendant la Coupe du Monde 2006, une trêve temporaire aurait été observée en Côte d’Ivoire après la qualification des Éléphants, menée par Didier Drogba
+                </p>
+              </div>
             </div>
-            <span className="text-white">Football Club</span>
-          </a>
-        </div>
-      </div>
     </div>
   );
 }
