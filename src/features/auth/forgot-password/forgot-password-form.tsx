@@ -37,7 +37,7 @@ export function ForgotPasswordForm({
         <Field>
           <FieldDescription className="text-center">
             Remember you password?{" "}
-            <a href="/login" className="underline underline-offset-4 text-green-400">
+            <a href="/auth/login" className="underline underline-offset-4 text-green-400">
               Login
             </a>
           </FieldDescription>

@@ -2,173 +2,130 @@
 
 import * as React from "react"
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
+  Footprints,
+  Home,
+  Shield,
+  User,
+  UsersRound,
+  type LucideIcon,
 } from "lucide-react"
 
-import { NavMain } from "@/features/dashbord/components/nav-main"
-import { NavProjects } from "@/features/dashbord/components/nav-projects"
-import { NavUser } from "@/features/dashbord/components/nav-user"
-import { TeamSwitcher } from "@/features/dashbord/components/team-switcher"
+import { NavMain, type NavItem } from "@/features/dashbord/components/nav-main"
+import { NavLogo } from "@/features/dashbord/components/nav-logo"
+
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarRail,
 } from "@/features/dashbord/components/ui/sidebar"
 
-// This is sample data.
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  teams: [
+import { NavInfo } from "@/features/dashbord/components/nav-info"
+import { NavHeader } from "@/features/dashbord/components/nav-header"
+
+/* -------------------------------------------------------------------------- */
+/*                              TYPES 
+/* -------------------------------------------------------------------------- */
+
+type HeaderItem = {
+  name: string
+  url: string
+  icon: LucideIcon
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                DATA 
+/* -------------------------------------------------------------------------- */
+
+
+const data: {
+  logo: { name: string; src: string }[]
+  header: HeaderItem[]
+  navMain: NavItem[]
+} = {
+  logo: [
     {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
+      name: "Football Club",
+      src: "/assets/logo.png",
     },
   ],
+
+  header: [
+    {
+      name: "Accueil",
+      url: "/dashboard",
+      icon: Home,
+    },
+  ],
+
   navMain: [
     {
-      title: "Players",
-      url: "/dashboard",
-      icon: SquareTerminal,
+      title: "Joueurs",
+      url: "/dashboard/players",
+      icon: UsersRound,
+      isActive: true,
       items: [
         {
-          title: "listes",
+          title: "Listes",
           url: "/dashboard/players",
         },
-        {
-          title: "Add players",
-          url: "#",
-        },
-        {
-          title: "Update players",
-          url: "#",
-        },
       ],
-      isActive: true,
     },
     {
-      title: "User",
-      url: "",
-      icon: Bot,
+      title: "Utilisateurs",
+      url: "/dashboard/users",
+      icon: User,
       items: [
         {
-          title: "listes",
+          title: "Listes",
           url: "/dashboard/users",
         },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
       ],
     },
     {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
+      title: "Equipes",
+      url: "/dashboard/teams",
+      icon: Shield,
       items: [
         {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
+          title: "Listes",
+          url: "/dashboard/teams",
         },
       ],
     },
     {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
+      title: "Positions",
+      url: "/dashboard/positions",
+      icon: Footprints, 
       items: [
         {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
+          title: "Listes",
+          url: "/dashboard/positions",
         },
       ],
-    },
-  ],
-  projects: [
-    {
-      name: "Home",
-      url: "/dashboard",
-      icon: Frame,
-    },
-    {
-      name: "Player",
-      url: "/dashboard/players",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
     },
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+/* -------------------------------------------------------------------------- */
+/*                           COMPONENT
+/* -------------------------------------------------------------------------- */
+
+export function AppSidebar(
+  props: React.ComponentProps<typeof Sidebar>
+) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <NavLogo logo={data.logo} />
       </SidebarHeader>
+
       <SidebarContent>
-         <NavProjects projects={data.projects} />
-         <NavMain items={data.navMain} />
+        <NavHeader header={data.header} />
+        <NavMain items={data.navMain} />
+        <NavInfo />
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter>
+
       <SidebarRail />
     </Sidebar>
   )

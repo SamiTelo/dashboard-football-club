@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { ChevronRight, type LucideIcon } from "lucide-react"
 
 import {
@@ -7,6 +8,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/features/dashbord/components/ui/collapsible"
+
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -18,23 +20,32 @@ import {
   SidebarMenuSubItem,
 } from "@/features/dashbord/components/ui/sidebar"
 
-export function NavMain({
-  items,
-}: {
-  items: {
-    title: string
-    url: string
-    icon?: LucideIcon
-    isActive?: boolean
-    items?: {
-      title: string
-      url: string
-    }[]
-  }[]
-}) {
+/* -------------------------------------------------------------------------- */
+/* TYPES */
+/* -------------------------------------------------------------------------- */
+
+export type NavSubItem = {
+  title: string
+  url: string
+}
+
+export type NavItem = {
+  title: string
+  url: string
+  icon?: LucideIcon
+  isActive?: boolean
+  items?: NavSubItem[]
+}
+
+/* -------------------------------------------------------------------------- */
+/* COMPONENT */
+/* -------------------------------------------------------------------------- */
+
+export function NavMain({ items }: { items: NavItem[] }) {
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Feature</SidebarGroupLabel>
+
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible
@@ -48,17 +59,19 @@ export function NavMain({
                 <SidebarMenuButton tooltip={item.title}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
+
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                 </SidebarMenuButton>
               </CollapsibleTrigger>
+
               <CollapsibleContent>
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
+                        <Link href={subItem.url}>
                           <span>{subItem.title}</span>
-                        </a>
+                        </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}

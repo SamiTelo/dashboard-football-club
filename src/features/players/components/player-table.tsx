@@ -33,6 +33,7 @@ interface StatCardProps {
   title: string;
   value: string | number;
   growth: string;
+  feature: string;
   icon: ReactNode;
   bgColor: string;
   isNegative?: boolean;
@@ -77,16 +78,15 @@ const users: User[] = [
 /* -------------------- COMPONENTS -------------------- */
 
 const StatCard = ({
-  title,
   value,
+  feature,
   growth,
   icon,
   bgColor,
   isNegative = false,
 }: StatCardProps) => (
-  <div className="bg-white p-5 rounded-lg shadow-sm flex justify-between items-start border border-gray-100">
+  <div className="bg-white p-8 rounded-lg shadow-sm flex justify-between items-start border border-gray-100">
     <div>
-      <div className="text-sm text-gray-500 font-medium mb-1">{title}</div>
 
       <div className="flex items-center gap-2">
         <span className="text-2xl font-bold text-gray-700">{value}</span>
@@ -100,7 +100,7 @@ const StatCard = ({
         </span>
       </div>
 
-      <div className="text-xs text-gray-400 mt-1">Total Users</div>
+      <div className="text-xs text-gray-400 mt-1">{feature}</div>
     </div>
 
     <div className={`p-3 rounded-lg ${bgColor}`}>{icon}</div>
@@ -125,16 +125,17 @@ const StatusBadge = ({ status }: StatusBadgeProps) => {
 
 /* -------------------- MAIN COMPONENT -------------------- */
 
-export default function UserListDashboard() {
+export default function PlayerList() {
   return (
-    <div className="p-6 bg-[#F8F7FA] min-h-screen font-sans text-[#5d596c]">
-      
+    <div className="p-0 bg-[#F8F7FA] min-h-screen font-sans text-[#5d596c]">
+      <p>Liste des Joueurs /</p><br/>
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         <StatCard
           title="Session"
           value="21,459"
           growth="+29%"
+          feature="Total users"
           icon={<FiUsers className="text-purple-500" />}
           bgColor="bg-purple-100"
         />
@@ -143,6 +144,7 @@ export default function UserListDashboard() {
           title="Paid Users"
           value="4,567"
           growth="+18%"
+          feature="Total teams"
           icon={<FiUserCheck className="text-red-500" />}
           bgColor="bg-red-100"
         />
@@ -151,6 +153,7 @@ export default function UserListDashboard() {
           title="Active Users"
           value="19,860"
           growth="-14%"
+          feature="Total players"
           icon={<FiUserPlus className="text-green-500" />}
           bgColor="bg-green-100"
           isNegative
@@ -160,6 +163,7 @@ export default function UserListDashboard() {
           title="Pending Users"
           value="237"
           growth="+42%"
+          feature="Total positions"
           icon={<FiUserX className="text-orange-500" />}
           bgColor="bg-orange-100"
         />
@@ -173,7 +177,7 @@ export default function UserListDashboard() {
           <h3 className="text-lg font-medium mb-4">Search Filter</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <select className="border border-gray-200 rounded-md p-2 outline-none focus:border-purple-400">
+            <select className="border border-[#F8F7FA] rounded-md p-2 outline-none focus:border-green-400 bg-[#F8F7FA]">
               <option>Select Role</option>
             </select>
 
@@ -206,7 +210,7 @@ export default function UserListDashboard() {
               <FiDownload /> Export
             </button>
 
-            <button className="flex items-center gap-2 bg-[#7367F0] text-white px-4 py-2 rounded-md hover:bg-indigo-600 transition shadow-md shadow-indigo-200">
+            <button className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-md hover:bg-green-400 transition shadow-md shadow-indigo-200">
               <FiPlus /> Add New User
             </button>
           </div>

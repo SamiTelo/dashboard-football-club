@@ -120,7 +120,7 @@ export function RegisterForm({
           <FieldDescription className="text-center mt-4">
             Already have an account?{" "}
             <a
-              href="/login"
+              href="/auth/login"
               className="underline underline-offset-4 text-green-400"
             >
               Sign in
