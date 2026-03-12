@@ -1,21 +1,26 @@
-import { AppSidebar } from "@/features/dashbord/components/app-sidebar"
+"use client"
+
+import { AppSidebar } from "@/features/dashbaord/components/app-sidebar"
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/features/dashbord/components/ui/sidebar"
+} from "@/features/dashbaord/components/ui/sidebar"
 
-import { Separator } from "@/features/dashbord/components/ui/separator"
-
+import { Separator } from "@/features/dashbaord/components/ui/separator"
 import { Search, Mail, Bell, LogOut } from "lucide-react"
-import Image from "next/image"
+import React from "react"
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const currentYear = new Date().getFullYear()
+
+  // --- USER INFO ---
+  const userName = "Samuel Tiemtore"
+  const userEmail = "samdev10@mail.com"
+  const initials = userName
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
 
   return (
     <SidebarProvider>
@@ -53,20 +58,14 @@ export default function DashboardLayout({
 
             {/* USER */}
             <div className="flex items-center gap-3">
-              <div className="relative h-9 w-9 overflow-hidden rounded-full">
-                <Image
-                  src="/assets/photo.png"
-                  alt="user"
-                  fill
-                  className="object-cover"
-                />
+              <div className="h-9 w-9 flex items-center justify-center rounded-full bg-green-100 text-green-600 font-bold text-sm">
+                {initials}
               </div>
 
+              {/* Nom et email */}
               <div className="hidden md:block leading-tight">
-                <p className="text-sm font-semibold">Samuel Tiemtore</p>
-                <p className="text-xs text-muted-foreground">
-                  samdev10@mail.com
-                </p>
+                <p className="text-sm font-semibold">{userName}</p>
+                <p className="text-xs text-muted-foreground">{userEmail}</p>
               </div>
             </div>
 
@@ -83,9 +82,7 @@ export default function DashboardLayout({
           <div className="flex justify-center py-4 px-4">
             <p className="text-xs text-gray-400 text-center">
               Copyright {currentYear}. Tous droits réservés. Développement et design par{" "}
-              <span className="text-green-400 font-medium">
-                Samuel TIEMTORE
-              </span>
+              <span className="text-green-400 font-medium">{userName}</span>
             </p>
           </div>
         </footer>

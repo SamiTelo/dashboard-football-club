@@ -10,18 +10,18 @@ import {
   type LucideIcon,
 } from "lucide-react"
 
-import { NavMain, type NavItem } from "@/features/dashbord/components/nav-main"
-import { NavLogo } from "@/features/dashbord/components/nav-logo"
+import { NavMain, type NavItem } from "@/features/dashbaord/components/nav-main"
+import { NavLogo } from "@/features/dashbaord/components/nav-logo"
 
 import {
   Sidebar,
   SidebarContent,
   SidebarHeader,
   SidebarRail,
-} from "@/features/dashbord/components/ui/sidebar"
+} from "@/features/dashbaord/components/ui/sidebar"
 
-import { NavInfo } from "@/features/dashbord/components/nav-info"
-import { NavHeader } from "@/features/dashbord/components/nav-header"
+import { NavInfo } from "@/features/dashbaord/components/nav-info"
+import { NavHeader } from "@/features/dashbaord/components/nav-header"
 
 /* -------------------------------------------------------------------------- */
 /*                              TYPES 

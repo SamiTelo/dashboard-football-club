@@ -1,4 +1,4 @@
-import DashboardMain from "@/features/dashbord/components/dashbord-main";
+import DashboardMain from "@/features/dashbaord/components/dashbaord-main";
 
 export default function Page() {
   return <main>

@@ -7,7 +7,7 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/features/dashbord/components/ui/collapsible"
+} from "@/features/dashbaord/components/ui/collapsible"
 
 import {
   SidebarGroup,
@@ -18,7 +18,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@/features/dashbord/components/ui/sidebar"
+} from "@/features/dashbaord/components/ui/sidebar"
 
 /* -------------------------------------------------------------------------- */
 /* TYPES */

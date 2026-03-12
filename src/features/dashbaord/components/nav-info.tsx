@@ -7,7 +7,6 @@ export function NavInfo() {
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <div className="relative mt-3 overflow-hidden rounded-xl h-40 shadow-lg text-white">
-        {/* Background image */}
         <div className="absolute inset-0 bg-[url('/assets/info-img.png')] bg-cover bg-center" />
 
         {/* Overlay */}

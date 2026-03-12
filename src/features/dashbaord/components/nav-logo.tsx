@@ -6,12 +6,12 @@ import Image from "next/image";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
-} from "@/features/dashbord/components/ui/dropdown-menu";
+} from "@/features/dashbaord/components/ui/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/features/dashbord/components/ui/sidebar";
+} from "@/features/dashbaord/components/ui/sidebar";
 
 interface LogoItem {
   name: string;
