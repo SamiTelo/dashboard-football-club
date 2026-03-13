@@ -1,3 +1,8 @@
+
+import DashboardMain from "@/features/dashbaord/components/dashbaord-main";
+
 export default function Page() {
-  return <main>Bienvenue sur le dashboard !</main>
+  return <main>
+    <DashboardMain/>
+  </main>
 }

@@ -1,10 +1,10 @@
-import UserListDashboard from "@/features/players/components/player-table";
+import PlayersList from "@/features/players/components/players-list";
 
 
 export default function Page() {
   return (
     <main>
-      <UserListDashboard/>
-      </main>
+      <PlayersList/>
+    </main>
   )
 }
