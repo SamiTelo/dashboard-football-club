@@ -86,7 +86,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </p>
           </div>
         </footer>
-        
+
       </SidebarInset>
     </SidebarProvider>
   )

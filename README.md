@@ -60,7 +60,9 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 | ![pop-add-player](./assets/screenshots/pop-add-player.png) |
 
 
+
 ## Architecture du projet
+
 
 ```bash
 
