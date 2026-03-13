@@ -1,15 +1,24 @@
 # Football Club Dashboard
 
-Dashboard frontend pour la gestion complète du Football Club, de l'API-football backend NestJS + Prisma.
+Dashboard frontend pour la gestion d’un club de football.
+Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 
 
 **Note** : Il s’agit d’un prototype actuellement en développement. compatible mobile, tablette et PC
 
-## Stacks
+## Tech Stack
 
+**Framework**
 - Next.js 14
+
+**Language**
 - TypeScript
-- TailwindCSS
+
+**Styling**
+- Tailwind CSS
+- shadcn/ui
+
+**Animation**
 - Framer Motion
 
 
@@ -18,8 +27,8 @@ Dashboard frontend pour la gestion complète du Football Club, de l'API-football
 - Interface responsive avec TailwindCSS (OK)
 - Page login (OK)
 - Page register (OK)
-- Page mot de pase oublié (OK)
-- Page réinitialisation de mot de pase (OK)
+- Page mot de passe oublié (OK)
+- Page réinitialisation du mot de passe (OK)
 - Page verification code OTP (OK)
 - Export PDF player avec pdfmake (OK)
 - Pop Form add player (OK)
@@ -50,13 +59,41 @@ Dashboard frontend pour la gestion complète du Football Club, de l'API-football
 | pop add player |
 | ![pop-add-player](./assets/screenshots/pop-add-player.png) |
 
+
+
+## Architecture du projet
+
+
 ```bash
+
+assets/              # screenshots pour le README
+
+public/
+└── assets/          # images et ressources utilisées par l'application
+
+src/
+├── app/             # routing et pages Next.js
+├── features/        # fonctionnalités (auth, dashboard, players, team, user, position)
+├── components/      # composants UI réutilisables
+├── hooks/           # hooks React personnalisés
+├── lib/             # utilitaires et services
+
+types/               # types TypeScript globaux
+
+README.md            # documentation du projet
+
+```
+## Installation du projet
+
+```bash
+
 git clone https://github.com/SamiTelo/dashboard-football-club
 cd dashboard-football-club
 npm install
 npm run dev
 
 ```
+
 ##  Auteur
 **Tiemtore Samuel**
 Email: [samueltiemtore10@gmail.com](mailto:samueltiemtore10@gmail.com)
