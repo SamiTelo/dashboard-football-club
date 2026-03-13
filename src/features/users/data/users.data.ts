@@ -1,0 +1,55 @@
+import { UserListItem } from "../types/users.types";
+
+
+export const users: UserListItem[] = [
+  {
+    id: 1,
+    name: "Jamal Kerrod",
+    email: "jacobson@gmail.com",
+    role: "Admin",
+    status: "Active",
+    isVerified: true,
+    createdAt: "2024-01-10",
+    updatedAt: "2024-04-20",
+  },
+  {
+    id: 2,
+    name: "Shamus Tuttle",
+    email: "balistreri24@hotmail.com",
+    role: "Utilisateur",
+    status: "Inactive",
+    isVerified: false,
+    createdAt: "2024-02-15",
+    updatedAt: "2024-04-20",
+  },
+  {
+    id: 3,
+    name: "Samuel Tiemtore",
+    email: "samitelo@gmail.com",
+    role: "SuperAdmin",
+    status: "Active",
+    isVerified: true,
+    createdAt: "2024-03-02",
+    updatedAt: "2024-04-20",
+  },
+   {
+    id: 4,
+    name: "Jeden Tuttle",
+    email: "balistreri24@hotmail.com",
+    role: "Utilisateur",
+    status: "Inactive",
+    isVerified: false,
+    createdAt: "2024-02-15",
+    updatedAt: "2024-04-20",
+  },
+  {
+    id: 5,
+    name: "Michale Wallbridge",
+    email: "goldner@gmail.com",
+    role: "Admin",
+    status: "Active",
+    isVerified: true,
+    createdAt: "2024-03-02",
+    updatedAt: "2024-04-20",
+  },
+];

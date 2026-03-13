@@ -1,0 +1,114 @@
+"use client";
+
+import { users } from "../data/users.data"; 
+import { UserListItem } from "../types/users.types";
+
+export function UsersExport() {
+  const exportPDF = async () => {
+    try {
+      const pdfMakeModule = await import("pdfmake/build/pdfmake");
+      const pdfFontsModule = await import("pdfmake/build/vfs_fonts");
+
+      const pdfMake = pdfMakeModule.default;
+      const fonts = pdfFontsModule.default;
+
+      if (fonts?.pdfMake?.vfs) pdfMake.vfs = fonts.pdfMake.vfs;
+      else if (fonts?.vfs) pdfMake.vfs = fonts.vfs;
+
+      // Corps du tableau
+      const tableBody = [
+        [
+          "ID",
+          "Nom",
+          "Email",
+          "Role",
+          "Status",
+          "Verified",
+          "CreatedAt",
+          "updatedAt",
+        ],
+
+        ...users.map((u: UserListItem) => [
+          u.id,
+          u.name,
+          u.email,
+          u.role,
+          u.status,
+          u.isVerified ? "Yes" : "No",
+          new Date(u.createdAt).toLocaleDateString(),
+          new Date(u.updatedAt).toLocaleDateString(),
+        ]),
+      ];
+
+      const docDefinition = {
+        content: [
+          {
+            text: "Liste des utilisateurs",
+            fontSize: 18,
+            bold: true,
+            alignment: "center",
+            margin: [0, 0, 0, 15],
+          },
+
+          {
+            text: `Exporté le ${new Date().toLocaleDateString()}`,
+            alignment: "right",
+            fontSize: 9,
+            margin: [0, 0, 0, 10],
+          },
+
+          {
+            text: `Total utilisateurs: ${users.length}`,
+            margin: [0, 10, 0, 10],
+            bold: true,
+          },
+
+          {
+            table: {
+              headerRows: 1,
+              widths: [
+                "auto",
+                "auto",
+                "*",
+                "auto",
+                "auto",
+                "auto",
+                "auto",
+                "auto",
+              ],
+              body: tableBody,
+            },
+
+            layout: {
+              fillColor: (rowIndex: number) => {
+                if (rowIndex === 0) return "#22c55e"; // header
+                return rowIndex % 2 === 0 ? "#f9f9f9" : null; // lignes alternées
+              },
+
+              hLineWidth: () => 0.5,
+              vLineWidth: () => 0.5,
+              hLineColor: () => "#ccc",
+              vLineColor: () => "#ccc",
+            },
+          },
+        ],
+
+        footer: (currentPage: number, pageCount: number) => ({
+          text: `${currentPage} / ${pageCount}`,
+          alignment: "center",
+          fontSize: 9,
+        }),
+
+        defaultStyle: {
+          fontSize: 10,
+        },
+      };
+
+      pdfMake.createPdf(docDefinition).download("users.pdf");
+    } catch (error) {
+      console.error("Impossible d’exporter le PDF :", error);
+    }
+  };
+
+  return { exportPDF };
+}
