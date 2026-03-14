@@ -56,9 +56,12 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 | ![forgot-password](./assets/screenshots/forgot-password.png) | ![reset-password](./assets/screenshots/reset-password.png) |
 | Dashboard | Dashboard player |
 | ![dashboard](./assets/screenshots/dashboard.png) | ![dashboard-player](./assets/screenshots/dashboard-player.png) |
-| pop add player |
-| ![pop-add-player](./assets/screenshots/pop-add-player.png) |
-
+| pop add player | Dashboard user |
+| ![pop-add-player](./assets/screenshots/pop-add-player.png) | ![dashboard-users](./assets/screenshots/dashboard-users.png) |
+| pop add user | pop delete user |
+| ![pop-add-users](./assets/screenshots/pop-add-users.png) | ![pop-delete-users](./assets/screenshots/pop-delete-users.png) |
+| pop update user |
+| ![pop-update-users](./assets/screenshots/pop-update-users.png) |
 
 
 ## Architecture du projet
