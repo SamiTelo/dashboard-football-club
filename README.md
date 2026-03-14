@@ -47,20 +47,20 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 
 ## Screenshots
 
-| Login | Register |
+| Connexion | Inscription |
 |-------|---------|
 | ![login](./assets/screenshots/login.png) | ![register](./assets/screenshots/register.png) |
-| Verification | Verify Mail |
+| Vérification | Vérifier l’email |
 | ![verification](./assets/screenshots/verification.png) | ![verify-mail](./assets/screenshots/verify-mail.png) |
-| Forgot Password | Reset Password |
+| Mot de passe oublié | Réinitialiser le mot de passe |
 | ![forgot-password](./assets/screenshots/forgot-password.png) | ![reset-password](./assets/screenshots/reset-password.png) |
-| Dashboard | Dashboard player |
-| ![dashboard](./assets/screenshots/dashboard.png) | ![dashboard-player](./assets/screenshots/dashboard-player.png) |
-| pop add player | Dashboard user |
+| Tableau de bord | Tableau des joueurs |
+| ![dashboard](./assets/screenshots/dashboard-main.png) | ![dashboard-player](./assets/screenshots/dashboard-player.png) |
+| Ajouter un joueur | Tableau des utilisateurs |
 | ![pop-add-player](./assets/screenshots/pop-add-player.png) | ![dashboard-users](./assets/screenshots/dashboard-users.png) |
-| pop add user | pop delete user |
+| Ajouter un utilisateur | Supprimer un utilisateur |
 | ![pop-add-users](./assets/screenshots/pop-add-users.png) | ![pop-delete-users](./assets/screenshots/pop-delete-users.png) |
-| pop update user |
+| Modifier un utilisateur |
 | ![pop-update-users](./assets/screenshots/pop-update-users.png) |
 
 
