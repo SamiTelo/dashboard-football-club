@@ -60,8 +60,10 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 | ![pop-add-player](./assets/screenshots/pop-add-player.png) | ![dashboard-users](./assets/screenshots/dashboard-users.png) |
 | Ajouter un utilisateur | Supprimer un utilisateur |
 | ![pop-add-users](./assets/screenshots/pop-add-users.png) | ![pop-delete-users](./assets/screenshots/pop-delete-users.png) |
-| Modifier un utilisateur |
-| ![pop-update-users](./assets/screenshots/pop-update-users.png) |
+| Modifier un utilisateur | Tableau des postes |
+| ![pop-update-users](./assets/screenshots/pop-update-users.png) | ![dashboard-position](./assets/screenshots/dashboard-positions.png) |
+| Ajouter un poste |
+| ![pop-add-positions](./assets/screenshots/pop-add-positions.png) |
 
 
 ## Architecture du projet
