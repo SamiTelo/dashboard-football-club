@@ -8,17 +8,9 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 
 ## Tech Stack
 
-**Framework**
 - Next.js 14
-
-**Language**
 - TypeScript
-
-**Styling**
 - Tailwind CSS
-- shadcn/ui
-
-**Animation**
 - Framer Motion
 
 
@@ -32,15 +24,17 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 - Page verification code OTP (OK)
 - Export PDF player avec pdfmake (OK)
 - Pop Form add player (OK)
-- Dashboard (OK)
-- Dashboard page player (OK)
+- Dashboard main (OK)
+- Tableau des joueurs (OK)
+- Tableau des utilisateurs (OK)
+- Tableau des postes (OK)
+- Tableau des équipes (OK)
+- Upload d'images (joueurs, logos)
 
 ## Fonctionnalités à venir (feature)
 
-- Dashboard page, team, user (dev en cours...)
-- Authentification sécurisée JWT + Refresh Token  (connexion a mon API)
+- Authentification sécurisée JWT + Refresh Token connexion a mon API externe (dev en cours...)
 - Gestion des joueurs, équipes et postes (connexion a mon API)
-- Upload d'images (joueurs, logos)
 - etc...
 
 
@@ -62,8 +56,10 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 | ![pop-add-users](./assets/screenshots/pop-add-users.png) | ![pop-delete-users](./assets/screenshots/pop-delete-users.png) |
 | Modifier un utilisateur | Tableau des postes |
 | ![pop-update-users](./assets/screenshots/pop-update-users.png) | ![dashboard-position](./assets/screenshots/dashboard-positions.png) |
-| Ajouter un poste |
-| ![pop-add-positions](./assets/screenshots/pop-add-positions.png) |
+| Ajouter un poste | Tableau des équipes |
+| ![pop-add-positions](./assets/screenshots/pop-add-positions.png) | ![dashboard-teams](./assets/screenshots/dashboard-teams.png) |
+| Ajouter une équipe |
+| ![pop-add-teams](./assets/screenshots/pop-add-teams.png) |
 
 
 ## Architecture du projet
