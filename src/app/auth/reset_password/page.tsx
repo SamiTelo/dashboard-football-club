@@ -1,5 +1,6 @@
 import { ResetPasswordForm } from "@/features/auth/components/reset-password-form";
 import Image from "next/image";
+import { Suspense } from "react";
 
 export default function LoginPage() {
   return (
@@ -12,7 +13,9 @@ export default function LoginPage() {
         {/* Form centré */}
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-115">
-            <ResetPasswordForm/>
+             <Suspense fallback={<div>Loading...</div>}>
+              <ResetPasswordForm />
+            </Suspense>
           </div>
         </div>
       </div>

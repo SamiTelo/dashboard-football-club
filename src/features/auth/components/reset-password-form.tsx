@@ -1,60 +1,155 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import axios from "axios";
+
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@/components/ui/field"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/field";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+// API
+import { resetPassword } from "../services/auth-services";
 
 export function ResetPasswordForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  //récupère le token depuis l'URL (?token=xxx)
+  const token = searchParams.get("token");
+  
+  // Définit l'état local du formulaire avec tous les champs nécessaires
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setError(null);
+    setSuccess(null);
+
+    // vérification côté frontend
+    if (password !== confirmPassword) {
+      setError("Les mots de passe ne correspondent pas");
+      return;
+    }
+
+    if (!token) {
+      setError("Token invalide ou manquant");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await resetPassword({
+        token,
+        newPassword: password,
+      });
+
+      setSuccess("Mot de passe réinitialisé avec succès");
+
+      // redirection après succès
+      setTimeout(() => {
+        router.push("/auth/login");
+      }, 2000);
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || "Erreur");
+      } else {
+        setError("Une erreur inattendue est survenue");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <form className={cn("flex flex-col gap-6 my-8 md:my-0", className)} {...props}>
+    <form
+      onSubmit={handleSubmit}
+      className={cn("flex flex-col gap-6 my-8 md:my-0", className)}
+      {...props}
+    >
       <FieldGroup>
         {/* Header */}
         <div className="flex flex-col gap-1">
-          <h1 className="text-4xl font-bold">Réinitialiser <br/>le<span className="text-green-400"> mot de passe ?</span></h1>
+          <h1 className="text-4xl font-bold">
+            Réinitialiser <br />
+            le <span className="text-green-400">mot de passe</span>
+          </h1>
           <p className="text-muted-foreground text-xs mt-2">
-          Pour réinitialiser votre mot de passe, veuillez saisir votre nouveau mot de passe dans le champ ci-dessous, puis confirmez-le afin de valider la modification.
+            Saisissez votre nouveau mot de passe et confirmez-le.
           </p>
         </div>
 
-        {/* Email */}
-         <Field>
-            <FieldLabel htmlFor="new-password">Nouveaux mot de passe</FieldLabel>
-            <Input
-              id="new-password"
-              type="new-password"
-              placeholder="••••••••"
-              required
-            />
-          </Field>
-
-           <Field>
-            <FieldLabel htmlFor="confirm-password">Confirmer mot de passe</FieldLabel>
-            <Input
-              id="confirm-password"
-              type="confirm-password"
-              placeholder="••••••••"
-              required
-            />
-          </Field>
-          
-        {/* Bouton Login */}
+        {/* Nouveau mot de passe */}
         <Field>
-          <Button type="submit" className="bg-green-400">Change password </Button>
+          <FieldLabel htmlFor="password">Nouveau mot de passe</FieldLabel>
+          <Input
+            id="password"
+            type="password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
         </Field>
-        
+
+        {/* Confirmation */}
+        <Field>
+          <FieldLabel htmlFor="confirmPassword">
+            Confirmer mot de passe
+          </FieldLabel>
+          <Input
+            id="confirmPassword"
+            type="password"
+            placeholder="••••••••"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+        </Field>
+
+        {/* Bouton */}
+        <Field>
+          <Button
+            type="submit"
+            className="bg-green-400 w-full"
+            disabled={loading}
+          >
+            {loading ? "Modification..." : "Changer le mot de passe"}
+          </Button>
+        </Field>
+
+        {/* Messages */}
+        {error && (
+          <p className="text-red-500 text-sm text-center">{error}</p>
+        )}
+
+        {success && (
+          <p className="text-green-500 text-sm text-center">{success}</p>
+        )}
+
+        {/* Info */}
         <Field>
           <FieldDescription className="text-center text-xs">
-            si vous n&apos;avez pas demandé de lien de récupération de mot de passe, <br/>veuillez l&apos;ignorer.{" "}
+            Si vous n&apos;avez pas demandé cette action, ignorez ce message.
           </FieldDescription>
         </Field>
       </FieldGroup>
     </form>
-  )
+  );
 }
