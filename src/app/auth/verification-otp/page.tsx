@@ -1,4 +1,4 @@
-import { VerificationForm } from "@/features/auth/verification-otp/verification-form";
+import { VerificationForm } from "@/features/auth/components/verification-form";
 import Image from "next/image";
 
 export default function LoginPage() {
