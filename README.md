@@ -6,12 +6,24 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 
 **Note** : Il s’agit d’un prototype actuellement en développement. compatible mobile, tablette et PC
 
-## Tech Stack
+## 🧱 Stack technique
 
-- Next.js 14
+### Frontend
+- Next.js 16 (App Router)
+- React
 - TypeScript
 - Tailwind CSS
-- Framer Motion
+- Framer motion
+- Shadcn UI
+
+### Backend
+- NestJS 
+- PostgreSQL
+- Prisma 
+
+### Autres
+- Axios
+- JWT Authentication
 
 
 ##  Fonctionnalités 
