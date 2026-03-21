@@ -6,7 +6,7 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 
 **Note** : Il s’agit d’un prototype actuellement en développement. compatible mobile, tablette et PC
 
-## 🧱 Stack technique
+## Stack technique
 
 ### Frontend
 - Next.js 16 (App Router)
@@ -41,12 +41,12 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 - Tableau des utilisateurs (OK)
 - Tableau des postes (OK)
 - Tableau des équipes (OK)
+- Authentification sécurisée JWT + Refresh Token connexion a mon API externe
 - Upload d'images (joueurs, logos)
 
 ## Fonctionnalités à venir (feature)
-
-- Authentification sécurisée JWT + Refresh Token connexion a mon API externe (dev en cours...)
-- Gestion des joueurs, équipes et postes (connexion a mon API)
+ 
+- Gestion des joueurs, équipes et postes (connexion a mon API) (dev en cours...)
 - etc...
 
 
