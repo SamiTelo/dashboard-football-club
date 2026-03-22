@@ -15,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { login } from "../services/auth-services";
-import axios from "axios";
 
 export function LoginForm({
   className,
@@ -58,14 +57,12 @@ export function LoginForm({
 
       //  redirection après login
       router.push("/dashboard");
-    } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || "Erreur de connexion");
+    } catch (err) {
+      if (typeof err === "string") {
+        setError(err); 
       } else {
         setError("Une erreur inattendue est survenue");
       }
-    } finally {
-      setLoading(false);
     }
   };
 
