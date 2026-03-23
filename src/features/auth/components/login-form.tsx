@@ -50,11 +50,6 @@ export function LoginForm({
 
       console.log("Login réussi :", res);
 
-      //  stocker token si tu en reçois un
-      if (res.data?.access_token) {
-        localStorage.setItem("access_token", res.data.access_token);
-      }
-
       //  redirection après login
       router.push("/dashboard");
     } catch (err) {
