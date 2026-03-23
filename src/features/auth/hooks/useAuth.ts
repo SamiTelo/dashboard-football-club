@@ -40,12 +40,15 @@ export const useAuth = () => {
   const register = async (dto: CreateUserDto) => {
     setLoading(true);
     setError("");
+
     try {
       const res = await authService.register(dto);
       return res.data;
     } catch (err: unknown) {
-      setError(parseAxiosError(err));
-      throw err;
+      const message = parseAxiosError(err);
+      setError(message);
+
+      throw message; // throw avec message simple
     } finally {
       setLoading(false);
     }
@@ -57,13 +60,20 @@ export const useAuth = () => {
   const login = async (dto: LoginUserDto) => {
     setLoading(true);
     setError("");
+
     try {
       const res = await authService.login(dto);
-      if (res.data.user) setUser(res.data.user as User);
+
+      if (res.data.user) {
+        setUser(res.data.user as User);
+      }
+
       return res.data;
     } catch (err: unknown) {
-      setError(parseAxiosError(err));
-      throw err;
+      const message = parseAxiosError(err); 
+      setError(message);
+
+      throw message; // throw avec message simple
     } finally {
       setLoading(false);
     }

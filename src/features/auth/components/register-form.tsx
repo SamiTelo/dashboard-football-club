@@ -14,7 +14,10 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useAuth } from "../hooks/useAuth";
 
-export function RegisterForm({ className, ...props }: React.ComponentProps<"form">) {
+export function RegisterForm({
+  className,
+  ...props
+}: React.ComponentProps<"form">) {
   const { register, loading, error } = useAuth();
 
   // Définit l'état local du formulaire avec tous les champs nécessaires
@@ -43,9 +46,14 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"form
       });
       console.log("Utilisateur créé :", res);
 
-      // Redirection
-      router.push("./auth/verify-email"); // <-- redirige vers la page de vérification d'email
-    } catch (err) { console.error("Erreur inscription :", err); }
+      router.push("./auth/verify-email");
+    } catch (err) {
+      if (typeof err === "string") {
+        alert(err);
+      } else {
+        alert("Une erreur est survenue");
+      }
+    }
   };
 
   return (
@@ -121,7 +129,11 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"form
 
         {/* Bouton Register */}
         <Field>
-          <Button type="submit" className="bg-green-400 w-full" disabled={loading}>
+          <Button
+            type="submit"
+            className="bg-green-400 w-full"
+            disabled={loading}
+          >
             {loading ? "Inscription..." : "Register"}
           </Button>
         </Field>
@@ -133,9 +145,17 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"form
 
         {/* Google */}
         <Field>
-          <Button variant="outline" type="button" className="w-full flex items-center gap-2">
+          <Button
+            variant="outline"
+            type="button"
+            className="w-full flex items-center gap-2"
+          >
             {/* SVG Google */}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 533.5 544.3" className="w-5 h-5">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 533.5 544.3"
+              className="w-5 h-5"
+            >
               {/* paths ici */}
             </svg>
             Sign up with Google
@@ -143,7 +163,10 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"form
 
           <FieldDescription className="text-center mt-4">
             Already have an account?{" "}
-            <a href="/auth/login" className="underline underline-offset-4 text-green-400">
+            <a
+              href="/auth/login"
+              className="underline underline-offset-4 text-green-400"
+            >
               Sign in
             </a>
           </FieldDescription>
