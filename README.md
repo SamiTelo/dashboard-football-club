@@ -8,6 +8,8 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 
 ## Stack technique
 
+## Stack technique
+
 ### Frontend
 - Next.js 16 (App Router)
 - React
@@ -72,6 +74,15 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 | ![pop-add-positions](./assets/screenshots/pop-add-positions.png) | ![dashboard-teams](./assets/screenshots/dashboard-teams.png) |
 | Ajouter une équipe |
 | ![pop-add-teams](./assets/screenshots/pop-add-teams.png) |
+
+
+
+## Déploiement
+
+- Frontend : [Vercel](https://dashboard-football-club.vercel.app) (Interface uniquement, API en cours d’intégration)
+- Backend : [Render](https://api-football-gfpz.onrender.com)
+- Base de données: PostgreSQL sur Render
+
 
 
 ## Architecture du projet
