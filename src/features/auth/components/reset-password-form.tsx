@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import axios from "axios";
 
 import {
   Field,
@@ -67,11 +66,7 @@ export function ResetPasswordForm({
         router.push("/auth/login");
       }, 2000);
     } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || "Erreur");
-      } else {
-        setError("Une erreur inattendue est survenue");
-      }
+      console.error(err);
     } finally {
       setLoading(false);
     }

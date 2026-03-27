@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
+
 
 import {
   Field,
@@ -38,11 +38,7 @@ export function ForgotPasswordForm({
       // message de succès
       setSuccess("Un lien de réinitialisation a été envoyé à votre email.");
     } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || "Erreur lors de l'envoi");
-      } else {
-        setError("Une erreur inattendue est survenue");
-      }
+      console.error(err);
     } finally {
       setLoading(false);
     }

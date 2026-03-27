@@ -48,11 +48,7 @@ export function RegisterForm({
 
       router.push("./auth/verify-email");
     } catch (err) {
-      if (typeof err === "string") {
-        alert(err);
-      } else {
-        alert("Une erreur est survenue");
-      }
+      console.error(err);
     }
   };
 

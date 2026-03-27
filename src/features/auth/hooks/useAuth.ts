@@ -17,7 +17,7 @@ export const useAuth = (autoLoadProfile = false) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Charge le profil uniquement si autoLoadProfile=true
+  // Charge le profil si autoLoadProfile = true
   useEffect(() => {
     if (!autoLoadProfile) return;
 
@@ -28,7 +28,8 @@ export const useAuth = (autoLoadProfile = false) => {
         setUser(res.data as User);
       } catch (err: unknown) {
         setUser(null);
-        setError(parseAxiosError(err));
+        const message = parseAxiosError(err);
+        setError(message);
       } finally {
         setLoading(false);
       }
@@ -43,7 +44,6 @@ export const useAuth = (autoLoadProfile = false) => {
   const register = async (dto: CreateUserDto) => {
     setLoading(true);
     setError("");
-
     try {
       const res = await authService.register(dto);
       return res.data;
@@ -62,7 +62,6 @@ export const useAuth = (autoLoadProfile = false) => {
   const login = async (dto: LoginUserDto) => {
     setLoading(true);
     setError("");
-
     try {
       const res = await authService.login(dto);
       if (res.data.user) setUser(res.data.user as User);
@@ -86,8 +85,9 @@ export const useAuth = (autoLoadProfile = false) => {
       await authService.logout();
       setUser(null);
     } catch (err: unknown) {
-      setError(parseAxiosError(err));
-      throw err;
+      const message = parseAxiosError(err);
+      setError(message);
+      throw message;
     } finally {
       setLoading(false);
     }
@@ -104,7 +104,9 @@ export const useAuth = (autoLoadProfile = false) => {
       setUser(res.data as User);
     } catch (err: unknown) {
       setUser(null);
-      setError(parseAxiosError(err));
+      const message = parseAxiosError(err);
+      setError(message);
+      throw message;
     } finally {
       setLoading(false);
     }
@@ -119,8 +121,9 @@ export const useAuth = (autoLoadProfile = false) => {
       return res.data;
     } catch (err: unknown) {
       setUser(null);
-      setError(parseAxiosError(err));
-      throw err;
+      const message = parseAxiosError(err);
+      setError(message);
+      throw message;
     }
   };
 
@@ -131,8 +134,9 @@ export const useAuth = (autoLoadProfile = false) => {
     try {
       return await authService.verifyEmail(token);
     } catch (err: unknown) {
-      setError(parseAxiosError(err));
-      throw err;
+      const message = parseAxiosError(err);
+      setError(message);
+      throw message;
     }
   };
 
@@ -143,8 +147,9 @@ export const useAuth = (autoLoadProfile = false) => {
     try {
       return await authService.forgotPassword(dto);
     } catch (err: unknown) {
-      setError(parseAxiosError(err));
-      throw err;
+      const message = parseAxiosError(err);
+      setError(message);
+      throw message;
     }
   };
 
@@ -152,8 +157,9 @@ export const useAuth = (autoLoadProfile = false) => {
     try {
       return await authService.resetPassword(dto);
     } catch (err: unknown) {
-      setError(parseAxiosError(err));
-      throw err;
+      const message = parseAxiosError(err);
+      setError(message);
+      throw message;
     }
   };
 
@@ -164,8 +170,9 @@ export const useAuth = (autoLoadProfile = false) => {
     try {
       return await authService.verify2FA(dto);
     } catch (err: unknown) {
-      setError(parseAxiosError(err));
-      throw err;
+      const message = parseAxiosError(err);
+      setError(message);
+      throw message;
     }
   };
 
