@@ -8,8 +8,6 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 
 ## Stack technique
 
-## Stack technique
-
 ### Frontend
 - Next.js 16 (App Router)
 - React
