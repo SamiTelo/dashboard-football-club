@@ -10,15 +10,17 @@ import {
   Verify2FaDto,
   User,
 } from "../types/auth-types";
-import { parseAxiosError } from "@/lib/axios-helper"; // ton helper pour les erreurs
+import { parseAxiosError } from "@/lib/axios-helper";
 
-export const useAuth = () => {
+export const useAuth = (autoLoadProfile = false) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Charger automatiquement le profil au montage du composant
+  // Charge le profil uniquement si autoLoadProfile=true
   useEffect(() => {
+    if (!autoLoadProfile) return;
+
     const loadProfile = async () => {
       setLoading(true);
       try {
@@ -31,8 +33,9 @@ export const useAuth = () => {
         setLoading(false);
       }
     };
+
     loadProfile();
-  }, []);
+  }, [autoLoadProfile]);
 
   /* ---------------------------
    * REGISTER
@@ -47,8 +50,7 @@ export const useAuth = () => {
     } catch (err: unknown) {
       const message = parseAxiosError(err);
       setError(message);
-
-      throw message; // throw avec message simple
+      throw message;
     } finally {
       setLoading(false);
     }
@@ -63,17 +65,12 @@ export const useAuth = () => {
 
     try {
       const res = await authService.login(dto);
-
-      if (res.data.user) {
-        setUser(res.data.user as User);
-      }
-
+      if (res.data.user) setUser(res.data.user as User);
       return res.data;
     } catch (err: unknown) {
-      const message = parseAxiosError(err); 
+      const message = parseAxiosError(err);
       setError(message);
-
-      throw message; // throw avec message simple
+      throw message;
     } finally {
       setLoading(false);
     }
