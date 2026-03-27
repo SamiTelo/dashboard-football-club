@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import {
@@ -66,11 +65,7 @@ export function VerificationForm({
       }, 1500);
 
     } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || "Code invalide");
-      } else {
-        setError("Une erreur est survenue");
-      }
+      console.error(err);
     } finally {
       setLoading(false);
     }

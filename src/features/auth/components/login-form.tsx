@@ -52,12 +52,8 @@ export function LoginForm({
 
       //  redirection après login
       router.push("/dashboard");
-    } catch (err) {
-      if (typeof err === "string") {
-        setError(err); 
-      } else {
-        setError("Une erreur inattendue est survenue");
-      }
+    } catch (err: unknown) {
+      console.error(err);
     }
   };
 
