@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "build:prod": "cross-env NODE_ENV=production next build",
-    "start:prod": "cross-env NODE_ENV=production next start -p 3004"
+    "start:prod": "cross-env NODE_ENV=production next start -p 3005",
+    "check:prod": "npm run build:prod && npm run start:prod"
   },
   "dependencies": {
     "axios": "^1.13.6",
