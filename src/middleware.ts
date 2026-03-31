@@ -1,27 +1,28 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
-  const token = request.cookies.get("access_token")?.value;
+export function middleware(req: NextRequest) {
+  const refreshToken = req.cookies.get("refreshToken")?.value;
+  const { pathname } = req.nextUrl;
 
-  const { pathname } = request.nextUrl;
-
-  // Routes protégées
+  // --------- Routes protégées ---------
   const isDashboardRoute = pathname.startsWith("/dashboard");
 
-  // Rediriger vers login si pas connecté
-  if (isDashboardRoute && !token) {
-    return NextResponse.redirect(new URL("/auth/login", request.url));
-  }
+  // Si l'utilisateur n'est pas connecté, redirige vers login
+  if (isDashboardRoute && !refreshToken) {
+    return NextResponse.redirect(new URL("/auth/login", req.url));
+  } 
 
-  // Empêcher accès login/register si déjà connecté
+  // --------- Routes d'auth ---------
   const isAuthRoute =
-    pathname.startsWith("/auth/login") ||
-    pathname.startsWith("/auth/register");
+    pathname.startsWith("/auth/login") || pathname.startsWith("/auth/register");
 
-  if (isAuthRoute && token) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+  // Si l'utilisateur est déjà connecté, bloque l'accès aux pages login/register
+  if (isAuthRoute && refreshToken) {
+    return NextResponse.redirect(new URL("/dashboard", req.url));
   }
+
+  // Si aucune condition, continuer
   return NextResponse.next();
 }
 
