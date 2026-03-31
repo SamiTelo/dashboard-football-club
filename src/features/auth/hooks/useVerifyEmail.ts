@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "./useAuth";
@@ -17,13 +16,10 @@ export function useVerifyEmail(token?: string) {
     const handleVerify = async () => {
       try {
         await verifyEmail(token);
-
         setStatus("Email vérifié ✅ Redirection vers le dashboard...");
         setTimeout(() => router.push("/dashboard"), 1500);
       } catch (error: unknown) {
-        if (typeof error === "string") {
-          setStatus(error);
-        } else if (error instanceof Error) {
+        if (error instanceof Error) {
           setStatus(error.message);
         } else {
           setStatus("Erreur inconnue lors de la vérification");
