@@ -24,6 +24,7 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 ### Autres
 - Axios
 - JWT Authentication
+- cookies HttpOnly
 
 
 ##  Fonctionnalités 
