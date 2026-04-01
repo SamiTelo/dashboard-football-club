@@ -17,7 +17,6 @@ export function useVerifyEmail(token?: string) {
       try {
         await verifyEmail(token);
         setStatus("Email vérifié ✅ Redirection vers le dashboard...");
-        setTimeout(() => router.push("/dashboard"), 1500);
       } catch (error: unknown) {
         if (error instanceof Error) {
           setStatus(error.message);
