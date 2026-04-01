@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
       {
         // Rewrites pour proxy les appels API vers ton back Render
         source: "/api/:path*",
-        destination: "https://api-football-gfpz.onrender.com/:path*",
+        destination: "https://api-football-gfpz.onrender.com/api/:path*",
       },
     ];
   },
