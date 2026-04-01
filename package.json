@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "build:prod": "cross-env NODE_ENV=production next build",
-    "start:prod": "cross-env NODE_ENV=production next start -p 3005",
+    "start:prod": "cross-env NODE_ENV=production next start -p $PORT",
     "check:prod": "npm run build:prod && npm run start:prod"
   },
   "dependencies": {
