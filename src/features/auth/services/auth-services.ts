@@ -11,3 +11,4 @@ export const verifyEmail = (token: string) => api.post("/auth/verify-email", { t
 export const forgotPassword = (data: ForgotPasswordDto) => api.post("/auth/forgot-password", data);
 export const resetPassword = (data: ResetPasswordDto) => api.post("/auth/reset-password", data);
 export const verify2FA = (data: Verify2FaDto) => api.post("/auth/verify-2fa", data);
+export const resendVerification = (email: string) => api.post("/auth/resend-verification", { email });

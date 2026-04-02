@@ -1,26 +1,31 @@
-"use client"
+"use client";
 
-import { AppSidebar } from "@/features/dashbaord/components/app-sidebar"
+import { AppSidebar } from "@/features/dashbaord/components/app-sidebar";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/features/dashbaord/components/ui/sidebar"
+} from "@/features/dashbaord/components/ui/sidebar";
 
-import { Separator } from "@/features/dashbaord/components/ui/separator"
-import { Search, Mail, Bell, LogOut } from "lucide-react"
-import React from "react"
+import { Separator } from "@/features/dashbaord/components/ui/separator";
+import { Search, Mail, Bell, LogOut } from "lucide-react";
+import React from "react";
+import { useAuth } from "@/features/auth/hooks/useAuth";  
+
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const currentYear = new Date().getFullYear()
+  const currentYear = new Date().getFullYear();
 
-  // --- USER INFO ---
-  const userName = "Samuel Tiemtore"
-  const userEmail = "samdev10@mail.com"
+  // --- USER INFO REEL ---
+  const { user, logout } = useAuth(); // user: { name, email }
+  const userName = user?.lastName || "Utilisateur";
+  const userEmail = user?.email || "user@mail.com";
+
   const initials = userName
     .split(" ")
     .map((n) => n[0])
     .join("")
+    .toUpperCase();
 
   return (
     <SidebarProvider>
@@ -51,7 +56,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
             {/* ICONS */}
             <div className="flex items-center gap-4 text-muted-foreground">
-              <LogOut className="h-5 w-5 cursor-pointer text-red-500 hover:text-green-400 transition" />
+              <LogOut
+                className="h-5 w-5 cursor-pointer text-red-500 hover:text-green-400 transition"
+                onClick={logout} // Active le logout réel
+              />
               <Mail className="hidden sm:block h-5 w-5 cursor-pointer hover:text-green-400 transition" />
               <Bell className="h-5 w-5 cursor-pointer hover:text-green-400 transition" />
             </div>
@@ -82,12 +90,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div className="flex justify-center py-4 px-4">
             <p className="text-xs text-gray-400 text-center">
               Copyright {currentYear}. Tous droits réservés. Développement et design par{" "}
-              <span className="text-green-400 font-medium">{userName}</span>
+              <span className="text-green-400 font-medium">Samuel Tiemtore</span>
             </p>
           </div>
         </footer>
 
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }
