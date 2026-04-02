@@ -11,6 +11,7 @@ import {
   User,
 } from "../types/auth-types";
 import { parseAxiosError } from "@/lib/axios-helper";
+import { useRouter } from "next/navigation";
 
 export const useAuth = (autoLoadProfile = false) => {
   const [user, setUser] = useState<User | null>(null);
@@ -78,12 +79,17 @@ export const useAuth = (autoLoadProfile = false) => {
   /* ---------------------------
    * LOGOUT
    --------------------------- */
+  const router = useRouter();
+
   const logout = async () => {
     setLoading(true);
     setError("");
     try {
       await authService.logout();
       setUser(null);
+
+      // Redirection vers la page de login
+      router.replace("/auth/login");
     } catch (err: unknown) {
       const message = parseAxiosError(err);
       setError(message);
@@ -141,6 +147,19 @@ export const useAuth = (autoLoadProfile = false) => {
   };
 
   /* ---------------------------
+ * RESEND VERIFICATION EMAIL
+ --------------------------- */
+  const resendVerification = async (email: string) => {
+    try {
+      return await authService.resendVerification(email);
+    } catch (err: unknown) {
+      const message = parseAxiosError(err);
+      setError(message);
+      throw message;
+    }
+  };
+
+  /* ---------------------------
    * FORGOT / RESET PASSWORD
    --------------------------- */
   const forgotPassword = async (dto: ForgotPasswordDto) => {
@@ -187,6 +206,7 @@ export const useAuth = (autoLoadProfile = false) => {
     getProfile,
     refresh,
     verifyEmail,
+    resendVerification,
     forgotPassword,
     resetPassword,
     verify2FA,

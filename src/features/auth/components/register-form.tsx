@@ -46,7 +46,7 @@ export function RegisterForm({
       });
       console.log("Utilisateur créé :", res);
 
-      router.push("/auth/check-email");
+      router.replace("/auth/verify-email");
     } catch (err: unknown) {
       console.error(err);
     }
