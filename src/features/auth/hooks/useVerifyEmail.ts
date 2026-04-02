@@ -2,52 +2,49 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "./useAuth"; 
+import { useAuth } from "./useAuth";
 import { AxiosError } from "axios";
 
-// Type pour gérer l'état de vérification
+// Types de status
 type Status = "info" | "loading" | "success" | "error";
 
 export function useVerifyEmail(token: string | null, email?: string) {
   const router = useRouter();
-  const { verifyEmail, resendVerification } = useAuth(); // On utilise les fonctions centralisées
+  const { verifyEmail, resendVerification } = useAuth();
 
   const [status, setStatus] = useState<Status>(token ? "loading" : "info");
   const [message, setMessage] = useState(
     "Un lien de vérification a été envoyé à votre e-mail. Cliquez dessus pour activer votre compte. Pensez à vérifier vos spams si nécessaire."
   );
-  const [canResend, setCanResend] = useState(false); // Pour activer le bouton "Réenvoyer"
+  const [cooldown, setCooldown] = useState(0);
 
+  /* ------------------------------
+   * Vérification du token
+   ------------------------------ */
   useEffect(() => {
-    if (!token) return; // Si pas de token → page info
+    if (!token) return;
 
-    let isMounted = true; // Permet d'éviter les mises à jour d'état après démontage
+    let isMounted = true;
 
-    /* -----------------------------------------------
-     * VERIFY EMAIL
-     ---------------------------------------------------- */
     const handleVerify = async () => {
       try {
-        await verifyEmail(token); // Utilisation du hook centralisé
+        await verifyEmail(token);
         if (!isMounted) return;
 
         setStatus("success");
-        setMessage("Email vérifié avec succès Redirection...");
+        setMessage("Email vérifié avec succès. Redirection...");
 
-        setTimeout(() => {
-          router.replace("/dashboard"); // Redirection vers dashboard
-        }, 1200);
+        setTimeout(() => router.replace("/dashboard"), 1200);
       } catch (error: unknown) {
         if (!isMounted) return;
 
         setStatus("error");
-        setMessage("Lien invalide ou expiré. veuillez cliquer sur le bouton 'Réenvoyer' ci dessous pour recevoir un nouveau lien.");
-        setCanResend(true); // Permet de réenvoyer un nouveau mail
-
-        // Si erreur Axios, on peut extraire message backend
-        if (error instanceof AxiosError) {
-          setMessage(error.response?.data?.message || "Lien invalide ou expiré. veuillez cliquer sur 'Réenvoyer' pour recevoir un nouveau lien.");
-        }
+        setMessage(
+          error instanceof AxiosError
+            ? error.response?.data?.message ||
+              "Lien invalide ou expiré. Cliquez sur 'Réenvoyer' pour recevoir un nouveau lien."
+            : "Lien invalide ou expiré. Cliquez sur 'Réenvoyer' pour recevoir un nouveau lien."
+        );
       }
     };
 
@@ -58,31 +55,50 @@ export function useVerifyEmail(token: string | null, email?: string) {
     };
   }, [token, router, verifyEmail]);
 
-  /* -----------------------------------------------
-   * RESEND VERIFICATION EMAIL
-   ---------------------------------------------------- */
-  const handleResend = async () => {
-    if (!email) return;
+  /* ------------------------------
+   * Cooldown pour éviter spam
+   ------------------------------ */
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const timer = setTimeout(() => setCooldown((prev) => prev - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [cooldown]);
+
+  /* ------------------------------
+   * Resend email
+   ------------------------------ */
+  const handleResend = async (customEmail?: string) => {
+    const emailToUse = customEmail || email;
+
+    if (!emailToUse) {
+      setStatus("error");
+      setMessage("Veuillez entrer votre adresse e-mail.");
+      return;
+    }
+
+    if (cooldown > 0) return; // Bloque si cooldown actif
+
     try {
       setStatus("loading");
       setMessage("Envoi du nouveau mail de vérification...");
 
-      await resendVerification(email); // Fonction centralisée dans useAuth
+      await resendVerification(emailToUse);
 
       setStatus("info");
-      setMessage("Un nouveau lien de vérification a été envoyé à votre e-mail. Cliquez dessus pour activer votre compte. Pensez à vérifier vos spams si nécessaire.");
-      setCanResend(false); // Désactive le bouton après envoi
+      setMessage(
+        "Un nouveau lien de vérification a été envoyé à votre e-mail. Pensez à vérifier vos spams."
+      );
+
+      setCooldown(30); // 30s de cooldown
     } catch (error: unknown) {
       setStatus("error");
-      if (error instanceof AxiosError) {
-        setMessage(
-          error.response?.data?.message || "Erreur lors de l'envoi du mail."
-        );
-      } else {
-        setMessage("Erreur lors de l'envoi du mail.");
-      }
+      setMessage(
+        error instanceof AxiosError
+          ? error.response?.data?.message || "Erreur lors de l'envoi du mail."
+          : "Erreur lors de l'envoi du mail."
+      );
     }
   };
 
-  return { status, message, canResend, handleResend };
+  return { status, message, handleResend, cooldown };
 }
