@@ -97,7 +97,7 @@ export function LoginForm({
               href="/auth/forgot_password"
               className="ml-auto text-sm underline-offset-4 hover:underline hover:text-green-400"
             >
-              Forgot your password?
+              Mot de passe oublié ?
             </a>
           </div>
           <Input
@@ -124,11 +124,11 @@ export function LoginForm({
         {/* Erreur */}
         {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
-        <FieldSeparator>Or continue with</FieldSeparator>
+        <FieldSeparator>Ou continuez avec</FieldSeparator>
 
         {/* Google */}
         <Field>
-          <Button variant="outline" type="button">
+          <Button variant="outline" type="button" className="bg-gray-100 hover:bg-gray-50">
             {/* SVG */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -152,16 +152,16 @@ export function LoginForm({
                 d="M272 109.7c37.2 0 70.7 12.8 97 33.7l72.8-72.8C404.9 30 344 0 272 0 167.3 0 76.4 62.8 32.4 157.1l89.1 69.9c21.2-63.9 80.5-111.3 150.5-111.3z"
               />
             </svg>
-            Login with Google
+            Se connecter avec Google
           </Button>
 
           <FieldDescription className="text-center">
-            Don&apos;t have an account?{" "}
+            Vous n&apos;avez pas de compte ?{" "}
             <a
               href="/auth/register"
               className="underline underline-offset-4 text-green-400"
             >
-              Sign up
+              Register
             </a>
           </FieldDescription>
         </Field>

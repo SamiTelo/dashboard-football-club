@@ -26,7 +26,7 @@ export default function VerifyEmail() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="relative rounded-3xl p-8 md:p-12 max-w-xl w-full text-center bg-white shadow-lg"
+        className="relative rounded-3xl p-8 md:p-12 max-w-xl w-full text-center bg-white border border-white shadow-none hover:border-green-200 transition-shadow"
       >
         {/* Icon avec couleur selon le status */}
         <motion.div
@@ -41,7 +41,7 @@ export default function VerifyEmail() {
             className={`w-10 h-10 ${
               status === "success" ? "text-green-400" :
               status === "error" ? "text-red-400" :
-              "text-emerald-400"
+              "text-green-400"
             }`}
           />
         </motion.div>
