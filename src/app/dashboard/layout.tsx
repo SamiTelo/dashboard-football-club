@@ -6,19 +6,27 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/features/dashbaord/components/ui/sidebar";
-
 import { Separator } from "@/features/dashbaord/components/ui/separator";
 import { Search, Mail, Bell, LogOut } from "lucide-react";
 import React from "react";
-import { useAuth } from "@/features/auth/hooks/useAuth";  
-
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const currentYear = new Date().getFullYear();
 
-  // --- USER INFO REEL ---
-  const { user, logout } = useAuth(); // user: { name, email }
-  const userName = user?.lastName || "Utilisateur";
+  // --- USER INFO RÉEL ---
+  const { user, loading, logout } = useAuth(true); // true = autoLoadProfile
+
+  // Loader pendant récupération profil
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen text-gray-500">
+        Chargement de vos informations...
+      </div>
+    );
+  }
+
+  const userName = user ? `${user.firstName} ${user.lastName}` : "Utilisateur";
   const userEmail = user?.email || "user@mail.com";
 
   const initials = userName
@@ -58,7 +66,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <div className="flex items-center gap-4 text-muted-foreground">
               <LogOut
                 className="h-5 w-5 cursor-pointer text-red-500 hover:text-green-400 transition"
-                onClick={logout} // Active le logout réel
+                onClick={logout}
               />
               <Mail className="hidden sm:block h-5 w-5 cursor-pointer hover:text-green-400 transition" />
               <Bell className="h-5 w-5 cursor-pointer hover:text-green-400 transition" />

@@ -10,37 +10,27 @@ import {
   FieldLabel,
   FieldSeparator,
 } from "@/components/ui/field";
-
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
-import { login } from "../services/auth-services";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentProps<"form">) {
+export function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
   const router = useRouter();
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { login, error, loading } = useAuth();
 
-  // Définit l'état local du formulaire avec tous les champs nécessaires
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  // Met à jour les champs
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-  // Gère la soumission : envoie login + redirection
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    setLoading(true);
 
     try {
       const res = await login({
@@ -50,10 +40,11 @@ export function LoginForm({
 
       console.log("Login réussi :", res);
 
-      //  redirection après login
+      // Redirection après login
       router.push("/dashboard");
     } catch (err: unknown) {
-      console.error(err);
+      // L'erreur est déjà gérée par useAuth via `setError`
+      console.error("Erreur login:", err);
     }
   };
 
@@ -71,8 +62,7 @@ export function LoginForm({
             Bienvenue à <span className="text-green-400">Football Club</span>
           </h1>
           <p className="text-muted-foreground text-xs mt-2">
-            Veuillez saisir votre email et mot de passe pour accéder à votre
-            compte.
+            Veuillez saisir votre email et mot de passe pour accéder à votre compte.
           </p>
         </div>
 
@@ -112,16 +102,12 @@ export function LoginForm({
 
         {/* Bouton Login */}
         <Field>
-          <Button
-            type="submit"
-            className="bg-green-400 w-full"
-            disabled={loading}
-          >
+          <Button type="submit" className="bg-green-400 w-full" disabled={loading}>
             {loading ? "Connexion..." : "Login"}
           </Button>
         </Field>
 
-        {/* Erreur */}
+        {/* ⚡ Affichage de l'erreur */}
         {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
         <FieldSeparator>Ou continuez avec</FieldSeparator>
@@ -129,7 +115,6 @@ export function LoginForm({
         {/* Google */}
         <Field>
           <Button variant="outline" type="button" className="bg-gray-100 hover:bg-gray-50">
-            {/* SVG */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 533.5 544.3"
