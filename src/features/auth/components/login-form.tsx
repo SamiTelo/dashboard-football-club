@@ -32,7 +32,8 @@ export function LoginForm({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
-
+ 
+  // fonction handleSubmit qui gère la soumission du formulaire de login
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -42,13 +43,18 @@ export function LoginForm({
         password: formData.password,
       });
 
-      console.log("Login réussi :", res);
+      console.log("Login response:", res);
 
-      // Redirection après login
-      router.push("/dashboard");
-    } catch (err: unknown) {
-      // L'erreur est déjà gérée par useAuth via `setError`
-      console.error("Erreur login:", err);
+      // Si 2FA requis
+      if (res?.requires2FA) {
+        router.replace(`/auth/verify-2fa`);
+        return;
+      }
+
+      //  Sinon login normal
+      router.replace("/dashboard");
+    } catch (err) {
+      console.error("Login error:", err);
     }
   };
 
