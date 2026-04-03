@@ -6,6 +6,9 @@ import { MailCheck } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useVerifyEmail } from "../hooks/useVerifyEmail";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function VerifyEmail() {
   const searchParams = useSearchParams();
@@ -13,14 +16,17 @@ export default function VerifyEmail() {
   const email = searchParams.get("email") || undefined;
 
   const [resendEmail, setResendEmail] = useState(email || "");
-  const { status, message, handleResend, cooldown } = useVerifyEmail(token, email);
+  const { status, message, handleResend, cooldown } = useVerifyEmail(
+    token,
+    email,
+  );
 
   const messageColor =
     status === "error"
       ? "text-red-500"
       : status === "success"
-      ? "text-green-500"
-      : "text-gray-500";
+        ? "text-green-500"
+        : "text-gray-500";
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-linear-to-br px-4">
@@ -28,7 +34,7 @@ export default function VerifyEmail() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="relative rounded-3xl p-8 md:p-12 max-w-xl w-full text-center bg-white border border-white hover:border-green-200 transition-shadow"
+        className="relative rounded-3xl p-8 md:p-12 max-w-xl w-full text-center"
       >
         {/* Icon */}
         <motion.div
@@ -39,8 +45,8 @@ export default function VerifyEmail() {
             status === "success"
               ? "bg-green-100"
               : status === "error"
-              ? "bg-red-100"
-              : "bg-emerald-100"
+                ? "bg-red-100"
+                : "bg-emerald-100"
           }`}
         >
           <MailCheck
@@ -48,8 +54,8 @@ export default function VerifyEmail() {
               status === "success"
                 ? "text-green-400"
                 : status === "error"
-                ? "text-red-400"
-                : "text-green-400"
+                  ? "text-red-400"
+                  : "text-green-400"
             }`}
           />
         </motion.div>
@@ -60,7 +66,9 @@ export default function VerifyEmail() {
         </h1>
 
         {/* Message */}
-        <p className={`leading-relaxed mb-6 text-sm md:text-base ${messageColor}`}>
+        <p
+          className={`leading-relaxed mb-6 text-sm md:text-base ${messageColor}`}
+        >
           {status === "loading" ? "Vérification en cours..." : message}
         </p>
 
@@ -85,7 +93,9 @@ export default function VerifyEmail() {
               onClick={() => handleResend()}
               disabled={status === "loading" || cooldown > 0}
               className={`text-green-400 font-medium hover:underline ${
-                status === "loading" || cooldown > 0 ? "opacity-50 cursor-not-allowed" : ""
+                status === "loading" || cooldown > 0
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
               }`}
             >
               {cooldown > 0 ? `Réenvoyer dans ${cooldown}s` : "Réenvoyer"}
@@ -102,26 +112,34 @@ export default function VerifyEmail() {
             }}
             className="mt-6 text-left"
           >
-            <label htmlFor="resendEmail" className="block mb-2 text-sm text-gray-700">
-              Entrez votre e-mail pour recevoir un nouveau lien :
-            </label>
+            <FieldGroup>
 
-            <input
-              type="email"
-              id="resendEmail"
-              value={resendEmail}
-              onChange={(e) => setResendEmail(e.target.value)}
-              required
-              className="w-full border p-2 rounded mb-3"
-            />
+              {/* Email */}
+              <Field>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <Input
+                  type="email"
+                  id="resendEmail"
+                  value={resendEmail}
+                  onChange={(e) => setResendEmail(e.target.value)}
+                  required
+                />
+              </Field>
 
-            <button
-              type="submit"
-              disabled={!resendEmail || cooldown > 0}
-              className="w-full bg-green-400 hover:bg-black text-white font-semibold py-2 rounded"
-            >
-              {cooldown > 0 ? `Réenvoyer dans ${cooldown}s` : "Réenvoyer le lien"}
-            </button>
+              {/* Bouton réenvoyer */}
+              <Field>
+                <Button
+                  className="bg-green-400 w-full"
+                 type="submit"
+                disabled={!resendEmail || cooldown > 0}
+                >
+                  {cooldown > 0
+                  ? `Réenvoyer dans ${cooldown}s`
+                  : "Réenvoyer"}
+                </Button>
+              </Field>
+
+            </FieldGroup>
           </form>
         )}
       </motion.div>

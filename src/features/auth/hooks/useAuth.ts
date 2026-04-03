@@ -11,7 +11,6 @@ import {
   User,
 } from "../types/auth-types";
 import { parseAxiosError } from "@/lib/axios-helper";
-import { useRouter } from "next/navigation";
 
 export const useAuth = (autoLoadProfile = false) => {
   const [user, setUser] = useState<User | null>(null);
@@ -79,17 +78,12 @@ export const useAuth = (autoLoadProfile = false) => {
   /* ---------------------------
    * LOGOUT
    --------------------------- */
-  const router = useRouter();
-
   const logout = async () => {
     setLoading(true);
     setError("");
     try {
       await authService.logout();
       setUser(null);
-
-      // Redirection vers la page de login
-      router.replace("/auth/login");
     } catch (err: unknown) {
       const message = parseAxiosError(err);
       setError(message);

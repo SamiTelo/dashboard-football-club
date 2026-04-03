@@ -14,8 +14,12 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { Spinner } from "@/components/ui/spinner";
 
-export function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
+export function LoginForm({
+  className,
+  ...props
+}: React.ComponentProps<"form">) {
   const router = useRouter();
 
   const { login, error, loading } = useAuth();
@@ -62,7 +66,8 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
             Bienvenue à <span className="text-green-400">Football Club</span>
           </h1>
           <p className="text-muted-foreground text-xs mt-2">
-            Veuillez saisir votre email et mot de passe pour accéder à votre compte.
+            Veuillez saisir votre email et mot de passe pour accéder à votre
+            compte.
           </p>
         </div>
 
@@ -102,19 +107,28 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
 
         {/* Bouton Login */}
         <Field>
-          <Button type="submit" className="bg-green-400 w-full" disabled={loading}>
+          <Button
+            type="submit"
+            className="bg-green-400 w-full"
+            disabled={loading}
+          >
+            {loading && <Spinner className="mr-2" data-icon="inline-start" />}
             {loading ? "Connexion..." : "Login"}
           </Button>
         </Field>
 
-        {/* ⚡ Affichage de l'erreur */}
-        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+        {/* Affichage de l'erreur */}
+        {error && <p className="text-red-500 text-xs text-left">{error}</p>}
 
         <FieldSeparator>Ou continuez avec</FieldSeparator>
 
         {/* Google */}
         <Field>
-          <Button variant="outline" type="button" className="bg-gray-100 hover:bg-gray-50">
+          <Button
+            variant="outline"
+            type="button"
+            className="bg-gray-50 hover:bg-gray-100"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 533.5 544.3"

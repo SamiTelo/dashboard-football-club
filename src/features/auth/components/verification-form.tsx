@@ -19,6 +19,7 @@ import {
 
 import { cn } from "@/lib/utils";
 import { verify2FA } from "../services/auth-services";
+import { Spinner } from "@/components/ui/spinner";
 
 export function VerificationForm({
   className,
@@ -110,6 +111,7 @@ export function VerificationForm({
             className="bg-green-400 w-full"
             disabled={loading || value.length !== 6}
           >
+            {loading && <Spinner className="mr-2" data-icon="inline-start" />}
             {loading ? "Vérification..." : "Envoyer"}
           </Button>
         </Field>
