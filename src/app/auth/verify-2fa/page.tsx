@@ -1,4 +1,4 @@
-import { VerificationForm } from "@/features/auth/components/verification-form";
+import { Verify2FaForm } from "@/features/auth/components/verify-2fa-form";
 import Image from "next/image";
 import { Suspense } from "react";
 
@@ -12,8 +12,8 @@ export default function LoginPage() {
         {/* Form centré */}
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-115">
-            <Suspense fallback={<div>Chargement...</div>}>
-              <VerificationForm />
+            <Suspense>
+              <Verify2FaForm />
             </Suspense>
           </div>
         </div>
