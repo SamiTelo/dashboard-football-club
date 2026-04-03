@@ -4,6 +4,7 @@ import type { NextRequest } from "next/server";
 export function middleware(req: NextRequest) {
   const refreshToken = req.cookies.get("refreshToken")?.value;
   const twoFAValidated = req.cookies.get("twoFAValidated")?.value === "true";
+  const twoFARequired = req.cookies.get("twoFARequired")?.value === "true"; // nouveau cookie côté backend
   const { pathname } = req.nextUrl;
 
   const isDashboardRoute = pathname.startsWith("/dashboard");
@@ -11,23 +12,25 @@ export function middleware(req: NextRequest) {
     pathname.startsWith("/auth/login") ||
     pathname.startsWith("/auth/register");
 
-  //  Protection dashboard
-  // - Dashboard accessible seulement si refreshToken existant
-  // - ET si 2FA validé pour admin/superadmin
+  // ---------------------------
+  // Protection dashboard
+  // ---------------------------
   if (isDashboardRoute) {
     if (!refreshToken) {
-      // Pas connecté
+      // Pas connecté → redirect login
       return NextResponse.redirect(new URL("/auth/login", req.url));
     }
 
-    if (!twoFAValidated) {
-      // 2FA non validé pour admin/superadmin
-      return NextResponse.redirect(new URL("/auth/login", req.url));
+    // Bloque seulement si 2FA requis pour l'utilisateur
+    if (twoFARequired && !twoFAValidated) {
+      return NextResponse.redirect(new URL("/auth/verify-2fa", req.url));
     }
   }
 
-  //  Empêcher l’accès à login/register si déjà connecté et 2FA validé
-  if (isAuthRoute && refreshToken && twoFAValidated) {
+  // ---------------------------
+  // Empêcher login/register si déjà connecté
+  // ---------------------------
+  if (isAuthRoute && refreshToken && (!twoFARequired || twoFAValidated)) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
