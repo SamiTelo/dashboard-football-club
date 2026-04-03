@@ -1,3 +1,5 @@
+"use client";
+
 import { players } from "../data/players.data";
 import { PlayerRow } from "./player-row";
 

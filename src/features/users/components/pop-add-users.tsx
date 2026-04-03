@@ -45,7 +45,7 @@ export function PopAddUsers() {
           </DialogDescription>
         </DialogHeader>
 
-        <form className="space-y-4 mt-4">
+        <form className="space-y-2 md:space-y-4 mt-4">
           <FieldGroup>
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4 ">
               <Field className="space-y-2">

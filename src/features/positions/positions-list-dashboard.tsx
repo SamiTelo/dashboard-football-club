@@ -6,9 +6,10 @@ import { position } from "./data/positions-data";
 import { PositionsActions } from "./components/positions-actions";
 import { PositionsExport } from "./hooks/position-export-pdf";
 
-  const { exportPDF } = PositionsExport(); 
+
 
 export default function PositionsListDashboard() {
+    const { exportPDF } = PositionsExport(); 
   return (
     <div className="p-0 bg-[#F8F7FA] min-h-screen text-[13px] md:text-[14px] font-sans text-[#5d596c]">
       

@@ -1,3 +1,5 @@
+"use client";
+
 import { ReactNode } from "react";
 import { FiUsers } from "react-icons/fi";
 import { GiFootTrip } from "react-icons/gi";

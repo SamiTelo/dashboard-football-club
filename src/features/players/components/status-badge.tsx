@@ -1,3 +1,5 @@
+"use client";
+
 import { Status } from "../types/players.types";
 
 export function StatusBadge({ status }: { status: Status }) {

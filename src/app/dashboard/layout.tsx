@@ -7,17 +7,13 @@ import {
   SidebarTrigger,
 } from "@/features/dashbaord/components/ui/sidebar";
 import { Separator } from "@/features/dashbaord/components/ui/separator";
-import { Search, Mail, Bell, LogOut } from "lucide-react";
-import React, { useState } from "react";
+import { Search, Mail, Bell } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import { useRouter } from "next/router";
-import { Spinner } from "@/components/ui/spinner";
+import { LogoutButton } from "@/features/auth/components/logout-button";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const currentYear = new Date().getFullYear();
-  const { user, logout } = useAuth(true); // true = autoLoadProfile
-  const router = useRouter();
-  const [loadingLogout, setLoadingLogout] = useState(false);
+  const { user } = useAuth(true); // true = autoLoadProfile
 
   const userName = user ? `${user.firstName} ${user.lastName}` : "Utilisateur";
   const userEmail = user?.email || "user@mail.com";
@@ -28,17 +24,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     .join("")
     .toUpperCase();
 
-  // --- HANDLE LOGOUT ---
-  const handleLogout = async () => {
-    setLoadingLogout(true); // afficher spinner
-    try {
-      await logout(); // appelle useAuth.logout()
-      router.replace("/auth/login"); // redirige après déconnexion
-    } catch (err) {
-      console.error(err);
-      setLoadingLogout(false); // retire spinner en cas d'erreur
-    }
-  };
+
 
   return (
     <SidebarProvider>
@@ -67,14 +53,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
             {/* ICONS */}
             <div className="flex items-center gap-4 text-muted-foreground">
-              {loadingLogout ? (
-                <Spinner className="h-5 w-5 text-red-500 animate-spin" />
-              ) : (
-                <LogOut
-                  className="h-5 w-5 cursor-pointer text-red-500"
-                  onClick={handleLogout}
-                />
-              )}
+              <LogoutButton />
               <Mail className="hidden sm:block h-5 w-5 cursor-pointer hover:text-green-400 transition" />
               <Bell className="h-5 w-5 cursor-pointer hover:text-green-400 transition" />
             </div>

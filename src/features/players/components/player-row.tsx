@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { FiEdit, FiTrash2, FiMoreVertical } from "react-icons/fi";
 import { Player } from "../types/players.types";

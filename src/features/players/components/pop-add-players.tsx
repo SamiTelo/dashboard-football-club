@@ -1,4 +1,5 @@
-"@/components/ui/button"
+"use client";
+
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -44,7 +45,7 @@ export function PopAddPlayers() {
           </DialogDescription>
         </DialogHeader>
 
-        <form className="space-y-4 mt-4">
+        <form className="space-y-2 md:space-y-4 mt-4">
           <FieldGroup>
 
             <Field className="space-y-2">
