@@ -1,3 +1,5 @@
+"use client";
+
 import { FiDownload} from "react-icons/fi";
 import { PopAddPlayers } from "./pop-add-players";
 

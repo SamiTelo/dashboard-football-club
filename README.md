@@ -35,6 +35,7 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 - Page mot de passe oublié (OK)
 - Page réinitialisation du mot de passe (OK)
 - Page verification code OTP (OK)
+- page verification-email (OK)
 - Export PDF player avec pdfmake (OK)
 - Pop Form add player (OK)
 - Dashboard main (OK)

@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useAuth } from "../hooks/useAuth";
+import { Spinner } from "@/components/ui/spinner";
 
 export function RegisterForm({
   className,
@@ -130,12 +131,13 @@ export function RegisterForm({
             className="bg-green-400 w-full"
             disabled={loading}
           >
+            {loading && <Spinner className="mr-2" data-icon="inline-start" />}
             {loading ? "Inscription..." : "Register"}
           </Button>
         </Field>
 
         {/* Affichage erreur */}
-        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+        {error && <p className="text-red-500 text-xs text-left">{error}</p>}
 
         <FieldSeparator>Ou continuez avec</FieldSeparator>
 
@@ -144,7 +146,7 @@ export function RegisterForm({
           <Button
             variant="outline"
             type="button"
-            className="w-full flex items-center gap-2 bg-gray-100 hover:bg-gray-50 "
+            className="w-full flex items-center gap-2 bg-gray-50 hover:bg-gray-100 "
           >
             {/* SVG Google */}
              <svg

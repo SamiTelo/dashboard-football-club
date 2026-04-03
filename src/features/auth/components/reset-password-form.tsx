@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 
 // API
 import { resetPassword } from "../services/auth-services";
+import { Spinner } from "@/components/ui/spinner";
 
 export function ResetPasswordForm({
   className,
@@ -125,6 +126,7 @@ export function ResetPasswordForm({
             className="bg-green-400 w-full"
             disabled={loading}
           >
+            {loading && <Spinner className="mr-2" data-icon="inline-start" />}
             {loading ? "Modification..." : "Changer le mot de passe"}
           </Button>
         </Field>

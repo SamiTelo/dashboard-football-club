@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { forgotPassword } from "../services/auth-services";
+import { Spinner } from "@/components/ui/spinner";
 
 
 
@@ -81,7 +82,8 @@ export function ForgotPasswordForm({
             className="bg-green-400 w-full"
             disabled={loading}
           >
-            {loading ? "Envoi..." : "Send recovery link"}
+            {loading && <Spinner className="mr-2" data-icon="inline-start" />}
+            {loading ? "Envoi..." : "Envoyer le lien de récupération"}
           </Button>
         </Field>
 
