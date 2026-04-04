@@ -89,11 +89,11 @@ export function ForgotPasswordForm({
 
         {/* Messages */}
         {error && (
-          <p className="text-red-500 text-sm text-center">{error}</p>
+          <p className="text-red-500 text-sm text-left">{error}</p>
         )}
 
         {success && (
-          <p className="text-green-500 text-sm text-center">{success}</p>
+          <p className="text-green-500 text-sm text-left">{success}</p>
         )}
 
         {/* Lien login */}
