@@ -7,10 +7,10 @@ import {
   ForgotPasswordDto,
   LoginUserDto,
   ResetPasswordDto,
-  Verify2FaDto,
   User,
 } from "../types/auth-types";
 import { parseAxiosError } from "@/lib/axios-helper";
+import { login as loginService, verify2FA as verify2FAService } from "../services/auth-services";
 
 export const useAuth = (autoLoadProfile = false) => {
   const [user, setUser] = useState<User | null>(null);
@@ -56,15 +56,38 @@ export const useAuth = (autoLoadProfile = false) => {
     }
   };
 
-  /* ---------------------------
+   /* ---------------------------
    * LOGIN
    --------------------------- */
   const login = async (dto: LoginUserDto) => {
     setLoading(true);
     setError("");
     try {
-      const res = await authService.login(dto);
-      if (res.data.user) setUser(res.data.user as User);
+      const res = await loginService(dto);
+      const data = res.data;
+
+      // Si login normal
+      if (data.user) setUser(data.user);
+
+      return data;
+    } catch (err: unknown) {
+      const message = parseAxiosError(err);
+      setError(message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* ---------------------------
+   * VERIFY 2FA
+   --------------------------- */
+  const verify2FA = async (dto: { code: string }) => {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await verify2FAService(dto);
+      setUser(res.data.user);
       return res.data;
     } catch (err: unknown) {
       const message = parseAxiosError(err);
@@ -173,19 +196,6 @@ export const useAuth = (autoLoadProfile = false) => {
       const message = parseAxiosError(err);
       setError(message);
       throw message;
-    }
-  };
-
-  /* ---------------------------
-   * VERIFY 2FA
-   --------------------------- */
-  const verify2FA = async (dto: Verify2FaDto) => {
-    try {
-      return await authService.verify2FA(dto);
-    } catch (err: unknown) {
-      const message = parseAxiosError(err);
-      setError(message);
-      throw err;
     }
   };
 
