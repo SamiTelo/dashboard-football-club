@@ -1,8 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
-
 import { Field, FieldGroup } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,41 +10,34 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { cn } from "@/lib/utils";
-import { verify2FA } from "../services/auth-services";
 import { Spinner } from "@/components/ui/spinner";
-import { parseAxiosError } from "@/lib/axios-helper";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
-export function Verify2FaForm({ className, ...props }: React.ComponentProps<"form">) {
-  const router = useRouter();
+export function Verify2FaForm({
+  className,
+  ...props
+}: React.ComponentProps<"form">) {
+  const { verify2FA, loading, error } = useAuth();
+
   const [value, setValue] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
-  const [success, setSuccess] = React.useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    setSuccess(null);
 
-    if (value.length !== 6) {
-      setError("Veuillez entrer un code valide");
-      return;
-    }
+    if (value.length !== 6) return;
 
-    setLoading(true);
     try {
       await verify2FA({ code: value });
-      setSuccess("Code validé avec succès !");
-      setTimeout(() => router.replace("/dashboard"), 500);
-    } catch (err: unknown) {
-      setError(parseAxiosError(err));
-    } finally {
-      setLoading(false);
+    } catch {
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className={cn("flex flex-col gap-6 my-8 md:my-0", className)} {...props}>
+    <form
+      onSubmit={handleSubmit}
+      className={cn("flex flex-col gap-6 my-8 md:my-0", className)}
+      {...props}
+    >
       <FieldGroup>
         <div className="flex flex-col gap-1 text-center">
           <h1 className="text-3xl md:text-4xl font-bold">
@@ -74,14 +65,19 @@ export function Verify2FaForm({ className, ...props }: React.ComponentProps<"for
         </div>
 
         <Field>
-          <Button type="submit" className="bg-green-400 w-full" disabled={loading}>
-            {loading && <Spinner className="mr-2" data-icon="inline-start" />}
+          <Button
+            type="submit"
+            className="bg-green-400 w-full"
+            disabled={loading}
+          >
+            {loading && <Spinner className="mr-2" />}
             {loading ? "Vérification..." : "Envoyer"}
           </Button>
         </Field>
 
-        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-        {success && <p className="text-green-500 text-sm text-center">{success}</p>}
+        {error && (
+          <p className="text-red-500 text-sm text-center">{error}</p>
+        )}
       </FieldGroup>
     </form>
   );

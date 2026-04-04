@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation"; // ✅ AJOUT
 import * as authService from "../services/auth-services";
 import {
   CreateUserDto,
@@ -10,16 +11,12 @@ import {
   User,
 } from "../types/auth-types";
 import { parseAxiosError } from "@/lib/axios-helper";
-import {
-  login as loginService,
-  verify2FA as verify2FAService,
-} from "../services/auth-services";
-
 
 export const useAuth = (autoLoadProfile = false) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   // Charge le profil si autoLoadProfile = true
   useEffect(() => {
@@ -67,13 +64,16 @@ export const useAuth = (autoLoadProfile = false) => {
     setLoading(true);
     setError("");
     try {
-      const res = await loginService(dto);
+      const res = await authService.login(dto);
       const data = res.data;
 
-      // Si login normal
-      if (data.user) setUser(data.user);
+      if (data.requires2FA) {
+        router.replace("/auth/verify-2fa");
+        return;
+      }
 
-      return data;
+      if (data.user) setUser(data.user);
+      router.replace("/dashboard");
     } catch (err: unknown) {
       const message = parseAxiosError(err);
       setError(message);
@@ -90,8 +90,9 @@ export const useAuth = (autoLoadProfile = false) => {
     setLoading(true);
     setError("");
     try {
-      const res = await verify2FAService(dto);
+      const res = await authService.verify2FA(dto);
       setUser(res.data.user);
+      router.replace("/dashboard");
       return res.data;
     } catch (err: unknown) {
       const message = parseAxiosError(err);
@@ -111,6 +112,8 @@ export const useAuth = (autoLoadProfile = false) => {
     try {
       await authService.logout();
       setUser(null);
+
+      router.replace("/auth/login");
     } catch (err: unknown) {
       const message = parseAxiosError(err);
       setError(message);
@@ -133,7 +136,7 @@ export const useAuth = (autoLoadProfile = false) => {
       setUser(null);
       const message = parseAxiosError(err);
       setError(message);
-      throw message;
+      throw err;
     } finally {
       setLoading(false);
     }
@@ -162,20 +165,20 @@ export const useAuth = (autoLoadProfile = false) => {
     } catch (err: unknown) {
       const message = parseAxiosError(err);
       setError(message);
-      throw message;
+      throw err;
     }
   };
 
   /* ---------------------------
- * RESEND VERIFICATION EMAIL
- --------------------------- */
+   * RESEND VERIFICATION EMAIL
+   --------------------------- */
   const resendVerification = async (email: string) => {
     try {
       return await authService.resendVerification(email);
     } catch (err: unknown) {
       const message = parseAxiosError(err);
       setError(message);
-      throw message;
+      throw err;
     }
   };
 
@@ -188,7 +191,7 @@ export const useAuth = (autoLoadProfile = false) => {
     } catch (err: unknown) {
       const message = parseAxiosError(err);
       setError(message);
-      throw message;
+      throw err;
     }
   };
 
@@ -198,7 +201,7 @@ export const useAuth = (autoLoadProfile = false) => {
     } catch (err: unknown) {
       const message = parseAxiosError(err);
       setError(message);
-      throw message;
+      throw err;
     }
   };
 
