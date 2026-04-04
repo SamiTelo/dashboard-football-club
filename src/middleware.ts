@@ -2,15 +2,14 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const refreshToken = req.cookies.get("refreshToken")?.value;
+  const twoFARequired = req.cookies.get("twoFARequired")?.value === "true";
   const twoFAValidated = req.cookies.get("twoFAValidated")?.value === "true";
-  const twoFARequired = req.cookies.get("twoFARequired")?.value === "true"; // nouveau cookie côté backend
+  const refreshToken = req.cookies.get("refreshToken")?.value;
   const { pathname } = req.nextUrl;
 
   const isDashboardRoute = pathname.startsWith("/dashboard");
   const isAuthRoute =
-    pathname.startsWith("/auth/login") ||
-    pathname.startsWith("/auth/register");
+    pathname.startsWith("/auth/login") || pathname.startsWith("/auth/register");
 
   // ---------------------------
   // Protection dashboard
