@@ -120,6 +120,7 @@ export default function VerifyEmail() {
                 <Input
                   type="email"
                   id="resendEmail"
+                  placeholder="mail@example.com"
                   value={resendEmail}
                   onChange={(e) => setResendEmail(e.target.value)}
                   required
