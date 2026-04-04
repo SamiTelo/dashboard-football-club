@@ -10,12 +10,18 @@ import {
   User,
 } from "../types/auth-types";
 import { parseAxiosError } from "@/lib/axios-helper";
-import { login as loginService, verify2FA as verify2FAService } from "../services/auth-services";
+import {
+  login as loginService,
+  verify2FA as verify2FAService,
+} from "../services/auth-services";
+import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
 
 export const useAuth = (autoLoadProfile = false) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   // Charge le profil si autoLoadProfile = true
   useEffect(() => {
@@ -56,7 +62,7 @@ export const useAuth = (autoLoadProfile = false) => {
     }
   };
 
-   /* ---------------------------
+  /* ---------------------------
    * LOGIN
    --------------------------- */
   const login = async (dto: LoginUserDto) => {
@@ -144,8 +150,22 @@ export const useAuth = (autoLoadProfile = false) => {
       return res.data;
     } catch (err: unknown) {
       setUser(null);
-      const message = parseAxiosError(err);
+
+      // Assurer que c'est bien un AxiosError
+      const axiosErr = err as AxiosError;
+      const message = parseAxiosError(axiosErr);
       setError(message);
+
+      // Gérer 401 + 2FA
+      if (axiosErr.response?.status === 401) {
+        const twoFARequired = document.cookie.includes("twoFARequired=true");
+        if (twoFARequired) {
+          router.replace("/auth/verify-2fa");
+        } else {
+          router.replace("/auth/login");
+        }
+      }
+
       throw message;
     }
   };
