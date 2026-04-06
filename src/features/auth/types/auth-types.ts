@@ -18,6 +18,9 @@ export interface User {
   };
 }
 
+export interface GoogleLoginDto {
+  idToken: string;
+}
 
 export interface CreateUserDto {
   firstName: string;

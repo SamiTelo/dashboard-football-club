@@ -54,7 +54,7 @@ export function ForgotPasswordForm({
       <FieldGroup>
         {/* Header */}
         <div className="flex flex-col gap-1">
-          <h1 className="text-4xl font-bold">
+          <h1 className="text-3xl md:text-4xl font-bold">
             Mot de passe <span className="text-green-400">oublié ?</span>
           </h1>
           <p className="text-muted-foreground text-xs mt-2">

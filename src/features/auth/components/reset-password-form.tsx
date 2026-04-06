@@ -82,7 +82,7 @@ export function ResetPasswordForm({
       <FieldGroup>
         {/* Header */}
         <div className="flex flex-col gap-1">
-          <h1 className="text-4xl font-bold">
+          <h1 className="text-3xl md:text-4xl font-bold">
             Réinitialiser <br />
             le <span className="text-green-400">mot de passe</span>
           </h1>
