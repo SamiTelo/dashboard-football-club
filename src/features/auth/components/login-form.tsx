@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { GoogleLoginButton } from "./google-login-button";
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
   const { login, error, loading } = useAuth();
@@ -43,7 +44,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
     >
       <FieldGroup>
         <div className="flex flex-col gap-1">
-          <h1 className="text-4xl font-bold">
+          <h1 className="text-3xl md:text-4xl font-bold">
             Bonjour, <br />
             Bienvenue à <span className="text-green-400">Football Club</span>
           </h1>
@@ -102,13 +103,8 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
         <FieldSeparator>Ou continuez avec</FieldSeparator>
 
         <Field>
-          <Button
-            variant="outline"
-            type="button"
-            className="bg-gray-50 hover:bg-gray-100"
-          >
-            Se connecter avec Google
-          </Button>
+
+          <GoogleLoginButton label="Se connecter avec Google"/>
 
           <FieldDescription className="text-center">
             Vous n&apos;avez pas de compte ?{" "}

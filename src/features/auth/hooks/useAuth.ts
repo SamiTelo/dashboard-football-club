@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation"; // ✅ AJOUT
+import { useRouter } from "next/navigation";
 import * as authService from "../services/auth-services";
 import {
   CreateUserDto,
@@ -48,6 +48,30 @@ export const useAuth = (autoLoadProfile = false) => {
     try {
       const res = await authService.register(dto);
       return res.data;
+    } catch (err: unknown) {
+      const message = parseAxiosError(err);
+      setError(message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* ---------------------------
+   * GOOGLE LOGIN
+   --------------------------- */
+
+  const googleLogin = async (dto: { idToken: string }) => {
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await authService.googleLogin(dto);
+      const data = res.data;
+
+      if (data.user) setUser(data.user);
+
+      router.replace("/dashboard");
     } catch (err: unknown) {
       const message = parseAxiosError(err);
       setError(message);
@@ -211,6 +235,7 @@ export const useAuth = (autoLoadProfile = false) => {
     loading,
     error,
     register,
+    googleLogin,
     login,
     logout,
     getProfile,

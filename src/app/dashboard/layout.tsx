@@ -78,7 +78,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </main>
 
         {/* FOOTER */}
-        <footer className="bg-white">
+        <footer className="bg-white mt-10">
           <div className="flex justify-center py-4 px-4">
             <p className="text-xs text-gray-400 text-center">
               Copyright {currentYear}. Tous droits réservés. Développement et design par{" "}

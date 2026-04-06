@@ -44,6 +44,7 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 - Tableau des postes (OK)
 - Tableau des équipes (OK)
 - Authentification sécurisée JWT + Refresh Token connexion a mon API externe
+- Authentification securiser google avec OAuth
 - Upload d'images (joueurs, logos)
 
 ## Fonctionnalités à venir (feature)
@@ -79,7 +80,7 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 
 ## Déploiement
 
-- Frontend : [Vercel](https://dashboard-football-club.vercel.app) (Interface uniquement, API en cours d’intégration)
+- Frontend : [Vercel](https://dashboard-football-club.vercel.app) (API toujours en cours d’intégration)
 - Backend : [Render](https://api-football-gfpz.onrender.com)
 - Base de données: PostgreSQL sur Render
 

@@ -1,5 +1,5 @@
 import { api } from "@/lib/api";
-import { CreateUserDto, ForgotPasswordDto, LoginUserDto, ResetPasswordDto } from "../types/auth-types";
+import { CreateUserDto, ForgotPasswordDto, GoogleLoginDto, LoginUserDto, ResetPasswordDto} from "../types/auth-types";
 
 
 export const register = (data: CreateUserDto) => api.post("/auth/register", data);
@@ -12,3 +12,4 @@ export const verifyEmail = (token: string) => api.post("/auth/verify-email", { t
 export const forgotPassword = (data: ForgotPasswordDto) => api.post("/auth/forgot-password", data);
 export const resetPassword = (data: ResetPasswordDto) => api.post("/auth/reset-password", data);
 export const resendVerification = (email: string) => api.post("/auth/resend-verification", { email });
+export const googleLogin = (data: GoogleLoginDto) =>api.post("/auth/google-login", data);
