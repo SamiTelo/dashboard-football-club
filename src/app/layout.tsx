@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
-import Script from "next/script";
+import { GoogleScriptLoader } from "./GoogleScriptLoader";
 
 export const metadata: Metadata = {
   title: "Football Club",
@@ -25,12 +25,7 @@ export default function RootLayout({
         />
 
         {/* Google Identity Services */}
-        <Script
-          src="https://accounts.google.com/gsi/client"
-          strategy="afterInteractive"
-          onLoad={() => console.log("Google Identity Services chargé")}
-        />
-
+       <GoogleScriptLoader/>
         {children}
       </body>
     </html>
