@@ -43,6 +43,9 @@ export function Verify2FaForm({
           <h1 className="text-3xl md:text-4xl font-bold">
             Code de <span className="text-green-400">vérification</span>
           </h1>
+          <p className="text-muted-foreground text-xs mt-2">
+            Veuillez saisir le code OTP récue par mail ci-dessous
+          </p>
         </div>
 
         <div className="flex justify-center my-4 md:my-6">
