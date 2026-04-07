@@ -35,15 +35,24 @@ export function GoogleLoginButton({
         setLoading(false);
       }
     },
-    [googleLogin]
+    [googleLogin],
   );
 
   // Initialisation Google Identity Services
   useEffect(() => {
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+
+    console.log("CLIENT ID:", clientId);
+
+    if (!clientId) {
+      console.error("GOOGLE CLIENT ID manquant !");
+      return;
+    }
+
     if (!window.google?.accounts?.id) return;
 
     window.google.accounts.id.initialize({
-      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+      client_id: clientId,
       callback: handleCredentialResponse,
     });
   }, [handleCredentialResponse]);
@@ -91,7 +100,6 @@ export function GoogleLoginButton({
           d="M272 109.7c37.2 0 70.7 12.8 97 33.7l72.8-72.8C404.9 30 344 0 272 0 167.3 0 76.4 62.8 32.4 157.1l89.1 69.9c21.2-63.9 80.5-111.3 150.5-111.3z"
         />
       </svg>
-
     </Button>
   );
 }
