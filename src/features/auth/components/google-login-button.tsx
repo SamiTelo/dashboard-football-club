@@ -17,8 +17,9 @@ export function GoogleLoginButton({
 }: GoogleLoginButtonProps) {
   const { googleLogin } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [sdkLoaded, setSdkLoaded] = useState(false);
 
-  // on mémorise la fonction pour éviter le warning React
+  // Gestion du token
   const handleCredentialResponse = useCallback(
     async (response: { credential: string }) => {
       if (!response.credential) {
@@ -38,22 +39,36 @@ export function GoogleLoginButton({
     [googleLogin]
   );
 
-  // Initialisation du SDK Google Identity
+  // Charge le SDK Google Identity
   useEffect(() => {
-    if (typeof window === "undefined" || !window.google) return;
+    if (typeof window === "undefined") return;
+    if (window.google) {
+      setSdkLoaded(true);
+      return;
+    }
 
-    window.google.accounts.id.initialize({
-      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-      callback: handleCredentialResponse,
-    });
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      if (!window.google) return;
+      window.google.accounts.id.initialize({
+        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+        callback: handleCredentialResponse,
+      });
+      setSdkLoaded(true);
+    };
+    document.body.appendChild(script);
 
-    // Affiche le popup si l'utilisateur est déjà connecté
-    // window.google.accounts.id.prompt();
+    return () => {
+      document.body.removeChild(script);
+    };
   }, [handleCredentialResponse]);
 
-  // Déclenche le popup Google à la demande
+  // Déclenche le popup Google
   const handleClick = () => {
-    if (!window.google) {
+    if (!sdkLoaded || !window.google) {
       console.error("Google SDK non chargé");
       return;
     }
@@ -66,7 +81,7 @@ export function GoogleLoginButton({
       type="button"
       onClick={handleClick}
       className={cn("bg-gray-50 hover:bg-gray-100", className)}
-      disabled={loading}
+      disabled={loading || !sdkLoaded}
     >
       {/* Logo Google */}
       <svg
