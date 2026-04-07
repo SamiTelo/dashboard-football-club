@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleScriptLoader } from "./GoogleScriptLoader";
 
 export const metadata: Metadata = {
   title: "Football Club",
@@ -10,9 +10,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="fr">
       <body className="font-sans antialiased" suppressHydrationWarning>
@@ -23,11 +23,10 @@ export default function RootLayout({
           crawlSpeed={200}
           speed={300}
         />
-        <GoogleOAuthProvider
-          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}
-        >
-          {children}
-        </GoogleOAuthProvider>
+
+        {/* Google Identity Services */}
+       <GoogleScriptLoader/>
+        {children}
       </body>
     </html>
   );

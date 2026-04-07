@@ -1,11 +1,18 @@
 "use client";
 
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import { useEffect, useState, useCallback } from "react";
 
+
+// Typage Google Identity Services
+interface CredentialResponse {
+  credential?: string;
+  clientId?: string;
+  select_by?: string;
+}
 interface GoogleLoginButtonProps {
   className?: string;
   label?: string;
@@ -19,17 +26,17 @@ export function GoogleLoginButton({
   const [loading, setLoading] = useState(false);
   const [sdkLoaded, setSdkLoaded] = useState(false);
 
-  // Gestion du token
+  // Callback pour gérer la réponse Google
   const handleCredentialResponse = useCallback(
-    async (response: { credential: string }) => {
+    async (response: CredentialResponse) => {
       if (!response.credential) {
-        console.error("Aucun ID token reçu");
+        console.error("Aucun ID Token reçu");
         return;
       }
 
       try {
         setLoading(true);
-        await googleLogin({ idToken: response.credential });
+        await googleLogin({ idToken: response.credential }); // aligné avec backend
       } catch (err) {
         console.error("Erreur Google Login:", err);
       } finally {
@@ -38,38 +45,22 @@ export function GoogleLoginButton({
     },
     [googleLogin]
   );
-
-  // Charge le SDK Google Identity
+  
+  // Initialisation Google Identity Services
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (window.google) {
-      setSdkLoaded(true);
-      return;
-    }
+    if (!window.google?.accounts?.id) return;
 
-    const script = document.createElement("script");
-    script.src = "https://accounts.google.com/gsi/client";
-    script.async = true;
-    script.defer = true;
-    script.onload = () => {
-      if (!window.google) return;
-      window.google.accounts.id.initialize({
-        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-        callback: handleCredentialResponse,
-      });
-      setSdkLoaded(true);
-    };
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
+    window.google.accounts.id.initialize({
+      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+      callback: handleCredentialResponse,
+    });
   }, [handleCredentialResponse]);
 
-  // Déclenche le popup Google
+  // Ouvre la popup Google
   const handleClick = () => {
-    if (!sdkLoaded || !window.google) {
-      console.error("Google SDK non chargé");
+    if (!window.google?.accounts?.id) {
+      console.error("Google Identity Services non chargé");
+
       return;
     }
     window.google.accounts.id.prompt();
