@@ -6,13 +6,6 @@ import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 
-
-// Typage Google Identity Services
-interface CredentialResponse {
-  credential?: string;
-  clientId?: string;
-  select_by?: string;
-}
 interface GoogleLoginButtonProps {
   className?: string;
   label?: string;
@@ -24,7 +17,6 @@ export function GoogleLoginButton({
 }: GoogleLoginButtonProps) {
   const { googleLogin } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [sdkLoaded, setSdkLoaded] = useState(false);
 
   // Callback pour gérer la réponse Google
   const handleCredentialResponse = useCallback(
@@ -45,7 +37,7 @@ export function GoogleLoginButton({
     },
     [googleLogin]
   );
-  
+
   // Initialisation Google Identity Services
   useEffect(() => {
     if (!window.google?.accounts?.id) return;
@@ -60,7 +52,6 @@ export function GoogleLoginButton({
   const handleClick = () => {
     if (!window.google?.accounts?.id) {
       console.error("Google Identity Services non chargé");
-
       return;
     }
     window.google.accounts.id.prompt();
@@ -72,7 +63,7 @@ export function GoogleLoginButton({
       type="button"
       onClick={handleClick}
       className={cn("bg-gray-50 hover:bg-gray-100", className)}
-      disabled={loading || !sdkLoaded}
+      disabled={loading}
     >
       {/* Logo Google */}
       <svg

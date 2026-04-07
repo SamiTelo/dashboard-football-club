@@ -1,6 +1,7 @@
 export {};
 
 declare global {
+  // Typage Google Identity Services
   interface CredentialResponse {
     credential?: string;
     clientId?: string;
