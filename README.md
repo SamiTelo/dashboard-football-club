@@ -102,8 +102,7 @@ src/
 ├── components/      # composants UI réutilisables
 ├── hooks/           # hooks React personnalisés
 ├── lib/             # utilitaires et services
-
-types/               # types TypeScript globaux
+└── types/           # types TypeScript globaux               
 
 README.md            # documentation du projet
 
