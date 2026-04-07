@@ -65,6 +65,9 @@ export function GoogleLoginButton({
       className={cn("bg-gray-50 hover:bg-gray-100", className)}
       disabled={loading}
     >
+      {loading && <Spinner className="mr-2" />}
+      {loading ? "Connexion..." : label}
+
       {/* Logo Google */}
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -89,8 +92,6 @@ export function GoogleLoginButton({
         />
       </svg>
 
-      {loading && <Spinner className="mr-2" />}
-      {loading ? "Connexion..." : label}
     </Button>
   );
 }
