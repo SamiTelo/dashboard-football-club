@@ -75,7 +75,6 @@ export const useAuth = (autoLoadProfile = false) => {
     } catch (err: unknown) {
       const message = parseAxiosError(err);
       setError(message);
-      throw err;
     } finally {
       setLoading(false);
     }
