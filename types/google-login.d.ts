@@ -1,7 +1,6 @@
 export {};
 
 declare global {
-  // Typage Google Identity Services
   interface CredentialResponse {
     credential?: string;
     clientId?: string;
@@ -20,7 +19,11 @@ declare global {
             prompt_parent_id?: string;
             itp_support?: boolean;
           }) => void;
+
           prompt: () => void;
+
+          cancel: () => void;
+
           renderButton?: (
             parent: HTMLElement,
             options: Record<string, unknown>

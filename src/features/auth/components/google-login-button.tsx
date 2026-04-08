@@ -28,7 +28,7 @@ export function GoogleLoginButton({
 
       try {
         setLoading(true);
-        await googleLogin({ idToken: response.credential }); // aligné avec backend
+        await googleLogin({ idToken: response.credential }); 
       } catch (err) {
         console.error("Erreur Google Login:", err);
       } finally {
@@ -42,19 +42,26 @@ export function GoogleLoginButton({
   useEffect(() => {
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
-    console.log("CLIENT ID:", clientId);
-
     if (!clientId) {
       console.error("GOOGLE CLIENT ID manquant !");
       return;
     }
 
-    if (!window.google?.accounts?.id) return;
+    if (!window.google?.accounts?.id) {
+      console.log("Google SDK pas encore prêt...");
+      return;
+    }
+
+    try {
+      window.google.accounts.id.cancel(); 
+    } catch {}
 
     window.google.accounts.id.initialize({
       client_id: clientId,
       callback: handleCredentialResponse,
     });
+
+    console.log("Google initialisé avec:", clientId);
   }, [handleCredentialResponse]);
 
   // Ouvre la popup Google
@@ -71,7 +78,7 @@ export function GoogleLoginButton({
       variant="outline"
       type="button"
       onClick={handleClick}
-      className={cn("bg-gray-50 hover:bg-gray-100", className)}
+      className={cn("bg-gray-50 hover:bg-gray-100 hover:scale-105 transition-all duration-300", className)}
       disabled={loading}
     >
       {loading && <Spinner className="mr-2" />}
