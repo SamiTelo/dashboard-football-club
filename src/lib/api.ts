@@ -10,10 +10,11 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // Ignore login / verify-2fa : on ne touche pas à ces requêtes
+    // Ignore login / verify-2fa / google-login: on ne touche pas à ces requêtes
     if (
       originalRequest.url?.includes("/auth/login") ||
-      originalRequest.url?.includes("/auth/verify-2fa")
+      originalRequest.url?.includes("/auth/verify-2fa") ||
+      originalRequest.url?.includes("/auth/google-login") 
     ) {
       return Promise.reject(error);
     }
@@ -34,5 +35,5 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
