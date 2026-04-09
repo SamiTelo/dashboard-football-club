@@ -6,7 +6,7 @@ import { featureIconMap } from "../config/players.config";
 const stats = [
   { feature: "Total joueurs", value: "219" },
   { feature: "Total equipes", value: "45" },
-  { feature: "Total joueurs actifs", value: "199,860" },
+  { feature: "Total joueurs actifs", value: "200" },
   { feature: "Total positions", value: "237" },
 ];
 

@@ -26,16 +26,18 @@ export default function PlayersList() {
         <p className="flex items-start sm:items-center gap-2 text-sm sm:text-base md:text-[14px] leading-relaxed">
           <Hand className="text-green-500 mt-1 sm:mt-0 shrink-0" />
 
-          {loading ? (
-            <Skeleton className="h-4 w-60" />
-          ) : (
-            <span>
-              Bonjour <strong>{userName}</strong>, bienvenue sur
-              <span className="text-green-500 font-semibold ml-1">
-                Football Club
-              </span>
+          <span className="flex items-center gap-1">
+            Bonjour{" "}
+            {loading ? (
+              <Skeleton className="h-4 w-24 inline-block rounded-md" />
+            ) : (
+              <strong>{userName}</strong>
+            )}
+            , bienvenue sur
+            <span className="text-green-500 font-semibold ml-1">
+              Football Club
             </span>
-          )}
+          </span>
         </p>
       </div>
 
