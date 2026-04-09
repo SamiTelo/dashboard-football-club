@@ -10,31 +10,36 @@ import { Separator } from "@/features/dashbaord/components/ui/separator";
 import { Search, Mail, Bell } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { LogoutButton } from "@/features/auth/components/logout-button";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const currentYear = new Date().getFullYear();
-  const { user } = useAuth(true); // true = autoLoadProfile
 
-  const userName = user ? `${user.firstName} ${user.lastName}` : "Utilisateur";
-  const userEmail = user?.email || "user@mail.com";
+  const { user, loading } = useAuth(true);
+
+  const userName = user ? `${user.firstName} ${user.lastName}` : "";
+  const userEmail = user?.email || "";
 
   const initials = userName
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase();
-
-
+    ? userName
+        .split(" ")
+        .map((n) => n[0])
+        .slice(0, 2) // <- limite à 2 lettres
+        .join("")
+        .toUpperCase()
+    : "";
 
   return (
     <SidebarProvider>
       <AppSidebar />
 
       <SidebarInset className="flex flex-col h-screen overflow-x-hidden">
-
         {/* HEADER */}
         <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center justify-between shadow-xs bg-white/60 backdrop-blur px-3 md:px-6">
-
           {/* LEFT */}
           <div className="flex items-center gap-3 flex-1 min-w-0">
             <SidebarTrigger className="text-green-400" />
@@ -50,7 +55,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
           {/* RIGHT */}
           <div className="flex items-center gap-3 md:gap-6">
-
             {/* ICONS */}
             <div className="flex items-center gap-4 text-muted-foreground">
               <LogoutButton />
@@ -59,34 +63,50 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
 
             {/* USER */}
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 flex items-center justify-center rounded-full bg-green-100 text-green-600 font-bold text-sm">
-                {initials}
-              </div>
-              <div className="hidden md:block leading-tight">
-                <p className="text-sm font-semibold">{userName}</p>
-                <p className="text-xs text-muted-foreground">{userEmail}</p>
-              </div>
-            </div>
+            <div className="flex items-center gap-3 min-w-35 justify-end">
+              {loading ? (
+                <>
+                  {/* Avatar Skeleton */}
+                  <Skeleton className="h-9 w-9 rounded-full" />
 
+                  {/* Texte Skeleton */}
+                  <div className="hidden md:block space-y-2">
+                    <Skeleton className="h-3 w-24" />
+                    <Skeleton className="h-3 w-32" />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="h-9 w-9 flex items-center justify-center rounded-full bg-green-100 text-green-600 font-bold text-sm">
+                    {initials}
+                  </div>
+                  <div className="hidden md:block leading-tight">
+                    <p className="text-sm font-semibold">{userName}</p>
+                    <p className="text-xs text-muted-foreground">{userEmail}</p>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </header>
 
         {/* MAIN */}
-        <main className="flex flex-1 flex-col gap-4 bg-[#F8F7FA] p-4 md:p-6">
+        <main className="flex flex-1 flex-col gap-4 bg-[#F8F7FA] px-4 md:px-6 pb-10 ">
           {children}
         </main>
 
         {/* FOOTER */}
-        <footer className="bg-white mt-10">
+        <footer className="bg-white">
           <div className="flex justify-center py-4 px-4">
             <p className="text-xs text-gray-400 text-center">
-              Copyright {currentYear}. Tous droits réservés. Développement et design par{" "}
-              <span className="text-green-400 font-medium">Samuel Tiemtore</span>
+              Copyright {currentYear}. Tous droits réservés. Développement et
+              design par{" "}
+              <span className="text-green-400 font-medium">
+                Samuel Tiemtore
+              </span>
             </p>
           </div>
         </footer>
-
       </SidebarInset>
     </SidebarProvider>
   );

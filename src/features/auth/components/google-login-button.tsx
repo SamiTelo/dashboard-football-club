@@ -35,7 +35,7 @@ export function GoogleLoginButton({
         setLoading(false);
       }
     },
-    [googleLogin]
+    [googleLogin],
   );
 
   // Initialisation Google Identity Services
@@ -72,23 +72,21 @@ export function GoogleLoginButton({
     }
 
     if (cooldown) {
-      console.warn(
-        "Popup temporairement désactivée, réessayez dans quelques secondes."
-      );
-      alert("Connexion Google temporairement indisponible. Réessayez dans quelques secondes.");
+      console.warn("Popup temporairement désactivée.");
       return;
     }
 
     try {
       window.google.accounts.id.prompt();
 
-      // Active le cooldown de 5 secondes
+      // Active le cooldown 5 secondes
       setCooldown(true);
-      const timer = setTimeout(() => setCooldown(false), 5000);
-      return () => clearTimeout(timer);
+
+      setTimeout(() => {
+        setCooldown(false);
+      }, 5000);
     } catch (err) {
       console.error("Erreur lors de l'ouverture de la popup Google:", err);
-      alert("Connexion Google temporairement indisponible. Réessayez dans quelques secondes.");
     }
   };
 

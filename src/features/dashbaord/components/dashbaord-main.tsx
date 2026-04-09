@@ -8,17 +8,17 @@ import { PlayersActions } from "@/features/players/components/players-actions";
 import { PlayersTable } from "@/features/players/components/players-table";
 import { Hand } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function PlayersList() {
   const { exportPDF } = usePlayersExport();
+  const { user, loading } = useAuth(true);
 
-   const { user } = useAuth(true); // true = autoLoadProfile
-   const userName = user ? `${user.firstName} ${user.lastName}` : "Utilisateur";
+  const userName = user ? `${user.firstName} ${user.lastName}` : "";
 
   return (
     <div className="p-0 bg-[#F8F7FA] min-h-screen text-[13px] md:text-[14px] font-sans text-[#5d596c]">
-
-       <p>Tableau de bord /</p>
+      <p>Tableau de bord /</p>
       <br />
 
       {/* Hero */}
@@ -26,12 +26,16 @@ export default function PlayersList() {
         <p className="flex items-start sm:items-center gap-2 text-sm sm:text-base md:text-[14px] leading-relaxed">
           <Hand className="text-green-500 mt-1 sm:mt-0 shrink-0" />
 
-          <span>
-            Bonjour <strong>{userName}</strong>, bienvenue sur
-            <span className="text-green-500 font-semibold ml-1">
-              Football Club
+          {loading ? (
+            <Skeleton className="h-4 w-60" />
+          ) : (
+            <span>
+              Bonjour <strong>{userName}</strong>, bienvenue sur
+              <span className="text-green-500 font-semibold ml-1">
+                Football Club
+              </span>
             </span>
-          </span>
+          )}
         </p>
       </div>
 
