@@ -45,20 +45,20 @@ export default function LoginPage() {
           </p>
           <p className="text-xs sm:text-sm mb-8 text-white/70 text-left">
             Accès invité limité à la consultation des fonctionnalités
-            principales.
+            principales. Envoyez moi un mail sur samueltiemtore10@gmail.com pour tester en tant qu&aposAdmin
           </p>
 
            {/* Access demo */}
           <div className="bg-black/30 rounded-lg p-4 px-10 text-sm w-full sm:text-base space-y-2 mb-6 text-left">
             <p>
               <span className="font-semibold text-green-400">Email :</span>{" "}
-              demo@footballclub.com
+              demofootballclub3@gmail.com
             </p>
             <p>
               <span className="font-semibold text-green-400">
                 Mot de passe :
               </span>{" "}
-              demo123
+              Demo@123
             </p>
           </div>
         </div>
