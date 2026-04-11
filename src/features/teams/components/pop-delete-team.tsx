@@ -16,7 +16,23 @@ import {
 import { Trash2Icon } from "lucide-react";
 import { FiTrash2 } from "react-icons/fi";
 
-export function PopDeleteTeam() {
+import { useDeleteTeam } from "../hooks/useTeams";
+
+interface PopDeleteTeamProps {
+  teamId: number;
+}
+
+export function PopDeleteTeam({ teamId }: PopDeleteTeamProps) {
+  const deleteTeam = useDeleteTeam();
+
+  const handleDelete = async () => {
+    try {
+      await deleteTeam.mutateAsync(teamId);
+    } catch (error) {
+      console.error("Error deleting team:", error);
+    }
+  };
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -50,6 +66,8 @@ export function PopDeleteTeam() {
           <AlertDialogAction
             variant="destructive"
             className="bg-red-600 hover:bg-red-700"
+            onClick={handleDelete}
+            disabled={deleteTeam.isPending}
           >
             Supprimer
           </AlertDialogAction>

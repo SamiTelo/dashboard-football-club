@@ -1,4 +1,6 @@
-"@/components/ui/button";
+"use client";
+
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,10 +16,36 @@ import { Field, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FiEdit, FiUser } from "react-icons/fi";
+import { useUpdatePosition } from "../hooks/usePositions";
+import { Position } from "../types/positions-types";
 
-export function PopUpdatePositions() {
+interface PopUpdatePositionsProps {
+  position: Position;
+}
+
+export function PopUpdatePositions({ position }: PopUpdatePositionsProps) {
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState(position.name);
+
+  const { mutate, isPending } = useUpdatePosition();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!name.trim()) return;
+
+    mutate(
+      { id: position.id, data: { name } },
+      {
+        onSuccess: () => {
+          setOpen(false); // ferme popup
+        },
+      }
+    );
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <FiEdit className="cursor-pointer hover:text-indigo-500" />
       </DialogTrigger>
@@ -35,15 +63,15 @@ export function PopUpdatePositions() {
           </DialogDescription>
         </DialogHeader>
 
-        <form className="space-y-4 mt-4">
+        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <FieldGroup>
-
             <Field className="space-y-2">
               <Label>Nom</Label>
-              <Input defaultValue="Attaquant" />
+              <Input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </Field>
-
-          
           </FieldGroup>
 
           <DialogFooter className="pt-6 flex gap-2">
@@ -51,7 +79,13 @@ export function PopUpdatePositions() {
               <Button variant="outline">Annuler</Button>
             </DialogClose>
 
-            <Button className="bg-black hover:bg-green-400"> Enregistrer</Button>
+            <Button
+              type="submit"
+              disabled={isPending}
+              className="bg-black hover:bg-green-400"
+            >
+              {isPending ? "Enregistrement..." : "Enregistrer"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

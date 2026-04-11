@@ -2,7 +2,7 @@
 import React from "react";
 import { users } from "./data/users.data";
 import { UserFilters } from "./components/users-filters";
-import { Pagination } from "../dashbaord/components/pagination";
+//import { Pagination } from "../dashbaord/components/pagination";
 import { UserTable } from "./components/users-table";
 import { UserActions } from "./components/users-actions";
 import { UsersExport } from "./hooks/users-export-pdf";
@@ -24,7 +24,7 @@ export default function UserListDashboard() {
         <UserTable users={users} />
       </div>
 
-      <Pagination/>
+      {/* <Pagination/>*/}
     </div>
   );
 }

@@ -1,10 +1,10 @@
 "use client";
 
-import { TeamsListItem } from "../types/teams-types";
 import { TeamsRow } from "./teams-row";
+import { Team } from "../types/teams-types";
 
 interface TeamsTableProps {
-  teams: TeamsListItem[];
+  teams: Team[];
 }
 
 export function TeamsTable({ teams }: TeamsTableProps) {
@@ -23,14 +23,14 @@ export function TeamsTable({ teams }: TeamsTableProps) {
 
         <tbody className="divide-y divide-gray-100">
 
-          {teams.length === 0 ? (
+          {teams?.length === 0 ? (
             <tr>
               <td colSpan={3} className="text-center py-6 text-gray-400">
                 Aucune équipe
               </td>
             </tr>
           ) : (
-            teams.map((team) => (
+            teams?.map((team) => (
               <TeamsRow key={team.id} team={team} />
             ))
           )}

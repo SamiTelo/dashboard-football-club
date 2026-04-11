@@ -16,87 +16,67 @@ export function GoogleLoginButton({
   label = "Se connecter avec Google",
 }: GoogleLoginButtonProps) {
   const { googleLogin } = useAuth();
-  const [loading, setLoading] = useState(false);
-  const [cooldown, setCooldown] = useState(false);
 
-  // Callback pour gérer la réponse Google
+  const [loading, setLoading] = useState(false);
+ 
+  // Callback Google
   const handleCredentialResponse = useCallback(
     async (response: CredentialResponse) => {
-      if (!response.credential) {
-        console.error("Aucun ID Token reçu");
-        return;
-      }
+      if (!response.credential) return;
 
       try {
         setLoading(true);
         await googleLogin({ idToken: response.credential });
-      } catch {
+      } catch (err) {
+        console.error(err);
       } finally {
         setLoading(false);
       }
     },
-    [googleLogin],
+    [googleLogin]
   );
 
-  // Initialisation Google Identity Services
+  // Init Google SDK
   useEffect(() => {
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
-    if (!clientId) {
-      console.error("GOOGLE CLIENT ID manquant !");
-      return;
-    }
-
-    if (!window.google?.accounts?.id) {
-      console.log("Google SDK pas encore prêt...");
-      return;
-    }
+    if (!clientId) return;
+    if (!window.google?.accounts?.id) return;
 
     try {
-      window.google.accounts.id.cancel(); // réinitialise l'état du SDK
+      window.google.accounts.id.cancel();
     } catch {}
 
     window.google.accounts.id.initialize({
       client_id: clientId,
       callback: handleCredentialResponse,
     });
-
-    console.log("Google initialisé avec:", clientId);
   }, [handleCredentialResponse]);
 
-  // Ouvre la popup Google avec cooldown et alert
+  // Click handler
   const handleClick = () => {
     if (!window.google?.accounts?.id) {
-      console.error("Google Identity Services non chargé");
+      console.error("Google SDK non chargé");
       return;
     }
 
-    if (cooldown) {
-      console.warn("Popup temporairement désactivée.");
-      return;
-    }
+    if (loading) return;
 
     try {
       window.google.accounts.id.prompt();
-
-      // Active le cooldown 5 secondes
-      setCooldown(true);
-
-      setTimeout(() => {
-        setCooldown(false);
-      }, 5000);
+      setLoading(true); 
     } catch (err) {
-      console.error("Erreur lors de l'ouverture de la popup Google:", err);
+      console.error(err);
     }
   };
 
   return (
     <Button
-      variant="outline"
       type="button"
+      variant="outline"
       onClick={handleClick}
+      disabled={loading}
       className={cn("bg-gray-50 hover:bg-gray-200", className)}
-      disabled={loading || cooldown}
     >
       {loading && <Spinner className="mr-2" />}
       {loading ? "Connexion..." : label}

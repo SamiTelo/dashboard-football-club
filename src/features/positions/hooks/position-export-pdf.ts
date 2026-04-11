@@ -1,10 +1,9 @@
 "use client";
 
-import { position } from "../data/positions-data";
-import { PositionsListItem } from "../types/positions-types";
+import { Position } from "../types/positions-types";
 
 export function PositionsExport() {
-  const exportPDF = async () => {
+  const exportPDF = async (positions: Position[]) => {
     try {
       const pdfMakeModule = await import("pdfmake/build/pdfmake");
       const pdfFontsModule = await import("pdfmake/build/vfs_fonts");
@@ -15,14 +14,12 @@ export function PositionsExport() {
       if (fonts?.pdfMake?.vfs) pdfMake.vfs = fonts.pdfMake.vfs;
       else if (fonts?.vfs) pdfMake.vfs = fonts.vfs;
 
-      // Corps du tableau
+      // =========================
+      // TABLE BODY
+      // =========================
       const tableBody = [
         ["ID", "Position"],
-
-        ...position.map((p: PositionsListItem) => [
-          p.id,
-          p.name,
-        ]),
+        ...positions.map((p) => [p.id, p.name]),
       ];
 
       const docDefinition = {
@@ -43,7 +40,7 @@ export function PositionsExport() {
           },
 
           {
-            text: `Total postes: ${position.length}`,
+            text: `Total postes: ${positions.length}`,
             margin: [0, 10, 0, 10],
             bold: true,
           },
@@ -60,7 +57,6 @@ export function PositionsExport() {
                 if (rowIndex === 0) return "#22c55e";
                 return rowIndex % 2 === 0 ? "#f9f9f9" : null;
               },
-
               hLineWidth: () => 0.5,
               vLineWidth: () => 0.5,
               hLineColor: () => "#ccc",
