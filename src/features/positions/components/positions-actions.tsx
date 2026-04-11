@@ -1,26 +1,41 @@
-import { FiDownload} from "react-icons/fi";
+"use client";
+
+import { FiDownload } from "react-icons/fi";
 import { PopAddPositions } from "./pop-add-positions";
-
-
 
 interface PositionsActionsProps {
   onExport: () => void;
+  search: string;
+  onSearchChange: (value: string) => void;
+  limit: number;
+  onLimitChange: (value: number) => void;
 }
 
 export function PositionsActions({
   onExport,
-}:  PositionsActionsProps) {
+  search,
+  onSearchChange,
+  limit,
+  onLimitChange,
+}: PositionsActionsProps) {
   return (
     <div className="p-4 flex flex-col md:flex-row justify-between items-center gap-4">
-      <select className="border border-gray-200 rounded-md p-1">
-        <option>10</option>
+      <select
+        value={limit}
+        onChange={(e) => onLimitChange(Number(e.target.value))}
+        className="border border-gray-200 rounded-md p-1"
+      >
+        <option value={10}>10</option>
+        <option value={20}>20</option>
+        <option value={50}>50</option>
       </select>
 
       <div className="flex flex-wrap items-center gap-3">
         <input
           type="text"
           placeholder="Search"
-          defaultValue=""
+          value={search}
+          onChange={(e) => onSearchChange(e.target.value)}
           className="border border-gray-200 rounded-md py-2 px-3 focus:outline-none focus:border-green-300"
         />
 
@@ -30,8 +45,8 @@ export function PositionsActions({
         >
           <FiDownload /> Exporter
         </button>
-        
-        <PopAddPositions/>
+
+        <PopAddPositions />
       </div>
     </div>
   );

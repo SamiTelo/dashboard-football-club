@@ -1,6 +1,6 @@
 "use client";
 
-import { Pagination } from "./pagination";
+// import { Pagination } from "./pagination";
 import { usePlayersExport } from "@/features/players/hooks/players-export-pdf";
 import { StatsCards } from "@/features/players/components/stats-cards";
 import { PlayersFilters } from "@/features/players/components/players-filters";
@@ -49,7 +49,7 @@ export default function PlayersList() {
         <PlayersTable />
       </div>
 
-      <Pagination />
+      {/* <Pagination/>*/}
     </div>
   );
 }

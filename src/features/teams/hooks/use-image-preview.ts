@@ -4,22 +4,29 @@ import { useState } from "react";
 
 export function useImagePreview() {
   const [preview, setPreview] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const selectedFile = e.target.files?.[0];
 
-    if (!file) return;
+    if (!selectedFile) return;
 
-    const imageUrl = URL.createObjectURL(file);
+    // store file for API upload
+    setFile(selectedFile);
+
+    // preview UI
+    const imageUrl = URL.createObjectURL(selectedFile);
     setPreview(imageUrl);
   };
 
   const resetPreview = () => {
     setPreview(null);
+    setFile(null);
   };
 
   return {
     preview,
+    file, 
     handleImageChange,
     resetPreview,
   };

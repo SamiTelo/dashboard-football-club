@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import { GoogleScriptLoader } from "./GoogleScriptLoader";
+import { ReactQueryProvider } from "@/providers/react-query-provider";
 
 export const metadata: Metadata = {
   title: "Football Club",
@@ -24,9 +25,11 @@ export default function RootLayout({
           speed={300}
         />
 
-        {/* Google Identity Services */}
-       <GoogleScriptLoader/>
-        {children}
+        <GoogleScriptLoader />
+
+        <ReactQueryProvider>
+          {children}
+        </ReactQueryProvider>
       </body>
     </html>
   );

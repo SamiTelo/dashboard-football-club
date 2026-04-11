@@ -21,10 +21,44 @@ import { Label } from "@/components/ui/label";
 import { FiPlus, FiUser, FiImage } from "react-icons/fi";
 
 import { useImagePreview } from "../hooks/use-image-preview";
+import { useState } from "react";
+
+import { useCreateTeam, useUploadTeamLogo } from "../hooks/useTeams";
 
 export function PopAddTeam() {
+  const { preview, handleImageChange, file } = useImagePreview();
 
-  const { preview, handleImageChange } = useImagePreview();
+  const [name, setName] = useState("");
+
+  const createTeam = useCreateTeam();
+  const uploadLogo = useUploadTeamLogo();
+
+  // =========================
+  // SUBMIT
+  // =========================
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      // CREATE TEAM
+      const team = await createTeam.mutateAsync({
+        name,
+      });
+
+      // UPLOAD LOGO (optional)
+      if (file) {
+        await uploadLogo.mutateAsync({
+          teamId: team.id,
+          file,
+        });
+      }
+
+      // reset
+      setName("");
+    } catch (error) {
+      console.error("Error creating team:", error);
+    }
+  };
 
   return (
     <Dialog>
@@ -36,7 +70,6 @@ export function PopAddTeam() {
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-md rounded-xl p-6">
-
         <DialogHeader className="space-y-2">
           <DialogTitle className="flex items-center gap-2 text-xl font-semibold">
             <FiUser className="text-green-500" />
@@ -48,22 +81,23 @@ export function PopAddTeam() {
           </DialogDescription>
         </DialogHeader>
 
-        <form className="space-y-4 mt-4">
-
+        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <FieldGroup>
-
+            {/* NAME */}
             <Field className="space-y-2">
               <Label>Nom</Label>
-              <Input placeholder="Ex: Arsenal" />
+              <Input
+                placeholder="Ex: Arsenal"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </Field>
 
             {/* IMAGE UPLOAD */}
-
             <Field className="space-y-2">
-              <Label>Logo de l&#39;équipe</Label>
+              <Label>Logo de l&apos;équipe</Label>
 
               <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg h-40 cursor-pointer hover:border-green-400 transition">
-
                 {preview ? (
                   <Image
                     src={preview}
@@ -85,27 +119,23 @@ export function PopAddTeam() {
                   onChange={handleImageChange}
                   className="hidden"
                 />
-
               </label>
-
             </Field>
-
           </FieldGroup>
 
           <DialogFooter className="pt-6 flex gap-2">
-
             <DialogClose asChild>
-              <Button variant="outline">
-                Annuler
-              </Button>
+              <Button variant="outline">Annuler</Button>
             </DialogClose>
 
-            <Button className="bg-black hover:bg-green-400">
+            <Button
+              type="submit"
+              className="bg-black hover:bg-green-400"
+              disabled={createTeam.isPending || uploadLogo.isPending}
+            >
               Enregistrer
             </Button>
-
           </DialogFooter>
-
         </form>
       </DialogContent>
     </Dialog>

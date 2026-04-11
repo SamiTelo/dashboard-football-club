@@ -4,7 +4,7 @@ import { PlayersTable } from "./components/players-table";
 import { PlayersFilters } from "./components/players-filters";
 import { PlayersActions } from "./components/players-actions";
 import { usePlayersExport } from "./hooks/players-export-pdf";
-import { Pagination } from "@/features/dashbaord/components/pagination";
+// import { Pagination } from "@/features/dashbaord/components/pagination";
 
 export default function PlayersList() {
   const { exportPDF } = usePlayersExport(); 
@@ -21,7 +21,7 @@ export default function PlayersList() {
         <PlayersTable/>
       </div>
 
-      <Pagination/>
+      {/* <Pagination/>*/}
     </div>
   );
 }
