@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
@@ -30,31 +30,49 @@ interface PopUpdateTeamProps {
 }
 
 export function PopUpdateTeam({ team }: PopUpdateTeamProps) {
-  const { preview, handleImageChange, file, resetPreview } = useImagePreview();
+  const { preview, handleImageChange, file, resetPreview } =
+    useImagePreview();
 
   const updateTeam = useUpdateTeam();
   const uploadLogo = useUploadTeamLogo();
 
-  const [name, setName] = useState(team.name);
+  // =========================
+  // STATE FORM
+  // =========================
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [country, setCountry] = useState("");
 
-  // reset form when open
-  useEffect(() => {
-    setName(team.name);
-  }, [team]);
+  // =========================
+  // HANDLE OPEN MODAL
+  // =========================
+  const handleOpenChange = (isOpen: boolean) => {
+    setOpen(isOpen);
 
+    // RESET ONLY WHEN OPENING
+    if (isOpen) {
+      setName(team.name);
+      setCountry(team.country ?? "");
+    }
+  };
+
+  // =========================
+  // SUBMIT
+  // =========================
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      // UPDATE TEAM DATA
+      // UPDATE TEAM
       await updateTeam.mutateAsync({
         id: team.id,
         data: {
           name,
+          country,
         },
       });
 
-      // UPLOAD NEW LOGO (optional)
+      // UPLOAD LOGO (optional)
       if (file) {
         await uploadLogo.mutateAsync({
           teamId: team.id,
@@ -63,22 +81,24 @@ export function PopUpdateTeam({ team }: PopUpdateTeamProps) {
       }
 
       resetPreview();
+      setOpen(false);
     } catch (error) {
       console.error("Error updating team:", error);
     }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <FiEdit className="cursor-pointer hover:text-indigo-500" />
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-md rounded-xl p-6">
+
         <DialogHeader className="space-y-2">
           <DialogTitle className="flex items-center gap-2 text-xl font-semibold">
             <FiUser className="text-blue-500" />
-            Mise à jours de l&apos;équipe
+            Mise à jour de l&apos;équipe
           </DialogTitle>
 
           <DialogDescription className="text-sm text-muted-foreground">
@@ -87,11 +107,26 @@ export function PopUpdateTeam({ team }: PopUpdateTeamProps) {
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+
           <FieldGroup>
+
             {/* NAME */}
             <Field className="space-y-2">
               <Label>Nom</Label>
-              <Input value={name} onChange={(e) => setName(e.target.value)} />
+              <Input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </Field>
+
+            {/* COUNTRY */}
+            <Field className="space-y-2">
+              <Label>Pays</Label>
+              <Input
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                placeholder="Ex: France"
+              />
             </Field>
 
             {/* IMAGE */}
@@ -99,6 +134,7 @@ export function PopUpdateTeam({ team }: PopUpdateTeamProps) {
               <Label>Logo de l&apos;équipe</Label>
 
               <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg h-40 cursor-pointer hover:border-green-400 transition">
+
                 {preview || team.logoUrl ? (
                   <Image
                     src={preview || team.logoUrl || ""}
@@ -122,9 +158,11 @@ export function PopUpdateTeam({ team }: PopUpdateTeamProps) {
                 />
               </label>
             </Field>
+
           </FieldGroup>
 
           <DialogFooter className="pt-6 flex gap-2">
+
             <DialogClose asChild>
               <Button variant="outline">Annuler</Button>
             </DialogClose>
@@ -136,7 +174,9 @@ export function PopUpdateTeam({ team }: PopUpdateTeamProps) {
             >
               Enregistrer
             </Button>
+
           </DialogFooter>
+
         </form>
       </DialogContent>
     </Dialog>

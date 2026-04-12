@@ -29,6 +29,7 @@ export function PopAddTeam() {
   const { preview, handleImageChange, file } = useImagePreview();
 
   const [name, setName] = useState("");
+  const [country, setCountry] = useState("");
 
   const createTeam = useCreateTeam();
   const uploadLogo = useUploadTeamLogo();
@@ -43,6 +44,7 @@ export function PopAddTeam() {
       // CREATE TEAM
       const team = await createTeam.mutateAsync({
         name,
+        country,
       });
 
       // UPLOAD LOGO (optional)
@@ -55,6 +57,7 @@ export function PopAddTeam() {
 
       // reset
       setName("");
+      setCountry(""); // reset
     } catch (error) {
       console.error("Error creating team:", error);
     }
@@ -70,6 +73,7 @@ export function PopAddTeam() {
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-md rounded-xl p-6">
+
         <DialogHeader className="space-y-2">
           <DialogTitle className="flex items-center gap-2 text-xl font-semibold">
             <FiUser className="text-green-500" />
@@ -83,6 +87,7 @@ export function PopAddTeam() {
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <FieldGroup>
+
             {/* NAME */}
             <Field className="space-y-2">
               <Label>Nom</Label>
@@ -93,11 +98,22 @@ export function PopAddTeam() {
               />
             </Field>
 
+            {/* COUNTRY  */}
+            <Field className="space-y-2">
+              <Label>Pays</Label>
+              <Input
+                placeholder="Ex: Angleterre"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+              />
+            </Field>
+
             {/* IMAGE UPLOAD */}
             <Field className="space-y-2">
               <Label>Logo de l&apos;équipe</Label>
 
               <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg h-40 cursor-pointer hover:border-green-400 transition">
+
                 {preview ? (
                   <Image
                     src={preview}
@@ -121,6 +137,7 @@ export function PopAddTeam() {
                 />
               </label>
             </Field>
+
           </FieldGroup>
 
           <DialogFooter className="pt-6 flex gap-2">
@@ -136,6 +153,7 @@ export function PopAddTeam() {
               Enregistrer
             </Button>
           </DialogFooter>
+
         </form>
       </DialogContent>
     </Dialog>
