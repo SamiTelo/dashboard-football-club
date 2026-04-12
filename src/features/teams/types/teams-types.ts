@@ -54,12 +54,10 @@ export interface GetTeamsQuery {
 export interface PaginatedTeams {
   data: Team[];
 
-  meta: {
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-  };
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
 }
 
 // =========================

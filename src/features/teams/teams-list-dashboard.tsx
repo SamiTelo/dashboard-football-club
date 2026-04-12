@@ -8,6 +8,7 @@ import { TeamsActions } from "./components/teams-actions";
 import { TeamsExport } from "./hooks/teams-export-pdf";
 import { useTeams } from "./hooks/useTeams";
 import { Pagination } from "../dashbaord/components/pagination";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function TeamsListDashboard() {
   const { exportPDF } = TeamsExport();
@@ -33,28 +34,29 @@ export default function TeamsListDashboard() {
     limit,
   });
 
+  const teams = data?.data ?? [];
+  const isEmpty = !isLoading && teams.length === 0;
+
   // =========================
-  // EXPORT HANDLER 
+  // EXPORT
   // =========================
   const handleExport = () => {
-    exportPDF(data?.data ?? []);
+    exportPDF(teams);
   };
 
   return (
-    <div className="p-0 bg-[#F8F7FA] min-h-screen text-[13px] md:text-[14px] font-sans text-[#5d596c]">
-
+    <div className="p-0 bg-[#F8F7FA] min-h-screen text-[13px] md:text-[14px] text-[#5d596c]">
       <p>Liste des équipes /</p>
       <br />
 
-      <div className="bg-white rounded-lg border border-gray-100">
-
+      <div className="bg-white rounded-lg border border-gray-100 min-h-72">
         {/* ACTIONS */}
         <TeamsActions
           onExport={handleExport}
           search={search}
           onSearchChange={(value) => {
             setSearch(value);
-            setPage(1); // reset pagination
+            setPage(1);
           }}
           limit={limit}
           onLimitChange={(value) => {
@@ -63,26 +65,34 @@ export default function TeamsListDashboard() {
           }}
         />
 
-        {/* TABLE */}
-        {isLoading ? (
-          <p className="p-4">Chargement...</p>
-        ) : (
-          <TeamsTable teams={data?.data ?? []} />
-        )}
-
+        {/* =========================
+            TABLE STATES (PRO UX)
+        ========================= */}
+        <div className="min-h-52 flex items-center justify-center">
+          {isLoading ? (
+            <Spinner className="h-10 w-10 text-green-500" />
+          ) : isEmpty ? (
+            <p className="text-gray-500">
+              Aucune équipe disponible pour le moment
+            </p>
+          ) : (
+            <div className="w-full">
+              <TeamsTable teams={teams} />
+            </div>
+          )}
+        </div>
       </div>
 
       {/* PAGINATION */}
-      {data && (
+      {data && teams.length > 0 && (
         <Pagination
           page={page}
           limit={limit}
-          total={data.meta.total}
-          totalPages={data.meta.totalPages}
+          total={data.total}
+          totalPages={data.totalPages}
           onPageChange={(p) => setPage(p)}
         />
       )}
-
     </div>
   );
 }
