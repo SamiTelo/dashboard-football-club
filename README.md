@@ -1,6 +1,6 @@
-# Football Club Dashboard
+# Football Club Dashboard (NextJS 16)
 
-Dashboard frontend pour la gestion d’un club de football.
+Dashboard fullstack pour la gestion d’un club de football.
 Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 
 
@@ -25,25 +25,26 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 - Axios
 - JWT Authentication
 - cookies HttpOnly
+- React query hooks
 
 
 ##  Fonctionnalités 
 
 - Interface responsive avec TailwindCSS (OK)
-- Page login (OK)
-- Page register (OK)
-- Page mot de passe oublié (OK)
-- Page réinitialisation du mot de passe (OK)
-- Page verification code OTP (OK)
-- page verification-email (OK)
-- Export PDF player avec pdfmake (OK)
+- login (OK)
+- register (OK)
+- mot de passe oublié (OK)
+- réinitialisation du mot de passe (OK)
+- verification code OTP ADMIN/SUPERADMIN (OK)
+- verification-email USER (OK)
+- Export PDF avec pdfmake (OK)
 - Pop Form add player (OK)
 - Dashboard main (OK)
 - Tableau des joueurs (OK)
 - Tableau des utilisateurs (OK)
 - Tableau des postes (OK)
 - Tableau des équipes (OK)
-- Authentification sécurisée JWT + Refresh Token connexion a mon API externe
+- Authentification sécurisée JWT + Refresh Token + verification 2fa, connexion API externe
 - Authentification securiser google avec OAuth
 - Upload d'images (joueurs, logos)
 
@@ -80,8 +81,8 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 
 ## Déploiement
 
-- Frontend : [Vercel](https://dashboard-football-club.vercel.app) (API toujours en cours d’intégration)
-- Backend : [Render](https://api-football-gfpz.onrender.com)
+- Frontend : [https://dashboard-football-club.vercel.app](https://dashboard-football-club.vercel.app) (API toujours en cours d’intégration)
+- Backend : [https://api-football-gfpz.onrender.com](https://api-football-gfpz.onrender.com) 
 - Base de données: PostgreSQL sur Render
 
 
@@ -101,6 +102,7 @@ src/
 ├── features/        # fonctionnalités (auth, dashboard, players, team, user, position)
 ├── components/      # composants UI réutilisables
 ├── hooks/           # hooks React personnalisés
+├── providers/
 ├── lib/             # utilitaires et services
 
 types/                # types TypeScript globaux 
