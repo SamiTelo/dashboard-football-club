@@ -11,6 +11,8 @@ import {
   User,
 } from "../types/auth-types";
 import { parseAxiosError } from "@/lib/axios-helper";
+import { api } from "@/lib/api";
+import { queryClient } from "@/lib/queryClient";
 
 export const useAuth = (autoLoadProfile = false) => {
   const [user, setUser] = useState<User | null>(null);
@@ -86,9 +88,13 @@ export const useAuth = (autoLoadProfile = false) => {
   const login = async (dto: LoginUserDto) => {
     setLoading(true);
     setError("");
+
     try {
       const res = await authService.login(dto);
       const data = res.data;
+
+      // RESET CACHE
+      queryClient.removeQueries();
 
       if (data.requires2FA) {
         router.replace("/auth/verify-2fa");
@@ -96,6 +102,7 @@ export const useAuth = (autoLoadProfile = false) => {
       }
 
       if (data.user) setUser(data.user);
+
       router.replace("/dashboard");
     } catch (err: unknown) {
       const message = parseAxiosError(err);
@@ -132,9 +139,16 @@ export const useAuth = (autoLoadProfile = false) => {
   const logout = async () => {
     setLoading(true);
     setError("");
+
     try {
       await authService.logout();
+
       setUser(null);
+
+      delete api.defaults.headers.common.Authorization;
+
+      // RESET CACHE
+      queryClient.removeQueries();
 
       router.replace("/auth/login");
     } catch (err: unknown) {

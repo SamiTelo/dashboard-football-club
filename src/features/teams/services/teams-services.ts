@@ -60,6 +60,10 @@ export const teamService = {
     return data;
   },
 
+  // =========================
+  // UPLOAD TEAM
+  // =========================
+
   async uploadLogo(
     teamId: number,
     file: File,

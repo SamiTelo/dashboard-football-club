@@ -6,17 +6,22 @@ import {
 } from "@tanstack/react-query";
 import { CreateTeamDto, GetTeamsQuery, Team, UpdateTeamDto } from "../types/teams-types";
 import { teamService } from "../services/teams-services";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 
 // =========================
 // GET ALL
 // =========================
-export const useTeams = (params: GetTeamsQuery) =>
-  useQuery({
-    queryKey: ["teams", params.page, params.limit, params.search],
+export const useTeams = (params: GetTeamsQuery) => {
+  const { user, loading: authLoading } = useAuth(true);
+
+  return useQuery({
+    queryKey: ["teams", user?.id, params.page, params.limit, params.search],
     queryFn: () => teamService.getAll(params),
     placeholderData: keepPreviousData,
+    enabled: !!user?.id && !authLoading
   });
+};
 
 // =========================
 // GET ONE
@@ -41,6 +46,7 @@ export const useCreateTeam = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["teams"],
+        exact: false,
       });
     },
   });
@@ -65,11 +71,13 @@ export const useUpdateTeam = () => {
       // refresh list
       queryClient.invalidateQueries({
         queryKey: ["teams"],
+        exact: false,
       });
 
       // refresh detail
       queryClient.invalidateQueries({
         queryKey: ["team", variables.id],
+        exact: false,
       });
     },
   });
@@ -88,11 +96,13 @@ export const useDeleteTeam = () => {
       // refresh list
       queryClient.invalidateQueries({
         queryKey: ["teams"],
+        exact: false,
       });
 
       // clean cache detail
       queryClient.removeQueries({
         queryKey: ["team", id],
+        exact: false,
       });
     },
   });
@@ -117,11 +127,13 @@ export const useUploadTeamLogo = () => {
       // refresh list (logo visible in table)
       queryClient.invalidateQueries({
         queryKey: ["teams"],
+        exact: false,
       });
 
       // refresh detail
       queryClient.invalidateQueries({
         queryKey: ["team", variables.teamId],
+        exact: false,
       });
     },
   });
