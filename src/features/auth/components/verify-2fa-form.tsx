@@ -74,7 +74,7 @@ export function Verify2FaForm({
             disabled={loading}
           >
             {loading && <Spinner className="mr-2" />}
-            {loading ? "Vérification..." : "Envoyer"}
+            {loading ? "Vérification..." : "Vérifier"}
           </Button>
         </Field>
 

@@ -1,6 +1,11 @@
 import { api } from "@/lib/api";
-import { CreateTeamDto, PaginatedTeams, Team, UpdateTeamDto, UploadTeamLogoResponse } from "../types/teams-types";
-
+import {
+  CreateTeamDto,
+  PaginatedTeams,
+  Team,
+  UpdateTeamDto,
+  UploadTeamLogoResponse,
+} from "../types/teams-types";
 
 export const teamService = {
   // =========================
@@ -55,24 +60,21 @@ export const teamService = {
     return data;
   },
 
-  // =========================
-  // UPLOAD TEAM LOGO (IMPORTANT)
-  // =========================
   async uploadLogo(
     teamId: number,
-    file: File
+    file: File,
   ): Promise<UploadTeamLogoResponse> {
     const formData = new FormData();
     formData.append("file", file);
 
     const { data } = await api.post(
-      `/team/${teamId}/logo`,
+      `/upload/team/${teamId}/logo`,
       formData,
       {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      }
+      },
     );
 
     return data;
