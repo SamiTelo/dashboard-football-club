@@ -15,8 +15,8 @@ export function TeamsTable({ teams }: TeamsTableProps) {
         <thead className="bg-[#F8F7FA] uppercase text-xs font-semibold text-gray-500 border-y border-gray-100">
           <tr>
             <th className="px-6 py-3">ID</th>
-            <th className="px-6 py-3">Teams</th>
-            <th className="px-6 py-3">Country</th>
+            <th className="px-6 py-3">Equipe</th>
+            <th className="px-6 py-3">Pays</th>
             <th className="px-6 py-3 text-center">Actions</th>
           </tr>
         </thead>

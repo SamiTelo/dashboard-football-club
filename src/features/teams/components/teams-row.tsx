@@ -15,26 +15,26 @@ export function TeamsRow({ team }: TeamsRowProps) {
     <tr className="hover:bg-gray-50 transition">
 
       {/* ID */}
-      <td className="px-6 py-4">
+      <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
         <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">
           #{team.id}
         </span>
       </td>
 
-      {/* TEAM INFO */}
-      <td className="px-6 py-4">
-        <div className="flex items-center gap-3">
+      {/* TEAM INFO (AMÉLIORÉ) */}
+      <td className="px-3 sm:px-6 py-4">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
 
           <Image
             src={team.logoUrl || "/placeholder-team.png"}
             alt={team.name}
             width={32}
             height={32}
-            className="rounded-full object-cover"
+            className="rounded-full object-cover shrink-0"
           />
 
-          <div className="flex flex-col">
-            <span className="font-medium text-gray-700">
+          <div className="flex flex-col min-w-0">
+            <span className="font-medium text-gray-500 text-sm sm:text-base truncate">
               {team.name}
             </span>
           </div>
@@ -43,14 +43,14 @@ export function TeamsRow({ team }: TeamsRowProps) {
       </td>
 
       {/* COUNTRY */}
-      <td className="px-6 py-4">
-        <span className="text-sm text-gray-500">
+      <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+        <span className="text-xs sm:text-sm text-gray-500">
           {team.country ?? "—"}
         </span>
       </td>
 
       {/* ACTIONS */}
-      <td className="px-6 py-4">
+      <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
         <div className="flex justify-center gap-2 text-gray-400">
 
           <PopUpdateTeam team={team} />

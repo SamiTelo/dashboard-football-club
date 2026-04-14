@@ -11,6 +11,7 @@ export function TeamsExport() {
       const pdfMake = pdfMakeModule.default;
       const fonts = pdfFontsModule.default;
 
+      // fonts fix (compat pdfmake)
       if (fonts?.pdfMake?.vfs) pdfMake.vfs = fonts.pdfMake.vfs;
       else if (fonts?.vfs) pdfMake.vfs = fonts.vfs;
 
@@ -18,11 +19,12 @@ export function TeamsExport() {
       // TABLE BODY
       // =========================
       const tableBody = [
-        ["ID", "Team"],
+        ["ID", "Team", "Country"],
 
         ...teams.map((t) => [
           t.id,
           t.name,
+          t.country ?? "-", // fallback si null
         ]),
       ];
 
@@ -52,7 +54,7 @@ export function TeamsExport() {
           {
             table: {
               headerRows: 1,
-              widths: ["auto", "*"],
+              widths: ["auto", "*", "*"], // 3 colonnes
               body: tableBody,
             },
 
