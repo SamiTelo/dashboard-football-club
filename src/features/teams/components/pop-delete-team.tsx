@@ -15,6 +15,7 @@ import {
 
 import { Trash2Icon } from "lucide-react";
 import { FiTrash2 } from "react-icons/fi";
+import { Spinner } from "@/components/ui/spinner";
 
 import { useDeleteTeam } from "../hooks/useTeams";
 
@@ -33,6 +34,8 @@ export function PopDeleteTeam({ teamId }: PopDeleteTeamProps) {
     }
   };
 
+  const isLoading = deleteTeam.isPending;
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -41,7 +44,6 @@ export function PopDeleteTeam({ teamId }: PopDeleteTeamProps) {
 
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
-
           <AlertDialogMedia className="bg-red-100 text-red-600 rounded-full flex items-center justify-center dark:bg-red-500/20 dark:text-red-400 [&>svg]:w-4 [&>svg]:h-4">
             <Trash2Icon />
           </AlertDialogMedia>
@@ -51,27 +53,28 @@ export function PopDeleteTeam({ teamId }: PopDeleteTeamProps) {
           </AlertDialogTitle>
 
           <AlertDialogDescription className="text-xs text-muted-foreground">
-            Cette action est <span className="font-semibold text-red-500">irréversible</span>.
+            Cette action est{" "}
+            <span className="font-semibold text-red-500">
+              irréversible
+            </span>.
             L’équipe sera définitivement supprimée du système.
           </AlertDialogDescription>
-
         </AlertDialogHeader>
 
         <AlertDialogFooter>
-
-          <AlertDialogCancel variant="outline">
+          <AlertDialogCancel variant="outline" disabled={isLoading}>
             Annuler
           </AlertDialogCancel>
 
           <AlertDialogAction
             variant="destructive"
-            className="bg-red-600 hover:bg-red-700"
+            className="bg-red-600 hover:bg-red-700 flex items-center justify-center"
             onClick={handleDelete}
-            disabled={deleteTeam.isPending}
+            disabled={isLoading}
           >
-            Supprimer
+            {isLoading && <Spinner className="mr-2 h-4 w-4" />}
+            {isLoading ? "Suppression..." : "Supprimer"}
           </AlertDialogAction>
-
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
