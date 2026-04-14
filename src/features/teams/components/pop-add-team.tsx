@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -21,12 +22,12 @@ import { Label } from "@/components/ui/label";
 import { FiPlus, FiUser, FiImage } from "react-icons/fi";
 
 import { useImagePreview } from "../hooks/use-image-preview";
-import { useState } from "react";
-
 import { useCreateTeam, useUploadTeamLogo } from "../hooks/useTeams";
 
 export function PopAddTeam() {
-  const { preview, handleImageChange, file } = useImagePreview();
+  const [open, setOpen] = useState(false);
+
+const { preview, handleImageChange, file, resetPreview } = useImagePreview();
 
   const [name, setName] = useState("");
   const [country, setCountry] = useState("");
@@ -47,7 +48,7 @@ export function PopAddTeam() {
         country,
       });
 
-      // UPLOAD LOGO (optional)
+      // UPLOAD LOGO (if exists)
       if (file) {
         await uploadLogo.mutateAsync({
           teamId: team.id,
@@ -55,16 +56,20 @@ export function PopAddTeam() {
         });
       }
 
-      // reset
+      // RESET FORM
       setName("");
-      setCountry(""); // reset
+      setCountry("");
+      resetPreview?.();
+
+      // CLOSE POPUP
+      setOpen(false);
     } catch (error) {
       console.error("Error creating team:", error);
     }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="flex items-center gap-2 bg-black text-white hover:bg-green-500 transition shadow-md">
           <FiPlus className="text-lg" />
@@ -73,7 +78,6 @@ export function PopAddTeam() {
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-md rounded-xl p-6">
-
         <DialogHeader className="space-y-2">
           <DialogTitle className="flex items-center gap-2 text-xl font-semibold">
             <FiUser className="text-green-500" />
@@ -87,7 +91,6 @@ export function PopAddTeam() {
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <FieldGroup>
-
             {/* NAME */}
             <Field className="space-y-2">
               <Label>Nom</Label>
@@ -95,10 +98,11 @@ export function PopAddTeam() {
                 placeholder="Ex: Arsenal"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                required
               />
             </Field>
 
-            {/* COUNTRY  */}
+            {/* COUNTRY */}
             <Field className="space-y-2">
               <Label>Pays</Label>
               <Input
@@ -113,7 +117,6 @@ export function PopAddTeam() {
               <Label>Logo de l&apos;équipe</Label>
 
               <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg h-40 cursor-pointer hover:border-green-400 transition">
-
                 {preview ? (
                   <Image
                     src={preview}
@@ -137,7 +140,6 @@ export function PopAddTeam() {
                 />
               </label>
             </Field>
-
           </FieldGroup>
 
           <DialogFooter className="pt-6 flex gap-2">
@@ -150,10 +152,11 @@ export function PopAddTeam() {
               className="bg-black hover:bg-green-400"
               disabled={createTeam.isPending || uploadLogo.isPending}
             >
-              Enregistrer
+              {createTeam.isPending || uploadLogo.isPending
+                ? "Enregistrement..."
+                : "Enregistrer"}
             </Button>
           </DialogFooter>
-
         </form>
       </DialogContent>
     </Dialog>
