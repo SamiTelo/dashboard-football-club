@@ -25,6 +25,8 @@ export default function TeamsListDashboard() {
   // =========================
   const [debouncedSearch] = useDebounce(search, 400);
 
+  const isSearching = debouncedSearch.trim().length > 0;
+
   // =========================
   // API
   // =========================
@@ -35,7 +37,10 @@ export default function TeamsListDashboard() {
   });
 
   const teams = data?.data ?? [];
-  const isEmpty = !isLoading && teams.length === 0;
+
+  const emptyMessage = isSearching
+    ? `Aucune équipe trouvée pour "${debouncedSearch}"`
+    : "Aucune équipe disponible pour le moment";
 
   // =========================
   // EXPORT
@@ -46,7 +51,7 @@ export default function TeamsListDashboard() {
 
   return (
     <div className="p-0 bg-[#F8F7FA] min-h-screen text-[13px] md:text-[14px] text-[#5d596c]">
-      <p>Liste des équipes /</p>
+      <p className="mt-10">Liste des équipes /</p>
       <br />
 
       <div className="bg-white rounded-lg border border-gray-100 min-h-72">
@@ -71,9 +76,9 @@ export default function TeamsListDashboard() {
         <div className="min-h-52 flex items-center justify-center">
           {isLoading ? (
             <Spinner className="h-10 w-10 text-green-500" />
-          ) : isEmpty ? (
-            <p className="text-gray-500">
-              Aucune équipe disponible pour le moment
+          ) : teams.length === 0 ? (
+            <p className="text-gray-500 text-center">
+              {emptyMessage}
             </p>
           ) : (
             <div className="w-full">

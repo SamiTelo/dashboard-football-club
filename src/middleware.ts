@@ -11,11 +11,11 @@ export function middleware(req: NextRequest) {
   const isAuthRoute =
     pathname.startsWith("/auth/login") ||
     pathname.startsWith("/auth/register") ||
-    pathname.startsWith("/auth/verify-2fa"); // inclure verify-2fa pour éviter boucle
+    pathname.startsWith("/auth/verify-2fa"); 
 
-  // ---------------------------
+  // ---------------------------------------------
   // Protection dashboard
-  // ---------------------------
+  // -----------------------------------------------------
   if (isDashboardRoute) {
     // Pas connecté → login
     if (!refreshToken) {
@@ -28,9 +28,9 @@ export function middleware(req: NextRequest) {
     }
   }
 
-  // ---------------------------
+  // -----------------------------------------------------------
   // Empêcher login/register si déjà connecté et 2FA validé
-  // ---------------------------
+  // ----------------------------------------------------------------
   if (isAuthRoute && refreshToken && (!twoFARequired || twoFAValidated)) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
