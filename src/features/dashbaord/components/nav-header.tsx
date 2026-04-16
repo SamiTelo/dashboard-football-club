@@ -35,7 +35,7 @@ export function NavHeader({
             <SidebarMenuItem key={item.name}>
               <SidebarMenuButton
                 asChild
-                className={isAccueil ? "bg-gray-100 hover:bg-gray-100 cursor-default" : ""}
+                className={isAccueil ? "hover:bg-gray-100 cursor-default" : ""}
               >
                 <a href={item.url}>
                   <item.icon />
