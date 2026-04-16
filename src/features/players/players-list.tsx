@@ -7,11 +7,17 @@ import { PlayersTable } from "./components/players-table";
 import { PlayersActions } from "./components/players-actions";
 import { usePlayersExport } from "./hooks/players-export-pdf";
 import { usePlayers } from "./hooks/usePlayers";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Pagination } from "@/features/dashbaord/components/pagination";
 import { Spinner } from "@/components/ui/spinner";
 
 export default function PlayersList() {
   const { exportPDF } = usePlayersExport();
+
+  // =========================
+  // AUTH 
+  // =========================
+  const { user, loading: authLoading } = useAuth(true);
 
   // =========================
   // STATE
@@ -28,13 +34,16 @@ export default function PlayersList() {
   const isSearching = debouncedSearch.trim().length > 0;
 
   // =========================
-  // API
+  // API 
   // =========================
-  const { data, isLoading } = usePlayers({
-    search: debouncedSearch,
-    page,
-    limit,
-  });
+  const { data, isLoading } = usePlayers(
+    {
+      search: debouncedSearch,
+      page,
+      limit,
+    },
+    !!user?.id && !authLoading
+  );
 
   const players = data?.data ?? [];
 
@@ -70,11 +79,9 @@ export default function PlayersList() {
           }}
         />
 
-        {/* =========================
-            TABLE STATES 
-        ========================= */}
+        {/* TABLE STATES */}
         <div className="min-h-52 flex items-center justify-center">
-          {isLoading ? (
+          {authLoading || isLoading ? (
             <Spinner className="h-10 w-10 text-green-500" />
           ) : players.length === 0 ? (
             <p className="text-gray-500 text-center">

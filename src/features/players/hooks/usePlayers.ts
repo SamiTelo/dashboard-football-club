@@ -12,28 +12,17 @@ import {
   GetPlayersQuery,
 } from "../types/players-types";
 
-import { useAuth } from "@/features/auth/hooks/useAuth";
 import { playerService } from "../services/players.service";
 
 // =========================
 // GET ALL
 // =========================
-export const usePlayers = (params: GetPlayersQuery) => {
-  const { user, loading: authLoading } = useAuth(true);
-
+export const usePlayers = (params: GetPlayersQuery, enabled: boolean) => {
   return useQuery({
-    queryKey: [
-      "players",
-      user?.id,
-      params.page,
-      params.limit,
-      params.search,
-      params.teamId,
-      params.positionId,
-    ],
+    queryKey: ["players", params],
     queryFn: () => playerService.getAll(params),
+    enabled,
     placeholderData: keepPreviousData,
-    enabled: !!user?.id && !authLoading,
   });
 };
 
