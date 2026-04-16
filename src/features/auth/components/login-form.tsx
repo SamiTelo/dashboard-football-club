@@ -92,7 +92,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
             disabled={loading}
           >
             {loading && <Spinner className="mr-2" />}
-            {loading ? "Connexion..." : "Login"}
+            {loading ? "Connexion" : "Login"}
           </Button>
         </Field>
 

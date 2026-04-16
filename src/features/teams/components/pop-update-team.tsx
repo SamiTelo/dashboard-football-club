@@ -5,7 +5,6 @@ import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-
 import {
   Dialog,
   DialogClose,
@@ -42,8 +41,10 @@ export function PopUpdateTeam({ team }: PopUpdateTeamProps) {
   const [name, setName] = useState("");
   const [country, setCountry] = useState("");
 
-  const isLoading = updateTeam.isPending || uploadLogo.isPending;
+  const isLoading =
+    updateTeam.isPending || uploadLogo.isPending;
 
+  // OPEN + RESET FORM
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
 
@@ -53,6 +54,7 @@ export function PopUpdateTeam({ team }: PopUpdateTeamProps) {
     }
   };
 
+  // SUBMIT
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -75,7 +77,7 @@ export function PopUpdateTeam({ team }: PopUpdateTeamProps) {
       resetPreview();
       setOpen(false);
     } catch (error) {
-      console.error(error);
+      console.error("Error updating team:", error);
     }
   };
 
@@ -85,18 +87,7 @@ export function PopUpdateTeam({ team }: PopUpdateTeamProps) {
         <FiEdit className="cursor-pointer hover:text-indigo-500" />
       </DialogTrigger>
 
-      {/* ✅ RESPONSIVE DIALOG */}
-      <DialogContent
-        className="
-          w-[95vw]
-          sm:max-w-md
-          rounded-xl
-          p-4
-          sm:p-6
-          max-h-[90vh]
-          overflow-y-auto
-        "
-      >
+      <DialogContent className="sm:max-w-md rounded-xl p-6">
         <DialogHeader className="space-y-2">
           <DialogTitle className="flex items-center gap-2 text-xl font-semibold">
             <FiUser className="text-blue-500" />
@@ -127,6 +118,7 @@ export function PopUpdateTeam({ team }: PopUpdateTeamProps) {
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
                 disabled={isLoading}
+                placeholder="Ex: France"
               />
             </Field>
 
@@ -134,17 +126,15 @@ export function PopUpdateTeam({ team }: PopUpdateTeamProps) {
             <Field className="space-y-2">
               <Label>Logo de l&apos;équipe</Label>
 
-              <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg h-40 cursor-pointer hover:border-green-400 transition overflow-hidden">
+              <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg h-40 cursor-pointer hover:border-green-400 transition">
 
                 {preview || team.logoUrl ? (
-                  <div className="relative w-full h-full flex items-center justify-center p-2">
-                    <Image
-                      src={preview || team.logoUrl || ""}
-                      alt="preview"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
+                  <Image
+                    src={preview || team.logoUrl || ""}
+                    alt="preview"
+                    fill
+                    className="object-contain"
+                  />
                 ) : (
                   <div className="flex flex-col items-center text-gray-400 text-sm">
                     <FiImage className="text-2xl mb-2" />
@@ -163,14 +153,9 @@ export function PopUpdateTeam({ team }: PopUpdateTeamProps) {
             </Field>
           </FieldGroup>
 
-          {/* FOOTER RESPONSIVE */}
-          <DialogFooter className="pt-6 flex flex-col sm:flex-row gap-2">
+          <DialogFooter className="pt-6 flex gap-2">
             <DialogClose asChild>
-              <Button
-                variant="outline"
-                disabled={isLoading}
-                className="w-full sm:w-auto"
-              >
+              <Button variant="outline" disabled={isLoading}>
                 Annuler
               </Button>
             </DialogClose>
@@ -178,10 +163,10 @@ export function PopUpdateTeam({ team }: PopUpdateTeamProps) {
             <Button
               type="submit"
               disabled={isLoading}
-              className="bg-black hover:bg-green-400 flex items-center justify-center w-full sm:w-auto"
+              className="bg-black hover:bg-green-400 flex items-center justify-center"
             >
               {isLoading && <Spinner className="mr-2 h-4 w-4" />}
-              {isLoading ? "Enregistrement..." : "Enregistrer"}
+              {isLoading ? "Modification" : "Enregistrer"}
             </Button>
           </DialogFooter>
         </form>
