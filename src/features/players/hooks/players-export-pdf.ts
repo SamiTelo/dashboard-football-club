@@ -2,6 +2,16 @@
 
 import { Player } from "../types/players-types";
 
+function formatDate(date?: string | Date) {
+  if (!date) return "-";
+
+  return new Date(date).toLocaleDateString("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+}
+
 export function usePlayersExport() {
   const exportPDF = async (players: Player[]) => {
     try {
@@ -11,7 +21,7 @@ export function usePlayersExport() {
       const pdfMake = pdfMakeModule.default;
       const fonts = pdfFontsModule.default;
 
-      // fix fonts (compat pdfmake)
+      // fix fonts
       if (fonts?.pdfMake?.vfs) pdfMake.vfs = fonts.pdfMake.vfs;
       else if (fonts?.vfs) pdfMake.vfs = fonts.vfs;
 
@@ -19,13 +29,15 @@ export function usePlayersExport() {
       // TABLE BODY
       // =========================
       const tableBody = [
-        ["ID", "Nom", "Équipe", "Position"],
+        ["ID", "Nom", "Équipe", "Position", "Créé le", "Modifié le"],
 
         ...players.map((p) => [
           p.id,
           `${p.firstName} ${p.lastName}`,
           p.team?.name ?? "-",
           p.position?.name ?? "-",
+          formatDate(p.createdAt),
+          formatDate(p.updatedAt),
         ]),
       ];
 
@@ -55,7 +67,7 @@ export function usePlayersExport() {
           {
             table: {
               headerRows: 1,
-              widths: ["auto", "*", "*", "*"],
+              widths: ["auto", "*", "*", "*", "auto", "auto"],
               body: tableBody,
             },
 
