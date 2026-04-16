@@ -41,20 +41,19 @@ export function PopUpdateTeam({ team }: PopUpdateTeamProps) {
   const [name, setName] = useState("");
   const [country, setCountry] = useState("");
 
-  const isLoading =
-    updateTeam.isPending || uploadLogo.isPending;
+  const isLoading = updateTeam.isPending || uploadLogo.isPending;
 
-  // OPEN + RESET FORM
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
 
     if (isOpen) {
       setName(team.name);
       setCountry(team.country ?? "");
+    } else {
+      resetPreview();
     }
   };
 
-  // SUBMIT
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -81,6 +80,8 @@ export function PopUpdateTeam({ team }: PopUpdateTeamProps) {
     }
   };
 
+  const imageToShow = preview || team.logoUrl;
+
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
@@ -91,11 +92,11 @@ export function PopUpdateTeam({ team }: PopUpdateTeamProps) {
         <DialogHeader className="space-y-2">
           <DialogTitle className="flex items-center gap-2 text-xl font-semibold">
             <FiUser className="text-blue-500" />
-            Mise à jour de l&apos;équipe
+            Mise à jour de l’équipe
           </DialogTitle>
 
           <DialogDescription className="text-sm text-muted-foreground">
-            Modifier les informations de l&apos;équipe puis cliquez sur enregistrer.
+            Modifier les informations puis enregistrer.
           </DialogDescription>
         </DialogHeader>
 
@@ -118,23 +119,24 @@ export function PopUpdateTeam({ team }: PopUpdateTeamProps) {
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
                 disabled={isLoading}
-                placeholder="Ex: France"
               />
             </Field>
 
             {/* IMAGE */}
             <Field className="space-y-2">
-              <Label>Logo de l&apos;équipe</Label>
+              <Label>Logo de l’équipe</Label>
 
-              <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg h-40 cursor-pointer hover:border-green-400 transition">
+              <label className="relative flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg h-32 sm:h-36 cursor-pointer hover:border-green-400 transition overflow-hidden">
 
-                {preview || team.logoUrl ? (
-                  <Image
-                    src={preview || team.logoUrl || ""}
-                    alt="preview"
-                    fill
-                    className="object-contain"
-                  />
+                {imageToShow ? (
+                  <div className="relative w-20 h-20 sm:w-24 sm:h-24">
+                    <Image
+                      src={imageToShow}
+                      alt="preview"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
                 ) : (
                   <div className="flex flex-col items-center text-gray-400 text-sm">
                     <FiImage className="text-2xl mb-2" />
@@ -166,7 +168,7 @@ export function PopUpdateTeam({ team }: PopUpdateTeamProps) {
               className="bg-black hover:bg-green-400 flex items-center justify-center"
             >
               {isLoading && <Spinner className="mr-2 h-4 w-4" />}
-              {isLoading ? "Modification" : "Enregistrer"}
+              {isLoading ? "Modification..." : "Enregistrer"}
             </Button>
           </DialogFooter>
         </form>

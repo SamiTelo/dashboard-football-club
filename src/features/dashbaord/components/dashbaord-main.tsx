@@ -18,27 +18,28 @@ export default function PlayersList() {
 
   return (
     <div className="p-0 bg-[#F8F7FA] min-h-screen text-[13px] md:text-[14px] font-sans text-[#5d596c]">
-      <p>Tableau de bord /</p>
+      <p className="mt-6">Tableau de bord /</p>
       <br />
 
-      {/* Hero */}
+       {/* Hero */}
       <div className="bg-green-100 py-4 px-4 sm:px-6 mb-6 rounded-xl">
-        <p className="flex items-start sm:items-center gap-2 text-sm sm:text-base md:text-[14px] leading-relaxed">
-          <Hand className="text-green-500 mt-1 sm:mt-0 shrink-0" />
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 text-sm sm:text-base md:text-[14px] leading-relaxed">
+          <div className="flex items-center">
+            <Hand className="text-green-500 shrink-0" />
+          </div>
+          <p className="flex flex-wrap items-center gap-x-1 gap-y-1">
+            <span>Bonjour</span>
 
-          <span className="flex items-center gap-1">
-            Bonjour{" "}
             {loading ? (
-              <Skeleton className="h-4 w-24 inline-block rounded-md" />
+              <Skeleton className="h-4 w-24 rounded-md" />
             ) : (
-              <strong>{userName}</strong>
+              <strong className="text-gray-800">{userName}</strong>
             )}
-            , bienvenue sur
-            <span className="text-green-500 font-semibold ml-1">
-              Football Club
-            </span>
-          </span>
-        </p>
+
+            <span>, bienvenue sur</span>
+            <span className="text-green-600 font-semibold">Football Club</span>
+          </p>
+        </div>
       </div>
 
       <StatsCards />
