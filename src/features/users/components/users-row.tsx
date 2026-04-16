@@ -2,13 +2,13 @@
 
 import React from "react";
 import { FiMoreVertical } from "react-icons/fi";
-import { StatusBadge } from "@/features/players/components/status-badge";
 import { UserListItem } from "../types/users.types";
 import { RoleBadge } from "./role-badge";
 import { VerifiedBadge } from "./verified-badge";
 import { getInitial } from "@/features/utils/getInitials";
 import { AlertDialogDestructive } from "./pop-alert-delete";
 import { PopUpdateUsers } from "./pop-udpdate-user";
+import { StatusBadge } from "./status-badge";
 
 
 interface UserRowProps {

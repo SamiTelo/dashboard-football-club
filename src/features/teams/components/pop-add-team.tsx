@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
+
 import {
   Dialog,
   DialogClose,
@@ -28,8 +29,7 @@ import { useCreateTeam, useUploadTeamLogo } from "../hooks/useTeams";
 export function PopAddTeam() {
   const [open, setOpen] = useState(false);
 
-  const { preview, handleImageChange, file, resetPreview } =
-    useImagePreview();
+  const { preview, handleImageChange, file, resetPreview } = useImagePreview();
 
   const [name, setName] = useState("");
   const [country, setCountry] = useState("");
@@ -54,7 +54,7 @@ export function PopAddTeam() {
         country: country.trim() || undefined,
       });
 
-      // UPLOAD LOGO (if exists)
+      // UPLOAD LOGO (optional)
       if (file) {
         await uploadLogo.mutateAsync({
           teamId: team.id,
@@ -62,12 +62,19 @@ export function PopAddTeam() {
         });
       }
 
-      // RESET FORM
+      // RESET FORM CLEAN
       setName("");
       setCountry("");
       resetPreview();
 
-      // CLOSE POPUP
+      // reset file input DOM
+      const input = document.querySelector(
+        'input[type="file"]',
+      ) as HTMLInputElement;
+
+      if (input) input.value = "";
+
+      // CLOSE MODAL
       setOpen(false);
     } catch (error) {
       console.error("Error creating team:", error);
@@ -87,14 +94,15 @@ export function PopAddTeam() {
         <DialogHeader className="space-y-2">
           <DialogTitle className="flex items-center gap-2 text-xl font-semibold">
             <FiUser className="text-green-500" />
-            Ajouter une nouvelle équipe
+            Ajouter une équipe
           </DialogTitle>
 
           <DialogDescription className="text-sm text-muted-foreground">
-            Remplissez les informations ci-dessous puis cliquez sur enregistrer.
+            Remplissez les informations puis cliquez sur enregistrer.
           </DialogDescription>
         </DialogHeader>
 
+        {/* FORM */}
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <FieldGroup>
             {/* NAME */}
@@ -122,15 +130,16 @@ export function PopAddTeam() {
             <Field className="space-y-2">
               <Label>Logo de l&apos;équipe</Label>
 
-              <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg h-40 cursor-pointer hover:border-green-400 transition">
+              <label className="relative flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg h-40 w-full cursor-pointer hover:border-green-400 transition overflow-hidden">
                 {preview ? (
-                  <Image
-                    src={preview}
-                    alt="preview"
-                    width={120}
-                    fill
-                    className="object-contain"
-                  />
+                  <div className="relative w-24 h-24 sm:w-28 sm:h-28">
+                    <Image
+                      src={preview}
+                      alt="preview"
+                      fill
+                      className="object-cover rounded-md"
+                    />
+                  </div>
                 ) : (
                   <div className="flex flex-col items-center text-gray-400 text-sm">
                     <FiImage className="text-2xl mb-2" />
@@ -148,6 +157,7 @@ export function PopAddTeam() {
             </Field>
           </FieldGroup>
 
+          {/* FOOTER */}
           <DialogFooter className="pt-6 flex gap-2">
             <DialogClose asChild>
               <Button variant="outline" disabled={isLoading}>
@@ -160,10 +170,8 @@ export function PopAddTeam() {
               disabled={isLoading}
               className="bg-black hover:bg-green-400 flex items-center justify-center"
             >
-              {isLoading && (
-                <Spinner className="mr-2 h-4 w-4" />
-              )}
-              {isLoading ? "Enregistrement" : "Enregistrer"}
+              {isLoading && <Spinner className="mr-2 h-4 w-4" />}
+              {isLoading ? "Enregistrement..." : "Enregistrer"}
             </Button>
           </DialogFooter>
         </form>
