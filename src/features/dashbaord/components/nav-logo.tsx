@@ -15,7 +15,7 @@ import {
 
 interface LogoItem {
   name: string;
-  src: string; // chemin vers ton image
+  src: string; 
 }
 
 interface NavLogoProps {

@@ -1,7 +1,7 @@
 "use client";
 
 import { StatCard } from "./stat-card";
-import { featureIconMap } from "../config/players.config";
+import { featureIconMap } from "../../players/config/players.config";
 
 const stats = [
   { feature: "Total joueurs", value: "219" },

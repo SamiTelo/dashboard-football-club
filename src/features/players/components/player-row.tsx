@@ -1,55 +1,96 @@
 "use client";
 
 import Image from "next/image";
-import { FiEdit, FiTrash2, FiMoreVertical } from "react-icons/fi";
-import { Player } from "../types/players.types";
-import { StatusBadge } from "./status-badge";
-import { teamLogos } from "../config/players.config";
+import { FiMoreVertical } from "react-icons/fi";
+
+import { Player } from "../types/players-types";
+import { PopUpdatePlayer } from "./pop-update-player";
+import { PopDeletePlayer } from "./pop-delete-player";
+
+// =========================
+// AVATAR COLORS
+// =========================
+const avatarColors = [
+  "bg-blue-100 text-blue-600",
+  "bg-green-100 text-green-600",
+  "bg-purple-100 text-purple-600",
+];
+
+function getAvatarColor(id: number) {
+  return avatarColors[id % avatarColors.length];
+}
 
 export function PlayerRow({ player }: { player: Player }) {
-  const initials = player.name
-    .split(" ")
-    .map((n) => n[0])
-    .join("");
+  const initials =
+    (player.firstName?.[0] ?? "") +
+    (player.lastName?.[0] ?? "");
+
+  const hasImage = !!player.imageUrl;
 
   return (
     <tr className="hover:bg-gray-50 transition">
+
+      {/* ID */}
       <td className="px-6 py-4">
         <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">
           #{player.id}
         </span>
       </td>
+
+      {/* NAME + AVATAR */}
       <td className="px-6 py-4 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold">
-          {initials}
+
+        {/* AVATAR */}
+        <div
+          className={`w-10 h-10 rounded-full overflow-hidden flex items-center justify-center font-bold ${getAvatarColor(
+            player.id
+          )}`}
+        >
+          {hasImage ? (
+            <Image
+              src={player.imageUrl as string}
+              alt={`${player.firstName} ${player.lastName}`}
+              width={40}
+              height={40}
+              className="object-cover w-full h-full"
+            />
+          ) : (
+            <span>{initials}</span>
+          )}
         </div>
-        <div className="flex flex-row gap-1">
-          <div className="font-medium text-gray-800">{player.name}</div>
-          <div className="font-medium text-gray-800">{player.lastname}</div>
+
+        {/* NAME */}
+        <div className="font-medium text-gray-800">
+          {player.firstName} {player.lastName}
         </div>
       </td>
-      <td className="px-3 sm:px-6 py-4 min-w-35">
+
+      {/* TEAM */}
+      <td className="px-6 py-4">
         <div className="flex items-center gap-2">
-          <span className="w-6 h-6 overflow-hidden rounded-full shrink-0">
+          {player.team?.logoUrl && (
             <Image
-              src={teamLogos[player.team]}
-              alt={player.team}
+              src={player.team.logoUrl}
+              alt={player.team.name}
               width={24}
               height={24}
-              className="object-cover"
+              className="rounded-full"
             />
-          </span>
-          <span className="truncate">{player.team}</span>
+          )}
+          <span>{player.team?.name ?? "—"}</span>
         </div>
       </td>
-      <td className="px-6 py-4 font-medium">{player.position}</td>
+
+      {/* POSITION */}
       <td className="px-6 py-4">
-        <StatusBadge status={player.status} />
+        {player.position?.name ?? "—"}
       </td>
-      <td className="px-6 py-4">
+
+      {/* ACTIONS */}
+      <td className="px-6 py-4 whitespace-nowrap">
         <div className="flex justify-center gap-2 text-gray-400">
-          <FiEdit className="cursor-pointer hover:text-indigo-500" />
-          <FiTrash2 className="cursor-pointer hover:text-red-500" />
+          <PopUpdatePlayer player={player} />
+          <PopDeletePlayer playerId={player.id} />
           <FiMoreVertical className="cursor-pointer hover:text-gray-700" />
         </div>
       </td>

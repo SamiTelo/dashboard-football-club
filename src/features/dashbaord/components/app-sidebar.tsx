@@ -72,17 +72,6 @@ const data: {
       ],
     },
     {
-      title: "Utilisateurs",
-      url: "/dashboard/users",
-      icon: User,
-      items: [
-        {
-          title: "Listes",
-          url: "/dashboard/users",
-        },
-      ],
-    },
-    {
       title: "Equipes",
       url: "/dashboard/teams",
       icon: Shield,
@@ -101,6 +90,17 @@ const data: {
         {
           title: "Listes",
           url: "/dashboard/positions",
+        },
+      ],
+    },
+    {
+      title: "Gestions utilisateurs",
+      url: "/dashboard/users",
+      icon: User,
+      items: [
+        {
+          title: "Listes",
+          url: "/dashboard/users",
         },
       ],
     },

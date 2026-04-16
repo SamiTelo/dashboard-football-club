@@ -84,7 +84,7 @@ export function PopAddPositions() {
               disabled={isPending}
               className="bg-black hover:bg-green-400"
             >
-              {isPending ? "Enregistrement..." : "Enregistrer un joueur"}
+              {isPending ? "Enregistrement..." : "Enregistrer"}
             </Button>
           </DialogFooter>
         </form>
