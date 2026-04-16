@@ -5,10 +5,8 @@ import { FiMoreVertical } from "react-icons/fi";
 
 import { Player } from "../types/players-types";
 import { PopDeletePlayer } from "./pop-delete-player";
+import { PopUpdatePlayer } from "./pop-update-player";
 
-// =========================
-// AVATAR COLORS
-// =========================
 const avatarColors = [
   "bg-blue-100 text-blue-600",
   "bg-green-100 text-green-600",
@@ -19,16 +17,23 @@ function getAvatarColor(id: number) {
   return avatarColors[id % avatarColors.length];
 }
 
+function formatDate(date?: string | Date) {
+  if (!date) return "—";
+
+  return new Date(date).toLocaleDateString("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+}
+
 export function PlayerRow({ player }: { player: Player }) {
-  const initials =
-    (player.firstName?.[0] ?? "") +
-    (player.lastName?.[0] ?? "");
+  const initials = (player.firstName?.[0] ?? "") + (player.lastName?.[0] ?? "");
 
   const hasImage = !!player.imageUrl;
 
   return (
     <tr className="hover:bg-gray-50 transition">
-
       {/* ID */}
       <td className="px-6 py-4">
         <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">
@@ -36,29 +41,27 @@ export function PlayerRow({ player }: { player: Player }) {
         </span>
       </td>
 
-      {/* NAME + AVATAR */}
+      {/* PLAYER */}
       <td className="px-6 py-4 flex items-center gap-3">
-
-        {/* AVATAR */}
         <div
           className={`w-10 h-10 rounded-full overflow-hidden flex items-center justify-center font-bold ${getAvatarColor(
-            player.id
+            player.id,
           )}`}
         >
           {hasImage ? (
-            <Image
-              src={player.imageUrl as string}
-              alt={`${player.firstName} ${player.lastName}`}
-              width={40}
-              height={40}
-              className="object-cover w-full h-full"
-            />
+            <div className="relative w-7 h-7 sm:w-8 sm:h-8 shrink-0">
+              <Image
+                src={player.imageUrl || "/placeholder-team.png"}
+                alt={`${player.firstName} ${player.lastName}`}
+                fill
+                className="rounded-full object-cover"
+              />
+            </div>
           ) : (
             <span>{initials}</span>
           )}
         </div>
 
-        {/* NAME */}
         <div className="font-medium text-gray-800">
           {player.firstName} {player.lastName}
         </div>
@@ -81,15 +84,24 @@ export function PlayerRow({ player }: { player: Player }) {
       </td>
 
       {/* POSITION */}
-      <td className="px-6 py-4">
-        {player.position?.name ?? "—"}
+      <td className="px-6 py-4">{player.position?.name ?? "—"}</td>
+
+      {/* CREATED */}
+      <td className="px-6 py-4 text-sm text-gray-500">
+        {formatDate(player.createdAt)}
+      </td>
+
+      {/* UPDATED */}
+      <td className="px-6 py-4 text-sm text-gray-500">
+        {formatDate(player.updatedAt)}
       </td>
 
       {/* ACTIONS */}
       <td className="px-6 py-4 whitespace-nowrap">
         <div className="flex justify-center gap-2 text-gray-400">
+          <PopUpdatePlayer player={player} />
+          <PopDeletePlayer playerId={player.id} />
           <FiMoreVertical className="cursor-pointer hover:text-gray-700" />
-           <PopDeletePlayer playerId={player.id} />
         </div>
       </td>
     </tr>

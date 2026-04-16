@@ -13,6 +13,8 @@ export function PlayersTable({ players }: { players: Player[] }) {
             <th className="px-6 py-3">Joueur</th>
             <th className="px-6 py-3">Equipe</th>
             <th className="px-6 py-3">Poste</th>
+            <th className="px-6 py-3">Créé le</th>
+            <th className="px-6 py-3">Modifié le</th>
             <th className="px-6 py-3 text-center">Actions</th>
           </tr>
         </thead>
