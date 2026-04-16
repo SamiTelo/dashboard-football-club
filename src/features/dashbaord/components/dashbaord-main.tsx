@@ -1,17 +1,13 @@
 "use client";
 
 // import { Pagination } from "./pagination";
-import { usePlayersExport } from "@/features/players/hooks/players-export-pdf";
 import { StatsCards } from "@/features/players/components/stats-cards";
 import { PlayersFilters } from "@/features/players/components/players-filters";
-import { PlayersActions } from "@/features/players/components/players-actions";
-import { PlayersTable } from "@/features/players/components/players-table";
 import { Hand } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function PlayersList() {
-  const { exportPDF } = usePlayersExport();
   const { user, loading } = useAuth(true);
 
   const userName = user ? `${user.firstName} ${user.lastName}` : "";
@@ -46,8 +42,6 @@ export default function PlayersList() {
 
       <div className="bg-white rounded-lg border border-gray-100">
         <PlayersFilters />
-        <PlayersActions onExport={exportPDF} />
-        <PlayersTable />
       </div>
 
       {/* <Pagination/>*/}
