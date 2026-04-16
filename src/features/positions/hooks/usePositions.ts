@@ -4,6 +4,7 @@ import {
   useQueryClient,
   keepPreviousData,
 } from "@tanstack/react-query";
+
 import { positionService } from "../services/positions-services";
 import {
   CreatePositionDto,
@@ -11,86 +12,104 @@ import {
   Position,
   GetPositionsParams,
 } from "../types/positions-types";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
-// -----------------------------
-// GET /position/all
-// -----------------------------
-export const usePositions = (params?: GetPositionsParams) =>
-  useQuery({
-    queryKey: ["positions", params?.page, params?.limit, params?.search],
+// =========================
+// GET ALL
+// =========================
+export const usePositions = (params?: GetPositionsParams) => {
+  const { user, loading: authLoading } = useAuth(true);
+
+  return useQuery({
+    queryKey: [
+      "positions",
+      user?.id,
+      params?.page,
+      params?.limit,
+      params?.search,
+    ],
     queryFn: () => positionService.getAll(params),
     placeholderData: keepPreviousData,
+    enabled: !!user?.id && !authLoading,
   });
+};
 
-// -----------------------------
-// GET /position/:id
-// -----------------------------
-export const usePosition = (id: number) =>
+// =========================
+// GET ONE
+// =========================
+export const usePosition = (id?: number) =>
   useQuery<Position>({
     queryKey: ["position", id],
-    queryFn: () => positionService.getOne(id),
+    queryFn: () => positionService.getOne(id as number),
     enabled: !!id,
   });
 
-// -----------------------------
-// POST /position
-// -----------------------------
+// =========================
+// CREATE
+// =========================
 export const useCreatePosition = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<Position, unknown, CreatePositionDto>({
-    mutationFn: positionService.create,
+  return useMutation({
+    mutationFn: (data: CreatePositionDto) =>
+      positionService.create(data),
+
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["positions"] });
+      queryClient.invalidateQueries({
+        queryKey: ["positions"],
+        exact: false,
+      });
     },
   });
 };
 
-// =============================
-// PATCH /position/:id
-// =============================
+// =========================
+// UPDATE
+// =========================
 export const useUpdatePosition = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<
-    Position,
-    unknown,
-    { id: number; data: UpdatePositionDto }
-  >({
-    mutationFn: ({ id, data }) => positionService.update(id, data),
+  return useMutation({
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: number;
+      data: UpdatePositionDto;
+    }) => positionService.update(id, data),
 
     onSuccess: (_, variables) => {
-      // refresh LIST
       queryClient.invalidateQueries({
         queryKey: ["positions"],
+        exact: false,
       });
 
-      // refresh ONLY affected item (best practice)
       queryClient.invalidateQueries({
         queryKey: ["position", variables.id],
+        exact: false,
       });
     },
   });
 };
 
-// =============================
-// DELETE /position/:id
-// =============================
+// =========================
+// DELETE
+// =========================
 export const useDeletePosition = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<{ id: number }, unknown, number>({
-    mutationFn: positionService.delete,
+  return useMutation({
+    mutationFn: (id: number) => positionService.delete(id),
 
     onSuccess: (_, id) => {
-      // refresh LIST
       queryClient.invalidateQueries({
         queryKey: ["positions"],
+        exact: false,
       });
 
-      // remove cached detail instantly (UX pro)
       queryClient.removeQueries({
         queryKey: ["position", id],
+        exact: false,
       });
     },
   });

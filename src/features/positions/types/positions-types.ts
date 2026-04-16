@@ -5,24 +5,34 @@ export interface Position {
   updatedAt: string;
 }
 
+// =========================
+// CREATE DTO
+// =========================
 export interface CreatePositionDto {
   name: string;
 }
 
+// =========================
+// UPDATE DTO
+// =========================
 export interface UpdatePositionDto {
   name?: string;
 }
 
+// =========================
+// PAGINATED RESPONSE (ALIGN TEAM)
+// =========================
 export interface PaginatedPositions {
   data: Position[];
-  meta: {
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-  };
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
 }
 
+// =========================
+// QUERY PARAMS
+// =========================
 export interface GetPositionsParams {
   search?: string;
   page?: number;
