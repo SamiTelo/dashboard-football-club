@@ -133,7 +133,7 @@ export function RegisterForm({
             disabled={loading}
           >
             {loading && <Spinner className="mr-2" data-icon="inline-start" />}
-            {loading ? "Inscription..." : "Register"}
+            {loading ? "Inscription" : "Register"}
           </Button>
         </Field>
 

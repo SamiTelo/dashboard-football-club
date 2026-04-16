@@ -79,7 +79,7 @@ export function GoogleLoginButton({
       className={cn("bg-gray-50 hover:bg-gray-200", className)}
     >
       {loading && <Spinner className="mr-2" />}
-      {loading ? "Connexion..." : label}
+      {loading ? "Connexion" : label}
     </Button>
   );
 }
