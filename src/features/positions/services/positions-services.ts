@@ -8,7 +8,7 @@ import {
 } from "../types/positions-types";
 
 export const positionService = {
-  // GET /position?search=&page=&limit=
+  // GET /position
   async getAll(params?: GetPositionsParams): Promise<PaginatedPositions> {
     const { data } = await api.get("/position", {
       params,
