@@ -1,28 +1,9 @@
 "use client";
 
-import { players } from "../data/players.data";
-
-const teamLogos: Record<string, string> = {
-  Arsenal: "/assets/teams/arsenal.png",
-  "Fc barcelone": "/assets/teams/fc-barcelona.png",
-  "Real Madrid": "/assets/teams/real-madrid.png",
-  PSG: "/assets/teams/psg.png",
-  "Man City": "/assets/teams/man-city.png",
-};
-
-async function getBase64Image(url: string): Promise<string> {
-  const res = await fetch(url);
-  const blob = await res.blob();
-
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result as string);
-    reader.readAsDataURL(blob);
-  });
-}
+import { Player } from "../types/players-types";
 
 export function usePlayersExport() {
-  const exportPDF = async () => {
+  const exportPDF = async (players: Player[]) => {
     try {
       const pdfMakeModule = await import("pdfmake/build/pdfmake");
       const pdfFontsModule = await import("pdfmake/build/vfs_fonts");
@@ -30,15 +11,23 @@ export function usePlayersExport() {
       const pdfMake = pdfMakeModule.default;
       const fonts = pdfFontsModule.default;
 
+      // fix fonts (compat pdfmake)
       if (fonts?.pdfMake?.vfs) pdfMake.vfs = fonts.pdfMake.vfs;
       else if (fonts?.vfs) pdfMake.vfs = fonts.vfs;
 
-      // convertir tous les logos
-      const logos: Record<string, string> = {};
+      // =========================
+      // TABLE BODY
+      // =========================
+      const tableBody = [
+        ["ID", "Nom", "Équipe", "Position"],
 
-      for (const team in teamLogos) {
-        logos[team] = await getBase64Image(teamLogos[team]);
-      }
+        ...players.map((p) => [
+          p.id,
+          `${p.firstName} ${p.lastName}`,
+          p.team?.name ?? "-",
+          p.position?.name ?? "-",
+        ]),
+      ];
 
       const docDefinition = {
         content: [
@@ -66,26 +55,15 @@ export function usePlayersExport() {
           {
             table: {
               headerRows: 1,
-              widths: [40, "*", "*", "*", "*"],
-              body: [
-                ["ID", "Nom", "Equipe", "Position", "Status"],
-
-                ...players.map((p) => [
-                  p.id,
-                  `${p.name} ${p.lastname}`,
-                  p.team,
-                  p.position,
-                  p.status,
-                ]),
-              ],
+              widths: ["auto", "*", "*", "*"],
+              body: tableBody,
             },
 
             layout: {
               fillColor: (rowIndex: number) => {
-                if (rowIndex === 0) return "#22c55e"; // header
-                return rowIndex % 2 === 0 ? "#f9f9f9" : null; // lignes alternées
+                if (rowIndex === 0) return "#22c55e";
+                return rowIndex % 2 === 0 ? "#f9f9f9" : null;
               },
-
               hLineWidth: () => 0.5,
               vLineWidth: () => 0.5,
               hLineColor: () => "#ccc",
@@ -93,6 +71,12 @@ export function usePlayersExport() {
             },
           },
         ],
+
+        footer: (currentPage: number, pageCount: number) => ({
+          text: `${currentPage} / ${pageCount}`,
+          alignment: "center",
+          fontSize: 9,
+        }),
 
         defaultStyle: {
           fontSize: 10,
