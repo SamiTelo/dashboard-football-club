@@ -35,21 +35,21 @@ export function PlayerRow({ player }: { player: Player }) {
   return (
     <tr className="hover:bg-gray-50 transition">
       {/* ID */}
-      <td className="px-6 py-4">
+      <td className="px-3 py-3 sm:px-6 sm:py-4">
         <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">
           #{player.id}
         </span>
       </td>
 
       {/* PLAYER */}
-      <td className="px-6 py-4 flex items-center gap-3">
+      <td className="px-3 py-3 sm:px-6 sm:py-4 flex items-center gap-3 min-w-0">
         <div
-          className={`w-10 h-10 rounded-full overflow-hidden flex items-center justify-center font-bold ${getAvatarColor(
+          className={`w-10 aspect-square shrink-0 rounded-full overflow-hidden flex items-center justify-center font-bold ${getAvatarColor(
             player.id,
           )}`}
         >
           {hasImage ? (
-            <div className="relative w-7 h-7 sm:w-8 sm:h-8 shrink-0">
+            <div className="relative w-full h-full">
               <Image
                 src={player.imageUrl || "/placeholder-team.png"}
                 alt={`${player.firstName} ${player.lastName}`}
@@ -62,42 +62,44 @@ export function PlayerRow({ player }: { player: Player }) {
           )}
         </div>
 
-        <div className="font-medium text-gray-800">
+        <div className="font-medium text-gray-800 truncate">
           {player.firstName} {player.lastName}
         </div>
       </td>
 
       {/* TEAM */}
-      <td className="px-6 py-4">
-        <div className="flex items-center gap-2">
+      <td className="px-3 py-3 sm:px-6 sm:py-4">
+        <div className="flex items-center gap-2 min-w-0">
           {player.team?.logoUrl && (
             <Image
               src={player.team.logoUrl}
               alt={player.team.name}
               width={24}
               height={24}
-              className="rounded-full"
+              className="rounded-full shrink-0"
             />
           )}
-          <span>{player.team?.name ?? "—"}</span>
+          <span className="truncate">{player.team?.name ?? "—"}</span>
         </div>
       </td>
 
       {/* POSITION */}
-      <td className="px-6 py-4">{player.position?.name ?? "—"}</td>
+      <td className="px-3 py-3 sm:px-6 sm:py-4">
+        {player.position?.name ?? "—"}
+      </td>
 
       {/* CREATED */}
-      <td className="px-6 py-4 text-sm text-gray-500">
+      <td className="px-3 py-3 sm:px-6 sm:py-4 text-sm text-gray-500">
         {formatDate(player.createdAt)}
       </td>
 
       {/* UPDATED */}
-      <td className="px-6 py-4 text-sm text-gray-500">
+      <td className="px-3 py-3 sm:px-6 sm:py-4 text-sm text-gray-500">
         {formatDate(player.updatedAt)}
       </td>
 
       {/* ACTIONS */}
-      <td className="px-6 py-4 whitespace-nowrap">
+      <td className="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap">
         <div className="flex justify-center gap-2 text-gray-400">
           <PopUpdatePlayer player={player} />
           <PopDeletePlayer playerId={player.id} />
