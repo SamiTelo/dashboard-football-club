@@ -35,6 +35,8 @@ import { usePositions } from "@/features/positions/hooks/usePositions";
 import { useImagePreview } from "../hooks/use-image-preview";
 
 export function PopAddPlayers() {
+  const [open, setOpen] = useState(false);
+
   const createPlayer = useCreatePlayer();
   const uploadImage = useUploadPlayerImage();
 
@@ -81,18 +83,21 @@ export function PopAddPlayers() {
         });
       }
 
+      // reset form
       setFirstName("");
       setLastName("");
       setTeamId(null);
       setPositionId(null);
       resetPreview();
+
+      setOpen(false); // FERMETURE AUTOMATIQUE
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="flex items-center gap-2 bg-black text-white hover:bg-green-500 transition shadow-md">
           <FiPlus />
@@ -100,7 +105,6 @@ export function PopAddPlayers() {
         </Button>
       </DialogTrigger>
 
-      {/* POPUP */}
       <DialogContent
         className="
           w-[95vw]
@@ -112,9 +116,8 @@ export function PopAddPlayers() {
           flex flex-col
         "
       >
-        {/* HEADER */}
         <DialogHeader className="shrink-0">
-          <DialogTitle className="flex items-center gap-2 text-xl font-semibold">
+          <DialogTitle className="flex items-left gap-2 text-xl font-semibold">
             <FiUser className="text-green-500" />
             Ajouter un joueur
           </DialogTitle>
@@ -124,7 +127,6 @@ export function PopAddPlayers() {
           </DialogDescription>
         </DialogHeader>
 
-        {/* BODY (scroll mobile only) */}
         <div className="flex-1 sm:overflow-visible overflow-y-auto mt-4 space-y-4 pr-1">
           <FieldGroup>
             <Field>
@@ -145,7 +147,6 @@ export function PopAddPlayers() {
               />
             </Field>
 
-            {/* TEAM */}
             <Field>
               <Label>Équipe</Label>
               <Select
@@ -176,7 +177,6 @@ export function PopAddPlayers() {
               </Select>
             </Field>
 
-            {/* POSITION */}
             <Field>
               <Label>Position</Label>
               <Select
@@ -207,7 +207,6 @@ export function PopAddPlayers() {
               </Select>
             </Field>
 
-            {/* IMAGE */}
             <Field>
               <Label>Photo</Label>
 
@@ -239,7 +238,6 @@ export function PopAddPlayers() {
           </FieldGroup>
         </div>
 
-        {/* FOOTER FIXED */}
         <DialogFooter className="pt-4 shrink-0 flex gap-2">
           <DialogClose asChild>
             <Button variant="outline">Annuler</Button>

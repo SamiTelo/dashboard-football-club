@@ -40,10 +40,11 @@ interface PopUpdatePlayerProps {
 }
 
 export function PopUpdatePlayer({ player }: PopUpdatePlayerProps) {
+  const [open, setOpen] = useState(false); // ✅ ajouté
+
   const updatePlayer = useUpdatePlayer();
   const uploadImage = useUploadPlayerImage();
-
-  const { preview, handleImageChange, resetPreview } = useImagePreview();
+  const { preview, file, handleImageChange, resetPreview } = useImagePreview();
 
   const [firstName, setFirstName] = useState(player.firstName);
   const [lastName, setLastName] = useState(player.lastName);
@@ -71,32 +72,38 @@ export function PopUpdatePlayer({ player }: PopUpdatePlayerProps) {
   }, [player]);
 
   const handleSubmit = async () => {
-    if (!firstName || !lastName || teamId === null || positionId === null) return;
+    if (!firstName || !lastName || teamId === null || positionId === null)
+      return;
 
-    const updatedPlayer = await updatePlayer.mutateAsync({
-      id: player.id,
-      data: {
-        firstName,
-        lastName,
-        teamId,
-        positionId,
-      },
-    });
-
-    if (preview) {
-      await uploadImage.mutateAsync({
-        playerId: updatedPlayer.id,
-        file: await fetch(preview).then(r => r.blob() as unknown as File),
+    try {
+      const updatedPlayer = await updatePlayer.mutateAsync({
+        id: player.id,
+        data: {
+          firstName,
+          lastName,
+          teamId,
+          positionId,
+        },
       });
-    }
 
-    resetPreview();
+      if (file) {
+        await uploadImage.mutateAsync({
+          playerId: updatedPlayer.id,
+          file,
+        });
+      }
+
+      resetPreview();
+      setOpen(false); //ferme automatiquement la popup
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const isLoading = updatePlayer.isPending || uploadImage.isPending;
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button className="hover:text-indigo-500">
           <FiEdit />
@@ -105,14 +112,17 @@ export function PopUpdatePlayer({ player }: PopUpdatePlayerProps) {
 
       <DialogContent
         className="
-          sm:max-w-md w-[95vw] rounded-xl p-6
+          w-[95vw]
+          max-w-md
+          sm:max-w-md
+          rounded-xl
+          p-4 sm:p-6
           max-h-[90vh]
-          overflow-y-auto sm:overflow-visible
+          flex flex-col
         "
       >
-        {/* HEADER */}
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+        <DialogHeader className="shrink-0">
+          <DialogTitle className="flex items-left gap-2 text-xl font-semibold">
             <FiEdit className="text-indigo-500" />
             Modifier joueur
           </DialogTitle>
@@ -122,80 +132,88 @@ export function PopUpdatePlayer({ player }: PopUpdatePlayerProps) {
           </DialogDescription>
         </DialogHeader>
 
-        {/* FORM */}
-        <div className="space-y-4 mt-4">
-          {/* LAST NAME */}
+        <div className="flex-1 sm:overflow-visible overflow-y-auto mt-4 space-y-4 pr-1">
           <div>
             <Label>Nom</Label>
-            <Input value={lastName} onChange={(e) => setLastName(e.target.value)} />
+            <Input
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
           </div>
 
-          {/* FIRST NAME */}
           <div>
             <Label>Prénom</Label>
-            <Input value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+            <Input
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
           </div>
 
-          {/* TEAM */}
           <div>
             <Label>Équipe</Label>
             <Select
-              value={teamId ? String(teamId) : undefined}
+              value={teamId ? String(teamId) : ""}
               onValueChange={(v) => setTeamId(Number(v))}
             >
-              <SelectTrigger>
-                <SelectValue placeholder="Choisir équipe" />
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Choisir une équipe" />
               </SelectTrigger>
 
               <SelectContent>
-                {teamsLoading || teams.length === 0 ? (
-                  <SelectItem value="empty" disabled>
-                    Aucune équipe
+                {teamsLoading ? (
+                  <SelectItem value="loading" disabled>
+                    Chargement...
                   </SelectItem>
-                ) : (
+                ) : teams.length ? (
                   teams.map((t) => (
                     <SelectItem key={t.id} value={String(t.id)}>
                       {t.name}
                     </SelectItem>
                   ))
+                ) : (
+                  <SelectItem value="empty" disabled>
+                    Aucune équipe
+                  </SelectItem>
                 )}
               </SelectContent>
             </Select>
           </div>
 
-          {/* POSITION */}
           <div>
             <Label>Position</Label>
             <Select
-              value={positionId ? String(positionId) : undefined}
+              value={positionId ? String(positionId) : ""}
               onValueChange={(v) => setPositionId(Number(v))}
             >
-              <SelectTrigger>
-                <SelectValue placeholder="Choisir position" />
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Choisir une position" />
               </SelectTrigger>
 
               <SelectContent>
-                {positionsLoading || positions.length === 0 ? (
-                  <SelectItem value="empty" disabled>
-                    Aucune position
+                {positionsLoading ? (
+                  <SelectItem value="loading" disabled>
+                    Chargement...
                   </SelectItem>
-                ) : (
+                ) : positions.length ? (
                   positions.map((p) => (
                     <SelectItem key={p.id} value={String(p.id)}>
                       {p.name}
                     </SelectItem>
                   ))
+                ) : (
+                  <SelectItem value="empty" disabled>
+                    Aucune position
+                  </SelectItem>
                 )}
               </SelectContent>
             </Select>
           </div>
 
-          {/* IMAGE */}
           <div>
             <Label>Photo</Label>
 
             <div className="flex items-center gap-3 mt-2">
-              <label className="cursor-pointer flex items-center gap-2 border px-3 py-2 rounded-md hover:bg-gray-50">
+              <label className="flex items-center gap-2 border px-3 py-2 rounded-md cursor-pointer hover:bg-gray-50">
                 <FiImage />
                 Image
                 <input
@@ -206,8 +224,7 @@ export function PopUpdatePlayer({ player }: PopUpdatePlayerProps) {
                 />
               </label>
 
-              {/* IMAGE FIXED SIZE */}
-              <div className="relative w-12 h-12 min-w-12 min-h-12">
+              <div className="relative w-12 h-12 shrink-0">
                 {preview ? (
                   <Image
                     src={preview}
@@ -229,8 +246,7 @@ export function PopUpdatePlayer({ player }: PopUpdatePlayerProps) {
           </div>
         </div>
 
-        {/* FOOTER */}
-        <DialogFooter className="pt-6 flex gap-2">
+        <DialogFooter className="pt-4 shrink-0 flex gap-2">
           <DialogClose asChild>
             <Button variant="outline">Annuler</Button>
           </DialogClose>

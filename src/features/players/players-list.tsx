@@ -10,6 +10,7 @@ import { usePlayers } from "./hooks/usePlayers";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Pagination } from "@/features/dashbaord/components/pagination";
 import { Spinner } from "@/components/ui/spinner";
+import { PlayersFilters } from "./components/players-filters";
 
 export default function PlayersList() {
   const { exportPDF } = usePlayersExport();
@@ -64,6 +65,10 @@ export default function PlayersList() {
       <br />
 
       <div className="bg-white rounded-lg border border-gray-100 min-h-72">
+
+        {/* FILTERs */}
+        <PlayersFilters/>
+
         {/* ACTIONS */}
         <PlayersActions
           onExport={handleExport}

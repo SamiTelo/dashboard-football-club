@@ -1,13 +1,13 @@
 "use client";
 
-// import { Pagination } from "./pagination";
 import { StatsCards } from "@/features/players/components/stats-cards";
 import { PlayersFilters } from "@/features/players/components/players-filters";
 import { Hand } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Skeleton } from "@/components/ui/skeleton";
+import PlayersList from "@/features/players/players-list";
 
-export default function PlayersList() {
+export default function DashboardMian() {
   const { user, loading } = useAuth(true);
 
   const userName = user ? `${user.firstName} ${user.lastName}` : "";
@@ -42,9 +42,8 @@ export default function PlayersList() {
 
       <div className="bg-white rounded-lg border border-gray-100">
         <PlayersFilters />
+        <PlayersList/>
       </div>
-
-      {/* <Pagination/>*/}
     </div>
   );
 }
