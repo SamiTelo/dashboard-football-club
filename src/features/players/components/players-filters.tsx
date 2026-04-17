@@ -14,13 +14,11 @@ import { usePositions } from "@/features/positions/hooks/usePositions";
 interface PlayersFiltersProps {
   onTeamChange?: (value: number | null) => void;
   onPositionChange?: (value: number | null) => void;
-  onCreatedAtChange?: (value: string | null) => void;
 }
 
 export function PlayersFilters({
   onTeamChange,
   onPositionChange,
-  onCreatedAtChange,
 }: PlayersFiltersProps) {
   const { data: teamsData, isLoading: teamsLoading } = useTeams({
     page: 1,
@@ -88,21 +86,6 @@ export function PlayersFilters({
             )}
           </SelectContent>
         </Select>
-
-        {/* CREATED AT FILTER*/}
-        <Select onValueChange={(v) => onCreatedAtChange?.(v || null)}>
-          <SelectTrigger className="w-full border border-gray-200 rounded-md p-2 outline-none focus:border-green-300 shadow-none">
-            <SelectValue placeholder="Période de création" />
-          </SelectTrigger>
-
-          <SelectContent>
-            <SelectItem value="today">Aujourd’hui</SelectItem>
-            <SelectItem value="week">Cette semaine</SelectItem>
-            <SelectItem value="month">Ce mois-ci</SelectItem>
-            <SelectItem value="30days">30 derniers jours</SelectItem>
-          </SelectContent>
-        </Select>
-
       </div>
     </div>
   );
