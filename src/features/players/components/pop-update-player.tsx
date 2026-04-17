@@ -15,6 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+import { Field, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -40,16 +41,19 @@ interface PopUpdatePlayerProps {
 }
 
 export function PopUpdatePlayer({ player }: PopUpdatePlayerProps) {
-  const [open, setOpen] = useState(false); // ✅ ajouté
+  const [open, setOpen] = useState(false);
 
   const updatePlayer = useUpdatePlayer();
   const uploadImage = useUploadPlayerImage();
+
   const { preview, file, handleImageChange, resetPreview } = useImagePreview();
 
   const [firstName, setFirstName] = useState(player.firstName);
   const [lastName, setLastName] = useState(player.lastName);
   const [teamId, setTeamId] = useState<number | null>(player.teamId);
-  const [positionId, setPositionId] = useState<number | null>(player.positionId);
+  const [positionId, setPositionId] = useState<number | null>(
+    player.positionId,
+  );
 
   const { data: teamsData, isLoading: teamsLoading } = useTeams({
     page: 1,
@@ -70,6 +74,8 @@ export function PopUpdatePlayer({ player }: PopUpdatePlayerProps) {
     setTeamId(player.teamId);
     setPositionId(player.positionId);
   }, [player]);
+
+  const isLoading = updatePlayer.isPending || uploadImage.isPending;
 
   const handleSubmit = async () => {
     if (!firstName || !lastName || teamId === null || positionId === null)
@@ -94,13 +100,11 @@ export function PopUpdatePlayer({ player }: PopUpdatePlayerProps) {
       }
 
       resetPreview();
-      setOpen(false); //ferme automatiquement la popup
+      setOpen(false);
     } catch (error) {
       console.error(error);
     }
   };
-
-  const isLoading = updatePlayer.isPending || uploadImage.isPending;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -121,129 +125,133 @@ export function PopUpdatePlayer({ player }: PopUpdatePlayerProps) {
           flex flex-col
         "
       >
-        <DialogHeader className="shrink-0">
-          <DialogTitle className="flex items-left gap-2 text-xl font-semibold">
+        <DialogHeader className="shrink-0 text-left">
+          <DialogTitle className="flex items-center gap-2 text-xl font-semibold text-left">
             <FiEdit className="text-indigo-500" />
             Modifier joueur
           </DialogTitle>
 
-          <DialogDescription>
+          <DialogDescription className="text-left">
             Modifier les informations du joueur.
           </DialogDescription>
         </DialogHeader>
 
         <div className="flex-1 sm:overflow-visible overflow-y-auto mt-4 space-y-4 pr-1">
-          <div>
-            <Label>Nom</Label>
-            <Input
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-          </div>
+          <FieldGroup>
+            <Field>
+              <Label>Nom</Label>
+              <Input
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Ex: Ronaldo"
+              />
+            </Field>
 
-          <div>
-            <Label>Prénom</Label>
-            <Input
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-          </div>
+            <Field>
+              <Label>Prénom</Label>
+              <Input
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="Ex: Cristiano"
+              />
+            </Field>
 
-          <div>
-            <Label>Équipe</Label>
-            <Select
-              value={teamId ? String(teamId) : ""}
-              onValueChange={(v) => setTeamId(Number(v))}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Choisir une équipe" />
-              </SelectTrigger>
+            <Field>
+              <Label>Équipe</Label>
+              <Select
+                value={teamId ? String(teamId) : ""}
+                onValueChange={(v) => setTeamId(Number(v))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Choisir une équipe" />
+                </SelectTrigger>
 
-              <SelectContent>
-                {teamsLoading ? (
-                  <SelectItem value="loading" disabled>
-                    Chargement...
-                  </SelectItem>
-                ) : teams.length ? (
-                  teams.map((t) => (
-                    <SelectItem key={t.id} value={String(t.id)}>
-                      {t.name}
+                <SelectContent>
+                  {teamsLoading ? (
+                    <SelectItem value="loading" disabled>
+                      Chargement...
                     </SelectItem>
-                  ))
-                ) : (
-                  <SelectItem value="empty" disabled>
-                    Aucune équipe
-                  </SelectItem>
-                )}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <Label>Position</Label>
-            <Select
-              value={positionId ? String(positionId) : ""}
-              onValueChange={(v) => setPositionId(Number(v))}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Choisir une position" />
-              </SelectTrigger>
-
-              <SelectContent>
-                {positionsLoading ? (
-                  <SelectItem value="loading" disabled>
-                    Chargement...
-                  </SelectItem>
-                ) : positions.length ? (
-                  positions.map((p) => (
-                    <SelectItem key={p.id} value={String(p.id)}>
-                      {p.name}
+                  ) : teams.length ? (
+                    teams.map((t) => (
+                      <SelectItem key={t.id} value={String(t.id)}>
+                        {t.name}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem value="empty" disabled>
+                      Aucune équipe
                     </SelectItem>
-                  ))
-                ) : (
-                  <SelectItem value="empty" disabled>
-                    Aucune position
-                  </SelectItem>
-                )}
-              </SelectContent>
-            </Select>
-          </div>
+                  )}
+                </SelectContent>
+              </Select>
+            </Field>
 
-          <div>
-            <Label>Photo</Label>
+            <Field>
+              <Label>Position</Label>
+              <Select
+                value={positionId ? String(positionId) : ""}
+                onValueChange={(v) => setPositionId(Number(v))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Choisir une position" />
+                </SelectTrigger>
 
-            <div className="flex items-center gap-3 mt-2">
-              <label className="flex items-center gap-2 border px-3 py-2 rounded-md cursor-pointer hover:bg-gray-50">
-                <FiImage />
-                Image
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="hidden"
-                />
-              </label>
+                <SelectContent>
+                  {positionsLoading ? (
+                    <SelectItem value="loading" disabled>
+                      Chargement...
+                    </SelectItem>
+                  ) : positions.length ? (
+                    positions.map((p) => (
+                      <SelectItem key={p.id} value={String(p.id)}>
+                        {p.name}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem value="empty" disabled>
+                      Aucune position
+                    </SelectItem>
+                  )}
+                </SelectContent>
+              </Select>
+            </Field>
 
-              <div className="relative w-12 h-12 shrink-0">
-                {preview ? (
-                  <Image
-                    src={preview}
-                    alt="preview"
-                    fill
-                    unoptimized
-                    className="rounded-full object-cover border"
+            <Field>
+              <Label>Photo</Label>
+
+              <div className="flex items-center gap-3">
+                <label className="flex items-center gap-2 border px-3 py-2 rounded-md cursor-pointer hover:bg-gray-50">
+                  <FiImage />
+                  Image
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
                   />
-                ) : player.imageUrl ? (
-                  <Image
-                    src={player.imageUrl}
-                    alt="current"
-                    fill
-                    className="rounded-full object-cover border"
-                  />
-                ) : null}
+                </label>
+
+                <div className="relative w-12 h-12">
+                  {preview ? (
+                    <Image
+                      src={preview}
+                      alt="preview"
+                      fill
+                      unoptimized
+                      className="rounded-full object-cover border"
+                    />
+                  ) : player.imageUrl ? (
+                    <Image
+                      src={player.imageUrl}
+                      alt="current"
+                      fill
+                      className="rounded-full object-cover border"
+                    />
+                  ) : null}
+                </div>
               </div>
-            </div>
-          </div>
+            </Field>
+          </FieldGroup>
         </div>
 
         <DialogFooter className="pt-4 shrink-0 flex gap-2">

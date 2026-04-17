@@ -87,6 +87,7 @@ export interface GetPlayersQuery {
   search?: string;
   teamId?: number;
   positionId?: number;
+  createdAt?: string;
 
   page?: number;
   limit?: number;
