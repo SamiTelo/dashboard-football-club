@@ -71,7 +71,7 @@ export function PlayersPreview() {
       </div>
 
       {/* ========================= */}
-      {/* FULL STYLE PAGINATION (REUSED) */}
+      {/* PAGINATION */}
       {/* ========================= */}
       {data && players.length > 0 && (
         <Pagination

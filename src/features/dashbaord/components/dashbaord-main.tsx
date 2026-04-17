@@ -4,7 +4,6 @@ import { StatsCards } from "@/features/players/components/stats-cards";
 import { Hand } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PlayersPreview } from "@/features/players/components/players-preview";
 
 export default function DashboardMain() {
   const { user, loading } = useAuth(true);
@@ -43,11 +42,6 @@ export default function DashboardMain() {
 
       {/* STATS */}
       <StatsCards />
-
-      {/* PLAYERS PREVIEW */}
-      <div className="bg-white rounded-lg border border-gray-100 mt-6">
-        <PlayersPreview/>
-      </div>
 
     </div>
   );

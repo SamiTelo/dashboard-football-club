@@ -14,6 +14,44 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Pagination } from "@/features/dashbaord/components/pagination";
 import { Spinner } from "@/components/ui/spinner";
 
+// =========================
+// DATE FILTER CONVERTER
+// =========================
+function getCreatedAtRange(value: string | null) {
+  if (!value || value === "all") return undefined;
+
+  const now = new Date();
+
+  switch (value) {
+    case "today": {
+      const start = new Date();
+      start.setHours(0, 0, 0, 0);
+      return start.toISOString();
+    }
+
+    case "week": {
+      const start = new Date();
+      start.setDate(now.getDate() - 7);
+      return start.toISOString();
+    }
+
+    case "month": {
+      const start = new Date();
+      start.setMonth(now.getMonth() - 1);
+      return start.toISOString();
+    }
+
+    case "30days": {
+      const start = new Date();
+      start.setDate(now.getDate() - 30);
+      return start.toISOString();
+    }
+
+    default:
+      return undefined;
+  }
+}
+
 export default function PlayersList() {
   const { exportPDF } = usePlayersExport();
 
@@ -29,16 +67,12 @@ export default function PlayersList() {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
 
-  // =========================
-  // FILTER STATES (CLEAN)
-  // =========================
+  // FILTERS
   const [teamId, setTeamId] = useState<number | null>(null);
   const [positionId, setPositionId] = useState<number | null>(null);
   const [createdAt, setCreatedAt] = useState<string | null>(null);
 
-  // =========================
-  // DEBOUNCE SEARCH
-  // =========================
+  // SEARCH DEBOUNCE
   const [debouncedSearch] = useDebounce(search, 400);
   const isSearching = debouncedSearch.trim().length > 0;
 
@@ -52,7 +86,7 @@ export default function PlayersList() {
       limit,
       teamId: teamId ?? undefined,
       positionId: positionId ?? undefined,
-      createdAt: createdAt ?? undefined,
+      createdAt: getCreatedAtRange(createdAt),
     },
     !!user?.id && !authLoading
   );
@@ -113,7 +147,7 @@ export default function PlayersList() {
         />
 
         {/* ========================= */}
-        {/* TABLE STATES */}
+        {/* TABLE */}
         {/* ========================= */}
         <div className="min-h-52 flex items-center justify-center">
           {authLoading || isLoading ? (
