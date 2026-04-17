@@ -14,13 +14,13 @@ import { usePositions } from "@/features/positions/hooks/usePositions";
 interface PlayersFiltersProps {
   onTeamChange?: (value: number | null) => void;
   onPositionChange?: (value: number | null) => void;
-  onStatusChange?: (value: string | null) => void;
+  onCreatedAtChange?: (value: string | null) => void;
 }
 
 export function PlayersFilters({
   onTeamChange,
   onPositionChange,
-  onStatusChange,
+  onCreatedAtChange,
 }: PlayersFiltersProps) {
   const { data: teamsData, isLoading: teamsLoading } = useTeams({
     page: 1,
@@ -39,11 +39,9 @@ export function PlayersFilters({
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-        {/* ===================== */}
         {/* TEAMS */}
-        {/* ===================== */}
-        <Select onValueChange={(v) => onTeamChange?.(Number(v))}>
-          <SelectTrigger className="w-full border border-gray-200 rounded-md p-2">
+        <Select onValueChange={(v) => onTeamChange?.(v ? Number(v) : null)}>
+          <SelectTrigger className="w-full border border-gray-200 rounded-md p-2 outline-none focus:border-green-300 shadow-none">
             <SelectValue placeholder="Choisir une équipe" />
           </SelectTrigger>
 
@@ -66,11 +64,9 @@ export function PlayersFilters({
           </SelectContent>
         </Select>
 
-        {/* ===================== */}
         {/* POSITIONS */}
-        {/* ===================== */}
-        <Select onValueChange={(v) => onPositionChange?.(Number(v))}>
-          <SelectTrigger className="w-full border border-gray-200 rounded-md p-2">
+        <Select onValueChange={(v) => onPositionChange?.(v ? Number(v) : null)}>
+          <SelectTrigger className="w-full border border-gray-200 rounded-md p-2 outline-none focus:border-green-300 shadow-none">
             <SelectValue placeholder="Choisir une position" />
           </SelectTrigger>
 
@@ -93,17 +89,17 @@ export function PlayersFilters({
           </SelectContent>
         </Select>
 
-        {/* ===================== */}
-        {/* STATUS (STATIC) */}
-        {/* ===================== */}
-        <Select onValueChange={(v) => onStatusChange?.(v)}>
-          <SelectTrigger className="w-full border border-gray-200 rounded-md p-2">
-            <SelectValue placeholder="Choisir un status" />
+        {/* CREATED AT FILTER*/}
+        <Select onValueChange={(v) => onCreatedAtChange?.(v || null)}>
+          <SelectTrigger className="w-full border border-gray-200 rounded-md p-2 outline-none focus:border-green-300 shadow-none">
+            <SelectValue placeholder="Période de création" />
           </SelectTrigger>
 
           <SelectContent>
-            <SelectItem value="active">Active</SelectItem>
-            <SelectItem value="inactive">Inactive</SelectItem>
+            <SelectItem value="today">Aujourd’hui</SelectItem>
+            <SelectItem value="week">Cette semaine</SelectItem>
+            <SelectItem value="month">Ce mois-ci</SelectItem>
+            <SelectItem value="30days">30 derniers jours</SelectItem>
           </SelectContent>
         </Select>
 

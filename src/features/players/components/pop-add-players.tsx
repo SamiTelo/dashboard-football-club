@@ -116,13 +116,13 @@ export function PopAddPlayers() {
           flex flex-col
         "
       >
-        <DialogHeader className="shrink-0">
-          <DialogTitle className="flex items-left gap-2 text-xl font-semibold">
+        <DialogHeader className="shrink-0 text-left">
+          <DialogTitle className="flex items-center gap-2 text-xl font-semibold text-left">
             <FiUser className="text-green-500" />
             Ajouter un joueur
           </DialogTitle>
 
-          <DialogDescription>
+          <DialogDescription className="text-left">
             Remplissez les informations du joueur.
           </DialogDescription>
         </DialogHeader>

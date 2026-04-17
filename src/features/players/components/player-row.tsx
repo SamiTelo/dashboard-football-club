@@ -62,29 +62,35 @@ export function PlayerRow({ player }: { player: Player }) {
           )}
         </div>
 
-        <div className="font-medium text-gray-800 truncate">
+        <div className="text-gray-500 truncate">
           {player.firstName} {player.lastName}
         </div>
       </td>
 
       {/* TEAM */}
       <td className="px-3 py-3 sm:px-6 sm:py-4">
-        <div className="flex items-center gap-2 min-w-0">
-          {player.team?.logoUrl && (
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          {/* IMAGE WRAPPER FIXE */}
+          <div className="relative w-7 h-7 sm:w-8 sm:h-8 shrink-0">
             <Image
-              src={player.team.logoUrl}
-              alt={player.team.name}
-              width={24}
-              height={24}
-              className="rounded-full shrink-0"
+              src={player.team?.logoUrl || "/placeholder-team.png"}
+              alt={player.team?.name ?? "team"}
+              fill
+              className="rounded-full object-cover"
             />
-          )}
-          <span className="truncate">{player.team?.name ?? "—"}</span>
+          </div>
+
+          {/* NAME */}
+          <div className="flex flex-col min-w-0">
+            <span className="text-xs sm:text-sm text-gray-500 truncate">
+              {player.team?.name ?? "—"}
+            </span>
+          </div>
         </div>
       </td>
 
       {/* POSITION */}
-      <td className="px-3 py-3 sm:px-6 sm:py-4">
+      <td className="px-3 py-3 sm:px-6 sm:py-4 truncate">
         {player.position?.name ?? "—"}
       </td>
 

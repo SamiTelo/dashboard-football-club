@@ -5,18 +5,20 @@ import { useDebounce } from "use-debounce";
 
 import { PlayersTable } from "./components/players-table";
 import { PlayersActions } from "./components/players-actions";
+import { PlayersFilters } from "./components/players-filters";
+
 import { usePlayersExport } from "./hooks/players-export-pdf";
 import { usePlayers } from "./hooks/usePlayers";
+
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Pagination } from "@/features/dashbaord/components/pagination";
 import { Spinner } from "@/components/ui/spinner";
-import { PlayersFilters } from "./components/players-filters";
 
 export default function PlayersList() {
   const { exportPDF } = usePlayersExport();
 
   // =========================
-  // AUTH 
+  // AUTH
   // =========================
   const { user, loading: authLoading } = useAuth(true);
 
@@ -28,20 +30,29 @@ export default function PlayersList() {
   const [page, setPage] = useState(1);
 
   // =========================
+  // FILTER STATES (CLEAN)
+  // =========================
+  const [teamId, setTeamId] = useState<number | null>(null);
+  const [positionId, setPositionId] = useState<number | null>(null);
+  const [createdAt, setCreatedAt] = useState<string | null>(null);
+
+  // =========================
   // DEBOUNCE SEARCH
   // =========================
   const [debouncedSearch] = useDebounce(search, 400);
-
   const isSearching = debouncedSearch.trim().length > 0;
 
   // =========================
-  // API 
+  // API CALL
   // =========================
   const { data, isLoading } = usePlayers(
     {
       search: debouncedSearch,
       page,
       limit,
+      teamId: teamId ?? undefined,
+      positionId: positionId ?? undefined,
+      createdAt: createdAt ?? undefined,
     },
     !!user?.id && !authLoading
   );
@@ -66,10 +77,27 @@ export default function PlayersList() {
 
       <div className="bg-white rounded-lg border border-gray-100 min-h-72">
 
-        {/* FILTERs */}
-        <PlayersFilters/>
+        {/* ========================= */}
+        {/* FILTERS */}
+        {/* ========================= */}
+        <PlayersFilters
+          onTeamChange={(value) => {
+            setTeamId(value);
+            setPage(1);
+          }}
+          onPositionChange={(value) => {
+            setPositionId(value);
+            setPage(1);
+          }}
+          onCreatedAtChange={(value) => {
+            setCreatedAt(value);
+            setPage(1);
+          }}
+        />
 
+        {/* ========================= */}
         {/* ACTIONS */}
+        {/* ========================= */}
         <PlayersActions
           onExport={handleExport}
           search={search}
@@ -84,7 +112,9 @@ export default function PlayersList() {
           }}
         />
 
+        {/* ========================= */}
         {/* TABLE STATES */}
+        {/* ========================= */}
         <div className="min-h-52 flex items-center justify-center">
           {authLoading || isLoading ? (
             <Spinner className="h-10 w-10 text-green-500" />
@@ -100,7 +130,9 @@ export default function PlayersList() {
         </div>
       </div>
 
+      {/* ========================= */}
       {/* PAGINATION */}
+      {/* ========================= */}
       {data && players.length > 0 && (
         <Pagination
           page={page}
