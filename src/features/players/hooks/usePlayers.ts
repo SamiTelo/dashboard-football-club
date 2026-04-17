@@ -19,7 +19,15 @@ import { playerService } from "../services/players-service";
 // =========================
 export const usePlayers = (params: GetPlayersQuery, enabled: boolean) => {
   return useQuery({
-    queryKey: ["players", params],
+    queryKey: [
+      "players",
+      params.search,
+      params.page,
+      params.limit,
+      params.teamId,
+      params.positionId,
+      params.createdAt,
+    ],
     queryFn: () => playerService.getAll(params),
     enabled,
     placeholderData: keepPreviousData,
@@ -43,8 +51,7 @@ export const useCreatePlayer = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreatePlayerDto) =>
-      playerService.create(data),
+    mutationFn: (data: CreatePlayerDto) => playerService.create(data),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -62,13 +69,8 @@ export const useUpdatePlayer = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      id,
-      data,
-    }: {
-      id: number;
-      data: UpdatePlayerDto;
-    }) => playerService.update(id, data),
+    mutationFn: ({ id, data }: { id: number; data: UpdatePlayerDto }) =>
+      playerService.update(id, data),
 
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
@@ -91,8 +93,7 @@ export const useDeletePlayer = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: number) =>
-      playerService.delete(id),
+    mutationFn: (id: number) => playerService.delete(id),
 
     onSuccess: (_, id) => {
       queryClient.invalidateQueries({
@@ -115,13 +116,8 @@ export const useUploadPlayerImage = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      playerId,
-      file,
-    }: {
-      playerId: number;
-      file: File;
-    }) => playerService.uploadImage(playerId, file),
+    mutationFn: ({ playerId, file }: { playerId: number; file: File }) =>
+      playerService.uploadImage(playerId, file),
 
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
