@@ -34,7 +34,6 @@ export default function PlayersList() {
   // =========================
   const [teamId, setTeamId] = useState<number | null>(null);
   const [positionId, setPositionId] = useState<number | null>(null);
-  const [createdAt, setCreatedAt] = useState<string | null>(null);
 
   // =========================
   // DEBOUNCE SEARCH
@@ -52,7 +51,6 @@ export default function PlayersList() {
       limit,
       teamId: teamId ?? undefined,
       positionId: positionId ?? undefined,
-      createdAt: createdAt ?? undefined,
     },
     !!user?.id && !authLoading
   );
@@ -87,10 +85,6 @@ export default function PlayersList() {
           }}
           onPositionChange={(value) => {
             setPositionId(value);
-            setPage(1);
-          }}
-          onCreatedAtChange={(value) => {
-            setCreatedAt(value);
             setPage(1);
           }}
         />
