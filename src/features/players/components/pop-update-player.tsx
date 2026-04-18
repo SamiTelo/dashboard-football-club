@@ -32,9 +32,10 @@ import { FiEdit, FiImage } from "react-icons/fi";
 import { useUpdatePlayer, useUploadPlayerImage } from "../hooks/usePlayers";
 import { useTeams } from "@/features/teams/hooks/useTeams";
 import { usePositions } from "@/features/positions/hooks/usePositions";
-import { useImagePreview } from "../hooks/use-image-preview";
+
 
 import type { Player } from "../types/players-types";
+import { useImagePreview } from "@/hooks/useImagePreview";
 
 interface PopUpdatePlayerProps {
   player: Player;

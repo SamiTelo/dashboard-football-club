@@ -5,7 +5,7 @@ import { useDebounce } from "use-debounce";
 
 import { TeamsTable } from "./components/teams-table";
 import { TeamsActions } from "./components/teams-actions";
-import { TeamsExport } from "./hooks/teams-export-pdf";
+import { TeamsExport } from "./hooks/useTeamsExportPdf";
 import { useTeams } from "./hooks/useTeams";
 import { Pagination } from "../dashbaord/components/pagination";
 import { Spinner } from "@/components/ui/spinner";

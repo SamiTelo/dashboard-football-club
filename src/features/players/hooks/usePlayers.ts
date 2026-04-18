@@ -12,7 +12,7 @@ import {
   GetPlayersQuery,
 } from "../types/players-types";
 
-import { playerService } from "../services/players-service";
+import { playerService } from "../services/players.service";
 
 // =========================
 // GET ALL

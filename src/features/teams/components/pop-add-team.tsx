@@ -23,8 +23,8 @@ import { Label } from "@/components/ui/label";
 
 import { FiPlus, FiUser, FiImage } from "react-icons/fi";
 
-import { useImagePreview } from "../hooks/use-image-preview";
 import { useCreateTeam, useUploadTeamLogo } from "../hooks/useTeams";
+import { useImagePreview } from "@/hooks/useImagePreview";
 
 export function PopAddTeam() {
   const [open, setOpen] = useState(false);

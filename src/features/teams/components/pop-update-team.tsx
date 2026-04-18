@@ -22,9 +22,9 @@ import { Label } from "@/components/ui/label";
 
 import { FiEdit, FiImage, FiUser } from "react-icons/fi";
 
-import { useImagePreview } from "../hooks/use-image-preview";
 import { useUpdateTeam, useUploadTeamLogo } from "../hooks/useTeams";
 import { Team } from "../types/teams-types";
+import { useImagePreview } from "@/hooks/useImagePreview";
 
 interface PopUpdateTeamProps {
   team: Team;

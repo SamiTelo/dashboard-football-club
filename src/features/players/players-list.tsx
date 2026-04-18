@@ -7,7 +7,7 @@ import { PlayersTable } from "./components/players-table";
 import { PlayersActions } from "./components/players-actions";
 import { PlayersFilters } from "./components/players-filters";
 
-import { usePlayersExport } from "./hooks/players-export-pdf";
+import { usePlayersExport } from "./hooks/usePlayersExportPdf";
 import { usePlayers } from "./hooks/usePlayers";
 
 import { useAuth } from "@/features/auth/hooks/useAuth";

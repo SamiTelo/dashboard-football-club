@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 // API
-import { resetPassword } from "../services/auth-services";
+import { resetPassword } from "../services/auth.service";
 import { Spinner } from "@/components/ui/spinner";
 
 export function ResetPasswordForm({

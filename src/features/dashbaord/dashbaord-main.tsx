@@ -1,6 +1,6 @@
 "use client";
 
-import { StatsCards } from "@/features/players/components/stats-cards";
+import { StatsCards } from "@/features/dashbaord/components/stats-cards";
 import { Hand } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -27,7 +27,7 @@ export default function DashboardMain() {
             {loading ? (
               <Skeleton className="h-4 w-24 rounded-md" />
             ) : (
-              <strong className="text-gray-800">{userName}</strong>
+              <strong className="text-gray-800 text-sm">{userName}</strong>
             )}
           </div>
 

@@ -4,9 +4,7 @@ import { Search, Mail, Bell } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { LogoutButton } from "@/features/auth/components/logout-button";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  SidebarTrigger,
-} from "@/features/dashbaord/components/ui/sidebar";
+import { SidebarTrigger } from "@/features/dashbaord/components/ui/sidebar";
 import { Separator } from "@/features/dashbaord/components/ui/separator";
 
 export default function DashboardHeader() {
@@ -26,15 +24,11 @@ export default function DashboardHeader() {
 
   return (
     <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center justify-between bg-white/70 backdrop-blur-md border-b border-gray-100 px-4 md:px-6">
-
       {/* ================= LEFT ================= */}
       <div className="flex items-center gap-3 flex-1 min-w-0">
         <SidebarTrigger className="text-green-500" />
 
-        <Separator
-          orientation="vertical"
-          className="h-4 hidden md:block"
-        />
+        <Separator orientation="vertical" className="h-4 hidden md:block" />
 
         {/* SEARCH (desktop only) */}
         <div className="hidden md:flex items-center gap-3 rounded-xl bg-[#F8F7FA] px-4 py-2 w-full max-w-sm">
@@ -47,8 +41,7 @@ export default function DashboardHeader() {
       </div>
 
       {/* ================= RIGHT ================= */}
-      <div className="flex items-center gap-4 md:gap-6">
-
+      <div className="flex items-center gap-4 md:gap-6 ml-auto">
         {/* ICONS */}
         <div className="flex items-center gap-4 text-muted-foreground">
           <LogoutButton />
@@ -73,17 +66,14 @@ export default function DashboardHeader() {
               </div>
 
               <div className="hidden md:block leading-tight">
-                <p className="text-sm font-semibold truncate max-w-30">
-                  {userName}
-                </p>
-                <p className="text-xs text-muted-foreground truncate max-w-40">
+                <p className="text-sm font-semibold truncate">{userName}</p>
+                <p className="text-xs text-muted-foreground truncate">
                   {userEmail}
                 </p>
               </div>
             </>
           )}
         </div>
-
       </div>
     </header>
   );
