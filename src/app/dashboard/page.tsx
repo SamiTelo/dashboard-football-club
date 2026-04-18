@@ -1,5 +1,5 @@
 
-import DashboardMain from "@/features/dashbaord/components/dashbaord-main";
+import DashboardMain from "@/features/dashbaord/dashbaord-main";
 
 export default function Page() {
    return (

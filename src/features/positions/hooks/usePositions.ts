@@ -5,7 +5,7 @@ import {
   keepPreviousData,
 } from "@tanstack/react-query";
 
-import { positionService } from "../services/positions-services";
+import { positionService } from "../services/positions.service";
 import {
   CreatePositionDto,
   UpdatePositionDto,

@@ -5,7 +5,7 @@ import { useDebounce } from "use-debounce";
 
 import { PositionsTable } from "./components/positions-table";
 import { PositionsActions } from "./components/positions-actions";
-import { PositionsExport } from "./hooks/position-export-pdf";
+import { PositionsExport } from "./hooks/usePositionExportPdf";
 import { usePositions } from "./hooks/usePositions";
 import { Pagination } from "../dashbaord/components/pagination";
 import { Spinner } from "@/components/ui/spinner";

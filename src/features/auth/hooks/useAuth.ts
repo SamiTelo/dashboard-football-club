@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import * as authService from "../services/auth-services";
+import * as authService from "../services/auth.service";
 import {
   CreateUserDto,
   ForgotPasswordDto,

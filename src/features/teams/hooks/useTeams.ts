@@ -5,7 +5,7 @@ import {
   keepPreviousData,
 } from "@tanstack/react-query";
 import { CreateTeamDto, GetTeamsQuery, Team, UpdateTeamDto } from "../types/teams-types";
-import { teamService } from "../services/teams-services";
+import { teamService } from "../services/teams.service";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 
 

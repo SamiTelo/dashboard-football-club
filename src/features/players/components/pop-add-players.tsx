@@ -32,7 +32,7 @@ import {
 import { useCreatePlayer, useUploadPlayerImage } from "../hooks/usePlayers";
 import { useTeams } from "@/features/teams/hooks/useTeams";
 import { usePositions } from "@/features/positions/hooks/usePositions";
-import { useImagePreview } from "../hooks/use-image-preview";
+import { useImagePreview } from "@/hooks/useImagePreview";
 
 export function PopAddPlayers() {
   const [open, setOpen] = useState(false);
