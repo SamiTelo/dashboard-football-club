@@ -25,18 +25,16 @@ export function PlayersFilters({
     limit: 100,
   });
 
-  const { data: positionsData, isLoading: positionsLoading } =
-    usePositions({
-      page: 1,
-      limit: 100,
-    });
+  const { data: positionsData, isLoading: positionsLoading } = usePositions({
+    page: 1,
+    limit: 100,
+  });
 
   return (
     <div className="p-5 border-b border-gray-100">
       <h3 className="text-lg font-medium mb-4">Search Filter</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
         {/* TEAMS */}
         <Select onValueChange={(v) => onTeamChange?.(v ? Number(v) : null)}>
           <SelectTrigger className="w-full border border-gray-200 rounded-md p-2 outline-none focus:border-green-300 shadow-none">
@@ -84,6 +82,24 @@ export function PlayersFilters({
                 Aucune position
               </SelectItem>
             )}
+          </SelectContent>
+        </Select>
+
+        {/* ALL LISTES */}
+        <Select
+          onValueChange={(v) => {
+            if (v === "all") {
+              onTeamChange?.(null);
+              onPositionChange?.(null);
+            }
+          }}
+        >
+          <SelectTrigger className="w-full border border-gray-200 rounded-md p-2 outline-none focus:border-green-300 shadow-none">
+            <SelectValue placeholder="Toutes la listes" />
+          </SelectTrigger>
+
+          <SelectContent>
+            <SelectItem value="all">Toutes la liste des joueur</SelectItem>
           </SelectContent>
         </Select>
       </div>
