@@ -4,9 +4,7 @@ import { Search, Mail, Bell } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { LogoutButton } from "@/features/auth/components/logout-button";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  SidebarTrigger,
-} from "@/features/dashbaord/components/ui/sidebar";
+import { SidebarTrigger } from "@/features/dashbaord/components/ui/sidebar";
 import { Separator } from "@/features/dashbaord/components/ui/separator";
 
 export default function DashboardHeader() {
@@ -25,10 +23,12 @@ export default function DashboardHeader() {
     : "";
 
   return (
-    <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center justify-between shadow-xs bg-white/60 backdrop-blur px-3 md:px-6">
+    <header className="sticky top-0 z-50 flex h-16 items-center bg-white/60 backdrop-blur shadow-xs px-3 md:px-6">
+      
       {/* LEFT */}
       <div className="flex items-center gap-3 flex-1 min-w-0">
         <SidebarTrigger className="text-green-400" />
+
         <Separator orientation="vertical" className="h-4 hidden md:block" />
 
         <div className="hidden md:flex items-center gap-3 rounded-xl bg-[#F8F7FA] px-4 py-2 w-full max-w-sm">
@@ -41,7 +41,8 @@ export default function DashboardHeader() {
       </div>
 
       {/* RIGHT */}
-      <div className="flex items-center gap-3 md:gap-6">
+      <div className="flex items-center justify-end gap-3 md:gap-6 ml-auto">
+        
         <div className="flex items-center gap-4 text-muted-foreground">
           <LogoutButton />
           <Mail className="hidden sm:block h-5 w-5 cursor-pointer hover:text-green-400 transition" />
@@ -49,11 +50,10 @@ export default function DashboardHeader() {
         </div>
 
         {/* USER */}
-        <div className="flex items-center gap-3 min-w-35 justify-end">
+        <div className="flex items-center gap-3 shrink-0">
           {loading ? (
             <>
               <Skeleton className="h-9 w-9 rounded-full" />
-
               <div className="hidden md:block space-y-2">
                 <Skeleton className="h-3 w-24" />
                 <Skeleton className="h-3 w-32" />
@@ -72,6 +72,7 @@ export default function DashboardHeader() {
             </>
           )}
         </div>
+
       </div>
     </header>
   );
