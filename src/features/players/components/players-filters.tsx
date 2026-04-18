@@ -10,6 +10,8 @@ import {
 
 import { useTeams } from "@/features/teams/hooks/useTeams";
 import { usePositions } from "@/features/positions/hooks/usePositions";
+import { RotateCcw } from "lucide-react";
+import { useState } from "react";
 
 interface PlayersFiltersProps {
   onTeamChange?: (value: number | null) => void;
@@ -29,6 +31,21 @@ export function PlayersFilters({
     page: 1,
     limit: 100,
   });
+
+  const [cooldown, setCooldown] = useState(false);
+
+  const handleReset = () => {
+    if (cooldown) return;
+
+    setCooldown(true);
+
+    onTeamChange?.(null);
+    onPositionChange?.(null);
+
+    setTimeout(() => {
+      setCooldown(false);
+    }, 500);
+  };
 
   return (
     <div className="p-5 border-b border-gray-100">
@@ -85,23 +102,17 @@ export function PlayersFilters({
           </SelectContent>
         </Select>
 
-        {/* ALL LISTES */}
-        <Select
-          onValueChange={(v) => {
-            if (v === "all") {
-              onTeamChange?.(null);
-              onPositionChange?.(null);
-            }
-          }}
+        {/* RESET LISTES */}
+        <button
+          onClick={handleReset}
+          disabled={cooldown}
+          className={`w-full border border-gray-200 rounded-md p-2 text-left bg-white hover:bg-gray-50 focus:border-green-300 outline-none transition flex items-center justify-between group ${
+            cooldown ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         >
-          <SelectTrigger className="w-full border border-gray-200 rounded-md p-2 outline-none focus:border-green-300 shadow-none">
-            <SelectValue placeholder="Toutes la listes" />
-          </SelectTrigger>
-
-          <SelectContent>
-            <SelectItem value="all">Toutes la liste des joueur</SelectItem>
-          </SelectContent>
-        </Select>
+          Toutes la liste des joueurs
+          <RotateCcw className="w-4 h-4 text-gray-500 group-hover:text-green-500 transition" />
+        </button>
       </div>
     </div>
   );

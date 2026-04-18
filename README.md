@@ -30,27 +30,30 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 
 ##  Fonctionnalités 
 
-- Interface responsive avec TailwindCSS (OK)
-- login (OK)
-- register (OK)
-- mot de passe oublié (OK)
-- réinitialisation du mot de passe (OK)
-- verification code OTP ADMIN/SUPERADMIN (OK)
-- verification-email USER (OK)
-- Export PDF avec pdfmake (OK)
-- Pop Form add player (OK)
-- Dashboard main (OK)
-- Tableau des joueurs (OK)
-- Tableau des utilisateurs (OK)
-- Tableau des postes (OK)
-- Tableau des équipes (OK)
+- Interface responsive avec TailwindCSS 
+- login 
+- register 
+- mot de passe oublié 
+- réinitialisation du mot de passe 
+- verification code OTP ADMIN/SUPERADMIN 
+- verification-email USER 
+- Export PDF avec pdfmake 
+- Pop Form add player 
+- Dashboard main 
+- Tableau des joueurs 
+- Tableau des utilisateurs 
+- Tableau des postes 
+- Tableau des équipes 
+- USER Multi-Tenant
+- Gestion des joueurs, équipes et postes
 - Authentification sécurisée JWT + Refresh Token + verification 2fa, connexion API externe
 - Authentification securiser google avec OAuth
 - Upload d'images (joueurs, logos)
 
 ## Fonctionnalités à venir (feature)
  
-- Gestion des joueurs, équipes et postes (connexion a mon API) (dev en cours...)
+- Gestion des utilisateurs (connexion a mon API) (dev en cours...)
+- Ajout d'autre module metier
 - etc...
 
 
