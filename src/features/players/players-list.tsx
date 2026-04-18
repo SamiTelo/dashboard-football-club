@@ -70,8 +70,6 @@ export default function PlayersList() {
 
   return (
     <div className="p-0 bg-[#F8F7FA] min-h-screen text-[13px] md:text-[14px] text-[#5d596c]">
-      <p className="mt-6">Liste des joueurs /</p>
-      <br />
 
       <div className="bg-white rounded-lg border border-gray-100 min-h-72">
 
