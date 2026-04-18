@@ -9,34 +9,31 @@ import PlayersList from "@/features/players/players-list";
 export default function DashboardMain() {
   const { user, loading } = useAuth(true);
 
-  const userName = user
-    ? `${user.firstName} ${user.lastName}`
-    : "";
+  const userName = user ? `${user.firstName} ${user.lastName}` : "";
 
   return (
     <div className="p-0 bg-[#F8F7FA] min-h-screen text-[13px] md:text-[14px] font-sans text-[#5d596c]">
-
       <p className="mt-6">Tableau de bord /</p>
       <br />
 
       {/* HERO */}
-      <div className="bg-green-100 py-4 px-4 sm:px-6 mb-6 rounded-xl">
-        <div className="flex items-center gap-2 sm:gap-3">
-          <Hand className="text-green-500" />
+      <div className="bg-green-100 py-5 px-4 sm:px-6 mb-6 rounded-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+          <div className="flex items-center gap-2">
+            <Hand className="text-green-500 shrink-0" />
 
-          <p className="flex gap-1">
-            <span>Bonjour</span>
+            <span className="text-sm text-gray-600">Bonjour</span>
 
             {loading ? (
               <Skeleton className="h-4 w-24 rounded-md" />
             ) : (
-              <strong>{userName}</strong>
+              <strong className="text-gray-800">{userName}</strong>
             )}
+          </div>
 
-            <span>, bienvenue sur</span>
-            <span className="text-green-600 font-semibold">
-              Football Club
-            </span>
+          <p className="text-sm text-gray-600">
+            Bienvenue sur{" "}
+            <span className="text-green-600 font-semibold">Football Club</span>
           </p>
         </div>
       </div>
@@ -46,9 +43,8 @@ export default function DashboardMain() {
 
       {/* PLAYERS PREVIEW */}
       <div className="bg-white rounded-lg border border-gray-100 mt-6">
-        <PlayersList/>
+        <PlayersList />
       </div>
-
     </div>
   );
 }
