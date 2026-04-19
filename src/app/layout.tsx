@@ -3,6 +3,7 @@ import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import { GoogleScriptLoader } from "./GoogleScriptLoader";
 import { ReactQueryProvider } from "@/providers/react-query-provider";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Football Club",
@@ -29,6 +30,7 @@ export default function RootLayout({
 
         <ReactQueryProvider>
           {children}
+          <Toaster richColors position="top-right"  offset={16}/>
         </ReactQueryProvider>
       </body>
     </html>

@@ -27,13 +27,13 @@ export default function DashboardMain() {
             {loading ? (
               <Skeleton className="h-4 w-24 rounded-md" />
             ) : (
-              <strong className="text-gray-800 text-sm">{userName}</strong>
+              <strong className="text-green-600 text-sm">{userName}</strong>
             )}
           </div>
 
           <p className="text-sm text-gray-600">
             Bienvenue sur{" "}
-            <span className="text-green-600 font-semibold">Football Club</span>
+            Football Club
           </p>
         </div>
       </div>
