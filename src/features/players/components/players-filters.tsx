@@ -44,7 +44,7 @@ export function PlayersFilters({
 
     setTimeout(() => {
       setCooldown(false);
-    }, 500);
+    }, 10000);
   };
 
   return (
