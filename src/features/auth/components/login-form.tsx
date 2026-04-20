@@ -69,7 +69,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
           <div className="flex items-center">
             <FieldLabel htmlFor="password">Mot de passe</FieldLabel>
             <a
-              href="/auth/forgot_password"
+              href="/auth/forgot-password"
               className="ml-auto text-sm underline-offset-4 hover:underline hover:text-green-400"
             >
               Mot de passe oublié ?

@@ -20,14 +20,14 @@ export default function LoginPage() {
        {/*---------------------------------------------------
           BLOC RIGHT: Image
        -------------------------------------------------------*/}
-      <div className="order-1 lg:order-2 relative bg-[url('/assets/img.jpg')] bg-cover bg-center min-h-150 lg:min-h-screen flex items-center justify-center">
+      <div className="order-1 lg:order-2 relative bg-[url('/assets/img.webp')] bg-cover bg-center min-h-150 lg:min-h-screen flex items-center justify-center">
 
       {/* Logo */}
         <div className="absolute top-6 right-6 flex items-center gap-3 p-3 md:p-4 bg-white/10 backdrop-blur-sm border border-white/10 shadow-xl rounded-2xl">
           <a href="#" className="flex items-center gap-3 font-semibold text-lg">
             <div className="w-9 h-9 relative">
               <Image
-                src="/assets/logo.png"
+                src="/assets/logo.webp"
                 alt="Football Club Logo"
                 fill
                 className="object-contain rounded-xl"
