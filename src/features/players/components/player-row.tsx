@@ -82,7 +82,7 @@ export function PlayerRow({ player }: { player: Player }) {
 
           {/* NAME */}
           <div className="flex flex-col min-w-0">
-            <span className="text-xs sm:text-sm text-gray-500 truncate">
+            <span className="text-sm text-gray-500 truncate">
               {player.team?.name ?? "—"}
             </span>
           </div>
@@ -95,12 +95,12 @@ export function PlayerRow({ player }: { player: Player }) {
       </td>
 
       {/* CREATED */}
-      <td className="px-3 py-3 sm:px-6 sm:py-4 text-sm text-gray-500">
+      <td className="px-3 py-3 sm:px-6 sm:py-4 text-xs md:text-sm text-gray-500">
         {formatDate(player.createdAt)}
       </td>
 
       {/* UPDATED */}
-      <td className="px-3 py-3 sm:px-6 sm:py-4 text-sm text-gray-500">
+      <td className="px-3 py-3 sm:px-6 sm:py-4  text-xs md:text-sm text-gray-500">
         {formatDate(player.updatedAt)}
       </td>
 
