@@ -11,7 +11,6 @@ import {
   User,
 } from "../types/auth-types";
 import { parseAxiosError } from "@/lib/axios-helper";
-import { api } from "@/lib/api";
 import { queryClient } from "@/lib/queryClient";
 
 export const useAuth = (autoLoadProfile = false) => {
@@ -20,7 +19,9 @@ export const useAuth = (autoLoadProfile = false) => {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  // Charge le profil si autoLoadProfile = true
+  // ======================================================
+  // LOAD PROFILE
+  // ======================================================
   useEffect(() => {
     if (!autoLoadProfile) return;
 
@@ -31,8 +32,7 @@ export const useAuth = (autoLoadProfile = false) => {
         setUser(res.data as User);
       } catch (err: unknown) {
         setUser(null);
-        const message = parseAxiosError(err);
-        setError(message);
+        setError(parseAxiosError(err));
       } finally {
         setLoading(false);
       }
@@ -41,50 +41,49 @@ export const useAuth = (autoLoadProfile = false) => {
     loadProfile();
   }, [autoLoadProfile]);
 
-  /* ---------------------------
-   * REGISTER
-   --------------------------- */
+  // ======================================================
+  // REGISTER
+  // ======================================================
   const register = async (dto: CreateUserDto) => {
     setLoading(true);
     setError("");
+
     try {
       const res = await authService.register(dto);
       return res.data;
     } catch (err: unknown) {
-      const message = parseAxiosError(err);
-      setError(message);
+      setError(parseAxiosError(err));
       throw err;
     } finally {
       setLoading(false);
     }
   };
 
-  /* ---------------------------
-   * GOOGLE LOGIN
-   --------------------------- */
-
+  // ======================================================
+  // GOOGLE LOGIN
+  // ======================================================
   const googleLogin = async (dto: { idToken: string }) => {
     setLoading(true);
     setError("");
 
     try {
-      const res = await authService.googleLogin(dto);
-      const data = res.data;
+      await authService.googleLogin(dto);
 
-      if (data.user) setUser(data.user);
+      queryClient.clear(); 
+
+      await getProfile();
 
       router.replace("/dashboard");
     } catch (err: unknown) {
-      const message = parseAxiosError(err);
-      setError(message);
+      setError(parseAxiosError(err));
     } finally {
       setLoading(false);
     }
   };
 
-  /* ---------------------------
-   * LOGIN
-   --------------------------- */
+  // ======================================================
+  // LOGIN
+  // ======================================================
   const login = async (dto: LoginUserDto) => {
     setLoading(true);
     setError("");
@@ -93,49 +92,51 @@ export const useAuth = (autoLoadProfile = false) => {
       const res = await authService.login(dto);
       const data = res.data;
 
-      // RESET CACHE
-      queryClient.removeQueries();
+      queryClient.clear();
 
       if (data.requires2FA) {
         router.replace("/auth/verify-2fa");
         return;
       }
 
-      if (data.user) setUser(data.user);
+      await getProfile();
 
       router.replace("/dashboard");
     } catch (err: unknown) {
-      const message = parseAxiosError(err);
-      setError(message);
+      setError(parseAxiosError(err));
       throw err;
     } finally {
       setLoading(false);
     }
   };
 
-  /* ---------------------------
-   * VERIFY 2FA
-   --------------------------- */
+  // ======================================================
+  // VERIFY 2FA
+  // ======================================================
   const verify2FA = async (dto: { code: string }) => {
     setLoading(true);
     setError("");
+
     try {
       const res = await authService.verify2FA(dto);
-      setUser(res.data.user);
+
+      queryClient.clear();
+      await getProfile(); // user réel
+
       router.replace("/dashboard");
+
       return res.data;
     } catch (err: unknown) {
-      const message = parseAxiosError(err);
-      setError(message);
+      setError(parseAxiosError(err));
       throw err;
     } finally {
       setLoading(false);
     }
   };
 
-  /* ---------------------------
-   * LOGOUT
-   --------------------------- */
+  // ======================================================
+  // LOGOUT
+  // ======================================================
   const logout = async () => {
     setLoading(true);
     setError("");
@@ -145,46 +146,45 @@ export const useAuth = (autoLoadProfile = false) => {
 
       setUser(null);
 
-      delete api.defaults.headers.common.Authorization;
+      queryClient.clear(); // full reset cache
 
-      // RESET CACHE
-      queryClient.removeQueries();
-
-      router.replace("/auth/login");
+      window.location.replace("/auth/login"); // full hard reset
     } catch (err: unknown) {
-      const message = parseAxiosError(err);
-      setError(message);
-      throw message;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  /* ---------------------------
-   * GET PROFILE
-   --------------------------- */
-  const getProfile = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const res = await authService.getProfile();
-      setUser(res.data as User);
-    } catch (err: unknown) {
-      setUser(null);
-      const message = parseAxiosError(err);
-      setError(message);
+      setError(parseAxiosError(err));
       throw err;
     } finally {
       setLoading(false);
     }
   };
 
-  /* ---------------------------
-   * REFRESH TOKEN
-   --------------------------- */
+  // ======================================================
+  // GET PROFILE
+  // ======================================================
+  const getProfile = async () => {
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await authService.getProfile();
+      setUser(res.data as User);
+    } catch (err: unknown) {
+      setUser(null);
+      setError(parseAxiosError(err));
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ======================================================
+  // REFRESH TOKEN
+  // ======================================================
   const refresh = async () => {
     try {
       const res = await authService.refreshToken();
+
+      await getProfile();
+
       return res.data;
     } catch (err: unknown) {
       setUser(null);
@@ -193,51 +193,50 @@ export const useAuth = (autoLoadProfile = false) => {
     }
   };
 
-  /* ---------------------------
-   * VERIFY EMAIL
-   --------------------------- */
+  // ======================================================
+  // VERIFY EMAIL
+  // ======================================================
   const verifyEmail = async (token: string) => {
     try {
       return await authService.verifyEmail(token);
     } catch (err: unknown) {
-      const message = parseAxiosError(err);
-      setError(message);
+      setError(parseAxiosError(err));
       throw err;
     }
   };
 
-  /* ---------------------------
-   * RESEND VERIFICATION EMAIL
-   --------------------------- */
+  // ======================================================
+  // RESEND VERIFICATION
+  // ======================================================
   const resendVerification = async (email: string) => {
     try {
       return await authService.resendVerification(email);
     } catch (err: unknown) {
-      const message = parseAxiosError(err);
-      setError(message);
+      setError(parseAxiosError(err));
       throw err;
     }
   };
 
-  /* ---------------------------
-   * FORGOT / RESET PASSWORD
-   --------------------------- */
+  // ======================================================
+  // FORGOT PASSWORD
+  // ======================================================
   const forgotPassword = async (dto: ForgotPasswordDto) => {
     try {
       return await authService.forgotPassword(dto);
     } catch (err: unknown) {
-      const message = parseAxiosError(err);
-      setError(message);
+      setError(parseAxiosError(err));
       throw err;
     }
   };
 
+  // ======================================================
+  // RESET PASSWORD
+  // ======================================================
   const resetPassword = async (dto: ResetPasswordDto) => {
     try {
       return await authService.resetPassword(dto);
     } catch (err: unknown) {
-      const message = parseAxiosError(err);
-      setError(message);
+      setError(parseAxiosError(err));
       throw err;
     }
   };

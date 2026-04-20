@@ -2,59 +2,39 @@ import axios from "axios";
 
 export const api = axios.create({
   baseURL: "/api",
-  withCredentials: true,
+  withCredentials: true, // Pour cookies
 });
 
 // ======================================================
-// REQUEST INTERCEPTOR
-// ======================================================
-api.interceptors.request.use((config) => {
-  if (typeof window !== "undefined") {
-    const token = localStorage.getItem("access_token");
-
-    if (token) {
-      config.headers = config.headers ?? {};
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-  }
-
-  return config;
-});
-
-// ======================================================
-// RESPONSE INTERCEPTOR
+// RESPONSE INTERCEPTOR (Refresh automatique)
 // ======================================================
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // ignore auth routes + refresh itself
+    // Ignore auth routes
     if (
       originalRequest.url?.includes("/auth/login") ||
       originalRequest.url?.includes("/auth/verify-2fa") ||
       originalRequest.url?.includes("/auth/google-login") ||
-      originalRequest.url?.includes("/auth/refresh") 
+      originalRequest.url?.includes("/auth/refresh")
     ) {
       return Promise.reject(error);
     }
 
-    // Refresh token logic
+    // Si 401 → essayer refresh
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        const res = await api.post("/auth/refresh");
-        const newAccessToken = res.data.access_token;
+        // Refresh via cookie HttpOnly
+        await api.post("/auth/refresh");
 
-        localStorage.setItem("access_token", newAccessToken);
-
-        originalRequest.headers = originalRequest.headers ?? {};
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-
+        // Retry la requête originale
         return api(originalRequest);
       } catch {
-        localStorage.removeItem("access_token");
+        // Si refresh échoue → redirection login
         window.location.href = "/auth/login";
         return Promise.reject(error);
       }

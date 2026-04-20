@@ -46,7 +46,7 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 - Tableau des équipes 
 - USER Multi-Tenant
 - Gestion des joueurs, équipes et postes
-- Authentification sécurisée JWT + Refresh Token + verification 2fa, connexion API externe
+- Authentification sécurisée JWT + Refresh Token + verification 2fa + Cookies HttpOnly, connexion API externe
 - Authentification securiser google avec OAuth
 - Upload d'images (joueurs, logos)
 
