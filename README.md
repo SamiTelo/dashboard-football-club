@@ -126,5 +126,5 @@ npm run dev
 
 ##  Auteur
 **Tiemtore Samuel**
-Email: [samueltiemtore10@gmail.com](mailto:samueltiemtore10@gmail.com)
-**Note** : le projet est sous LICENCE MIT
+- Email: [samueltiemtore10@gmail.com](mailto:samueltiemtore10@gmail.com)
+- **Le projet est sous LICENCE MIT**
