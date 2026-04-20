@@ -46,7 +46,7 @@ const data: {
   logo: [
     {
       name: "Football Club",
-      src: "/assets/logo.png",
+      src: "/assets/logo.webp",
     },
   ],
 

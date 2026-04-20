@@ -99,7 +99,7 @@ export function ForgotPasswordForm({
         {/* Lien login */}
         <Field>
           <FieldDescription className="text-center">
-            Remember your password?{" "}
+            Souvenez-vous de votre mot de passe?{" "}
             <a
               href="/auth/login"
               className="underline underline-offset-4 text-green-400"
