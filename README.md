@@ -84,9 +84,10 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 
 ## Déploiement
 
-- Frontend : [https://dashboard-football-club.vercel.app](https://dashboard-football-club.vercel.app) (API toujours en cours d’intégration)
+- Frontend : [https://dashboard-football-club.vercel.app](https://dashboard-football-club.vercel.app) 
 - Backend : [https://api-football-gfpz.onrender.com](https://api-football-gfpz.onrender.com) 
-- Base de données: PostgreSQL sur Render
+- Base de données: PostgreSQL deployer sur **Neon**
+- Une documentation Swagger est disponible: https://api-football-gfpz.onrender.com/docs
 
 
 
@@ -123,8 +124,9 @@ npm install
 npm run dev
 
 ```
-
 ##  Auteur
-**Tiemtore Samuel**
+- **Tiemtore Samuel**
 - Email: [samueltiemtore10@gmail.com](mailto:samueltiemtore10@gmail.com)
-- **Le projet est sous LICENCE MIT**
+
+## Licence
+Ce projet est sous licence MIT.
