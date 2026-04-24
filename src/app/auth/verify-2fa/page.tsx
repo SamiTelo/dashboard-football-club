@@ -22,7 +22,7 @@ export default function LoginPage() {
       {/*---------------------------------------------------
           BLOC RIGHT: Image (visible seulement sur lg+)
        -------------------------------------------------------*/}
-      <div className="order-1 md:order-2 hidden md:flex relative bg-[url('/assets/img.webp')] bg-cover bg-center min-h-100 md:min-h-screen items-center justify-center">
+      <div className="order-1 md:order-2 hidden md:flex relative bg-[url('/assets/info.webp')] bg-cover bg-center min-h-100 md:min-h-screen items-center justify-center">
         {/* Logo */}
         <div className="absolute top-6 right-6 flex items-center gap-3 p-3 md:p-4 bg-white/10 backdrop-blur-sm border border-white/10 shadow-xl rounded-2xl">
           <a href="#" className="flex items-center gap-3 font-semibold text-lg">

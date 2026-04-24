@@ -45,7 +45,7 @@ export default function LoginPage() {
           </p>
           <p className="text-xs sm:text-sm mb-8 text-white/70 text-left">
             Accès invité limité à la consultation des fonctionnalités
-            principales. Envoyez moi un mail sur samueltiemtore10@gmail.com pour tester en tant qu&apos;Admin
+            principales. Envoyez moi un mail sur samitelo10@gmail.com pour tester en tant qu&apos;Admin
           </p>
 
            {/* Access demo */}
