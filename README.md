@@ -87,6 +87,7 @@ Construit avec Next.js et connecté à une API backend NestJS + Prisma.
 - Frontend : [https://dashboard-football-club.vercel.app](https://dashboard-football-club.vercel.app) 
 - Backend : [https://api-football-gfpz.onrender.com](https://api-football-gfpz.onrender.com) 
 - Base de données: PostgreSQL deployer sur **Neon**
+- Une documentation Swagger est disponible: https://api-football-gfpz.onrender.com/docs
 
 
 
